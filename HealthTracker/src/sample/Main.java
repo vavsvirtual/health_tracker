@@ -100,12 +100,7 @@ public class Main extends Application{
         createLoginButton.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
         GridPane.setMargin(createLoginButton, new Insets(20, 0,20,0));
 
-        createLoginButton.setOnAction(new EventHandler<ActionEvent>(){
-            public void handle(ActionEvent t){
-                stage.setScene(Home.homeScene());
-            }
-        });
-
+        
         createLoginButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -118,11 +113,12 @@ public class Main extends Application{
                     return;
                 }
 
-//                showAlert(Alert.AlertType.CONFIRMATION, gridPaneLogin.getScene().getWindow(), "Login Successful!", "Welcome " + userField.getText());
-
                 System.out.println("User " + userField.getText() + " has logged in");
 
+                stage.setScene(Home.homeScene());
+
             }
+
         });
 
 
