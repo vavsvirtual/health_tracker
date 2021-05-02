@@ -1,6 +1,7 @@
 import Frontend.ProfilePane;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,6 +11,10 @@ public class FrontEndDemoProfile extends Application {
     double x,y = 0;
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        GridPane gridPane = new GridPane();
+
+
         ProfilePane pane = new ProfilePane();
 
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
@@ -25,9 +30,12 @@ public class FrontEndDemoProfile extends Application {
             primaryStage.setY(event.getScreenY() - y);
         });
 
-        pane.getChildren().addAll(root);
+//        pane.getChildren().addAll(root);
+
+        gridPane.getChildren().addAll(pane, root);
+
         primaryStage.setTitle(pane.getTitle());
-        primaryStage.setScene(new Scene(pane, 1200, 700));
+        primaryStage.setScene(new Scene(gridPane, 1200, 700));
 
         primaryStage.show();
     }
