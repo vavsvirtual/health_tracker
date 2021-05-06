@@ -1,4 +1,4 @@
-package Frontend;
+package frontend;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,6 +10,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -23,9 +24,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-
 
 public class ProfilePane extends BorderPane implements EventHandler<ActionEvent> {
     // photo
@@ -60,6 +61,8 @@ public class ProfilePane extends BorderPane implements EventHandler<ActionEvent>
     Button btnSave;
 
     public ProfilePane() {
+        setPrefWidth(600);
+        setPrefHeight(600);
 
         VBox rootBox = new VBox(10);
         rootBox.setPadding(new Insets(10));
@@ -71,6 +74,8 @@ public class ProfilePane extends BorderPane implements EventHandler<ActionEvent>
         rootBox.getChildren().add(createDietPart());
 
         rootBox.getChildren().add(createSaveButtonPart());
+
+        rootBox.prefWidthProperty().bind(widthProperty());
 
         ScrollPane scrollPane = new ScrollPane(rootBox);
         setCenter(scrollPane);
@@ -113,7 +118,11 @@ public class ProfilePane extends BorderPane implements EventHandler<ActionEvent>
         gridPane.add(cbMealType, 1, 2);
         gridPane.add(tfCalorieCount, 1, 3);
 
-        return new VBox(createTitleLabel("Diet"), gridPane);
+        HBox hBox = new HBox(gridPane);
+        hBox.setAlignment(Pos.CENTER);
+        VBox vBox = new VBox(createTitleLabel("Diet"), hBox);
+        vBox.setAlignment(Pos.CENTER);
+        return vBox;
     }
 
     private Node createExercisePart() {
@@ -131,7 +140,11 @@ public class ProfilePane extends BorderPane implements EventHandler<ActionEvent>
         gridPane.add(tfDistance, 1, 1);
         gridPane.add(cbTypeOfSports, 1, 2);
 
-        return new VBox(createTitleLabel("Exercise"), gridPane);
+        HBox hBox = new HBox(gridPane);
+        hBox.setAlignment(Pos.CENTER);
+        VBox vBox = new VBox(createTitleLabel("Exercise"), hBox);
+        vBox.setAlignment(Pos.CENTER);
+        return vBox;
     }
 
     private Node createPersonalPart() {
@@ -179,7 +192,11 @@ public class ProfilePane extends BorderPane implements EventHandler<ActionEvent>
         gridPane.add(tfHealthOverview, 1, 4);
         gridPane.add(btnGenerate, 3, 2);
 
-        return new VBox(createTitleLabel("Personal Information"), gridPane);
+        HBox hBox = new HBox(gridPane);
+        hBox.setAlignment(Pos.CENTER);
+        VBox vBox = new VBox(createTitleLabel("Personal Information"), hBox);
+        vBox.setAlignment(Pos.CENTER);
+        return vBox;
     }
 
     private VBox createSaveButtonPart() {
@@ -187,7 +204,8 @@ public class ProfilePane extends BorderPane implements EventHandler<ActionEvent>
         btnSave.setOnAction(this);
 
         VBox vBox = new VBox(btnSave);
-        vBox.setPadding(new Insets(10, 10, 10, 150));
+        vBox.setPadding(new Insets(10, 10, 10, 10));
+        vBox.setAlignment(Pos.CENTER);
         return vBox;
     }
 
@@ -198,7 +216,7 @@ public class ProfilePane extends BorderPane implements EventHandler<ActionEvent>
         ivPhoto.fitHeightProperty().set(150);
         ivPhoto.setImage(image);
         VBox vBox = new VBox(ivPhoto);
-        vBox.setPadding(new Insets(10, 10, 10, 150));
+        vBox.setPadding(new Insets(10, 10, 10, 10));
 
         ivPhoto.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -225,6 +243,7 @@ public class ProfilePane extends BorderPane implements EventHandler<ActionEvent>
                 }
             }
         });
+        vBox.setAlignment(Pos.CENTER);
         return vBox;
     }
 
@@ -241,12 +260,16 @@ public class ProfilePane extends BorderPane implements EventHandler<ActionEvent>
         gridPane.add(tfRealName, 1, 1);
         gridPane.add(tfEmail, 1, 2);
 
-        return new VBox(createTitleLabel("General"), gridPane);
+        HBox hBox = new HBox(gridPane);
+        hBox.setAlignment(Pos.CENTER);
+        VBox vBox = new VBox(createTitleLabel("General"), hBox);
+        vBox.setAlignment(Pos.CENTER);
+        return vBox;
     }
 
     private GridPane createGridPane() {
         GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(5, 0, 0, 50));
+        gridPane.setPadding(new Insets(5, 0, 0, 20));
         gridPane.setHgap(10);
         gridPane.setVgap(5);
         return gridPane;
@@ -269,5 +292,4 @@ public class ProfilePane extends BorderPane implements EventHandler<ActionEvent>
         alert.setContentText(text);
         alert.showAndWait();
     }
-
 }
