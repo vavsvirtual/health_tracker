@@ -14,7 +14,7 @@ import java.util.Collections;
 /**
  * Project      : health_tracker
  * File         : UserData.java
- * Last Edit    : 08/05/2021
+ * Last Edit    : 09/05/2021
  * PRG Lang     : Java
  * Author(s)    : Team 4.5 | Vav Scott 100287100
  *
@@ -26,19 +26,21 @@ public class UserData {
     public static final double CM_TO_INCHES = 0.3937008;
     public static final String FOOD_TYPES_FILE_PATH = "./client_data/foodTypes.ser";
     public static final String DRINK_TYPES_FILE_PATH = "./client_data/drinkTypes.ser";
-    //User related variables
+    //Account related variables
     private int heightCm;
     private Weight currentWeight;
     private final ArrayList<Day> userDays;
-    //Food and drink arraylists
+    //Food and drink lists
     private final ArrayList<Food> foodList;
     private final ArrayList<Drink> drinkList;
 
     //Constructor
     public UserData(int heightCm, Weight currentWeight){
+        //Obtain userdata
         this.heightCm = heightCm;
         this.currentWeight = currentWeight;
         this.userDays = new ArrayList<>();
+        //Add weight measurement to history
         userDays.add(new Day());
         userDays.get(0).addWeight(currentWeight);
         //Load in food & drink types
@@ -49,6 +51,9 @@ public class UserData {
     //Getters
     public Day getDay(LocalDate date){
         int pos = Collections.binarySearch(userDays, new Day(date));
+        if(pos < 0){
+            return null;
+        }
         return userDays.get(pos);
     }
     public int getHeightCm() {
@@ -87,8 +92,8 @@ public class UserData {
             }
         }
         userDays.add(day);
+        sortDays();
         return true;
-        //sortDays();
     }
     public boolean addDrink(Drink drink){
         for(Drink d : drinkList){
@@ -157,31 +162,93 @@ public class UserData {
     }
 
     //Test harness
-    /*public static void main(String[] args) {
-        //Creating new UserData object
+    public static void main(String[] args) {
+        //--------- SETUP ---------
         UserData userData = new UserData(200, new Weight(10, 1));
-        //Outputting all food
-        ArrayList<Food> foodList = userData.getFoodList();
-        for (Food food : foodList) {
-            System.out.print(food.getName() + ", ");
-        }
-        System.out.println("\b\b");
-
+        //---------TEST A: FOOD LIST---------
         //Adding a new food object
         Food spaghetti = new Food("Spaghetti", 201);
         userData.addFood(spaghetti);
-
-        //Outputting all food
+        //Checking for spaghetti food
+        ArrayList<Food> foodList = userData.getFoodList();
+        boolean successA1 = false;
         for (Food food : foodList) {
-            System.out.print(food.getName() + ", ");
+            if(food == spaghetti){
+                successA1 = true;
+                break;
+            }
         }
-        System.out.println("\b\b");
+        //Attempting to add a food object that already exists
+        boolean successA2 = !userData.addFood(spaghetti);
 
-        //Removing the food object and outputting all food again
+        //Removing the food object
         userData.removeFood(spaghetti);
+        boolean successA3 = true;
         for (Food food : foodList) {
-            System.out.print(food.getName() + ", ");
+            if(food == spaghetti){
+                successA3 = false;
+                break;
+            }
         }
-        System.out.println("\b\b");
-    }*/
+        //---------TEST B: DRINK LIST---------
+        //Adding a new drink object
+        Drink testDrink = new Drink("Test Drink", 20);
+        userData.addDrink(testDrink);
+        //Checking for testDrink
+        ArrayList<Drink> drinkList = userData.getDrinkList();
+        boolean successB1 = false;
+        for (Drink drink : drinkList) {
+            if(drink == testDrink){
+                successB1 = true;
+                break;
+            }
+        }
+        //Attempting to add a drink object that already exists
+        boolean successB2 = !userData.addDrink(testDrink);
+
+        //Removing the drink object
+        userData.removeDrink(testDrink);
+        boolean successB3 = true;
+        for (Drink drink : drinkList) {
+            if(drink == testDrink){
+                successB3 = false;
+                break;
+            }
+        }
+
+        //---------TEST C: DAY TESTS---------
+        //Adding a day to user data
+        userData.addDay(new Day(LocalDate.of(2007, 7,7)));
+        //Attempting to get it back
+        Day day = userData.getDay(LocalDate.of(2007, 7, 7));
+        boolean successC1 = false;
+        if(day != null){
+            successC1 = true;
+        }
+
+        //Attempting to add a day with the same date as a preexisting day
+        userData.addDay(new Day(LocalDate.of(2007, 7,7)));
+        boolean successC2 = (userData.userDays.size() == 2);
+
+        //Attempting to get non existant day
+        day = userData.getDay(LocalDate.of(2008, 7, 7));
+        boolean successC3 = true;
+        if(day != null){
+            successC3 = false;
+        }
+        //TEST RESULTS
+        System.out.println("---------TEST A: RESULTS---------");
+        System.out.println("ADDING UNIQUE FOOD: \t" + (successA1 ? "Pass" : "Fail"));
+        System.out.println("ADD DUPLICATE FOOD: \t" + (successA2 ? "Pass" : "Fail"));
+        System.out.println("REMOVE EXISTING FOOD: \t" + (successA3 ? "Pass" : "Fail"));
+        System.out.println("---------TEST B: RESULTS---------");
+        System.out.println("ADDING UNIQUE DRINK: \t" + (successB1 ? "Pass" : "Fail"));
+        System.out.println("ADD DUPLICATE DRINK: \t" + (successB2 ? "Pass" : "Fail"));
+        System.out.println("REMOVE EXISTING DRINK: \t" + (successB3 ? "Pass" : "Fail"));
+        System.out.println("---------TEST C: RESULTS---------");
+        System.out.println("ADD & GET UNIQUE DAY: \t" + (successC1 ? "Pass" : "Fail"));
+        System.out.println("ADD A DUPLICATE DAY: \t" + (successC2 ? "Pass" : "Fail"));
+        System.out.println("GET NON EXISTENT DAY: \t" + (successC3 ? "Pass" : "Fail"));
+
+    }
 }

@@ -3,7 +3,7 @@ package shared;
 /**
  * Project      : health_tracker
  * File         : Exercise.java
- * Last Edit    : 07/05/2021
+ * Last Edit    : 09/05/2021
  * PRG Lang     : Java
  * Author(s)    : Team 4.5 | Vav Scott 100287100
  *
@@ -12,7 +12,7 @@ package shared;
 
 
 public class Exercise{
-    public enum exerciseType{
+    public enum ExerciseType{
         //Individual sports
         RUNNING,
         CYCLING,
@@ -23,42 +23,64 @@ public class Exercise{
         FOOTBALL,
         RUGBY,
         TENNIS,
-        BADMINTON,
+        BADMINTON
     }
-    private final exerciseType type;
+    private static final double KM_TO_MILES = 0.6213712;
+    private final ExerciseType type;
     private int durationMins;
-    private float distanceKm;
+    private double distanceKm;
     
     //Constructors
-    public Exercise(exerciseType type, int durationMins){
+    public Exercise(ExerciseType type, int durationMins){
         this.type = type;
         this.durationMins = durationMins;
     }
-    public Exercise(exerciseType type, float distanceKm){
+    public Exercise(ExerciseType type, double distanceKm){
         this.type = type;
         this.distanceKm = distanceKm;
 
     }
-    public Exercise(exerciseType type, int durationMins, float distanceKm){
+    public Exercise(ExerciseType type, int durationMins, double distanceKm){
         this.type = type;
         this.durationMins = durationMins;
         this.distanceKm = distanceKm;
     }
 
     //Getters
-    public exerciseType getType() {
+    public ExerciseType getType() {
         return type;
     }
     public int getDurationMins() {
         return durationMins;
     }
     public int getDurationSeconds() {
-        return durationMins;
+        return durationMins*60;
     }
-    public float getDistanceKm() {
+    public double getDistanceKm() {
         return distanceKm;
     }
-    public float getDistanceMiles() {
-        return (float) (distanceKm*0.6213712);
+    public double getDistanceMiles() {
+        return distanceKm*KM_TO_MILES;
+    }
+
+    //Test harness
+    public static void main(String[] args) {
+        //--------- SETUP ---------
+        Exercise exercise = new Exercise(ExerciseType.BADMINTON, 20, 20);
+        //---------TEST A: CONVERSION GETTERS---------
+        //KM to Miles
+        boolean successA1 = false;
+        if(exercise.getDistanceMiles() > 12.3 && exercise.getDistanceMiles() < 12.5){
+            successA1 = true;
+        }
+        //Mins to Seconds
+        boolean successA2 = false;
+        if(exercise.getDurationSeconds() == 1200){
+            successA2 = true;
+        }
+        //TEST RESULTS
+        System.out.println("---------TEST A: RESULTS---------");
+        System.out.println("KM/MILES: \t" + (successA1 ? "Pass" : "Fail"));
+        System.out.println("MINS/SEC: \t" + (successA2 ? "Pass" : "Fail"));
     }
 }

@@ -124,7 +124,7 @@ public class Main extends Application{
                     showAlert(Alert.AlertType.ERROR, gridPaneLogin.getScene().getWindow(), "Form Error!", "Please enter a password");
                     return;
                 }
-                boolean success = connection.login(userField.getText(), passwordField.getText());
+                boolean success = false;//connection.login(userField.getText(), passwordField.getText());
                 if (success){
                     System.out.println("User " + userField.getText() + " has logged in");
                     showAlert(Alert.AlertType.CONFIRMATION, logInScene().getWindow(), "Login Success", "Welcome " + userField.getText());
@@ -274,7 +274,7 @@ public class Main extends Application{
                     return;
                 }
 
-                boolean success = connection.register(userField.getText(), passwordField.getText(), nameField.getText(), emailField.getText());
+                boolean success = false;//connection.register(userField.getText(), passwordField.getText(), nameField.getText(), emailField.getText());
                 if (success){
                     System.out.println("Registration Successful");
                     showAlert(Alert.AlertType.CONFIRMATION, gridPaneRegister.getScene().getWindow(), "Registration Success", "Please login " + userField.getText());

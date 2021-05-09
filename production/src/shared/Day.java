@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Project      : health_tracker
  * File         : Day.java
- * Last Edit    : 07/05/2021
+ * Last Edit    : 09/05/2021
  * PRG Lang     : Java
  * Author(s)    : Team 4.5 | Vav Scott 100287100
  *
@@ -96,5 +96,55 @@ public class Day implements Comparable<Day>{
     @Override
     public int compareTo(Day d) {
         return date.isBefore(d.getDate()) ? -1 : (date.equals(d.getDate()) ? 0 : 1);
+    }
+
+    //Test harness
+    public static void main(String[] args) {
+        //--------- SETUP ---------
+        Day pastDay = new Day(LocalDate.now().minusDays(200));
+        Day currentDay = new Day(LocalDate.now());
+        Day futureDay = new Day(LocalDate.now().plusDays(200));
+        //---------TEST A: OTHER FUNCTIONS---------
+        //inFuture test
+        boolean successA1 = (!pastDay.inFuture() && !currentDay.inFuture() && futureDay.inFuture());
+        //Compare test
+        boolean successA2, successA3, successA4;
+        //Less than date
+        successA2 = currentDay.compareTo(futureDay) < 0;
+        //Greater than date
+        successA3 = currentDay.compareTo(pastDay) > 0;
+        //Equal date
+        successA4 = currentDay.compareTo(new Day(LocalDate.now())) == 0;
+
+        //---------TEST B: ADDING TO DAY LIMITS---------
+        //Weight
+        boolean successB1 = currentDay.addWeight(new Weight(100f));
+        boolean successB2 = !futureDay.addWeight(new Weight(100f));
+        currentDay.addWeight(new Weight(100f));
+        currentDay.addWeight(new Weight(100f));
+        boolean successB3 = !currentDay.addWeight(new Weight(100f));
+
+        //Meals
+        boolean successB4 = currentDay.addMeal(new Meal());
+        boolean successB5 = !futureDay.addMeal(new Meal());
+
+        //Exercise
+        boolean successB6 = currentDay.addExercise(new Exercise(Exercise.ExerciseType.CYCLING, 20));
+        boolean successB7 = !futureDay.addExercise(new Exercise(Exercise.ExerciseType.CYCLING, 20));
+
+        //TEST RESULTS
+        System.out.println("---------TEST A: RESULTS---------");
+        System.out.println("IN FUTURE FUNC  : \t" + (successA1 ? "Pass" : "Fail"));
+        System.out.println("COMPARE TO <    : \t" + (successA2 ? "Pass" : "Fail"));
+        System.out.println("COMPARE TO >    : \t" + (successA3 ? "Pass" : "Fail"));
+        System.out.println("COMPARE TO =    : \t" + (successA4 ? "Pass" : "Fail"));
+        System.out.println("---------TEST B: RESULTS---------");
+        System.out.println("ADDING WEIGHT (NOW)     : \t" + (successB1 ? "Pass" : "Fail"));
+        System.out.println("ADDING WEIGHT (FUTURE)  : \t" + (successB2 ? "Pass" : "Fail"));
+        System.out.println("ADDING WEIGHT (NUM>3)   : \t" + (successB3 ? "Pass" : "Fail"));
+        System.out.println("ADDING MEAL (NOW)       : \t" + (successB4 ? "Pass" : "Fail"));
+        System.out.println("ADDING MEAL (FUTURE)    : \t" + (successB5 ? "Pass" : "Fail"));
+        System.out.println("ADDING EXERCISE (NOW)   : \t" + (successB6 ? "Pass" : "Fail"));
+        System.out.println("ADDING EXERCISE (FUTURE): \t" + (successB7 ? "Pass" : "Fail"));
     }
 }
