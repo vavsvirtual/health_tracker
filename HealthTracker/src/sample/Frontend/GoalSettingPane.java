@@ -1,14 +1,6 @@
 package client;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.time.LocalDate;
-
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import com.jfoenix.controls.JFXBadge;
 import com.jfoenix.controls.JFXButton;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -16,7 +8,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -25,12 +16,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -38,8 +25,7 @@ import javafx.stage.Stage;
 
 public class GoalSettingPane extends Application {
 
-    public static Stage stage;
-
+    private static Stage stage;
 
     @Override
     public void start(Stage primaryStage) {
@@ -101,9 +87,7 @@ public class GoalSettingPane extends Application {
 
         groups.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {
-                stage.setScene(GroupsPane.groupScene());
-            }
+            public void handle(ActionEvent event) { stage.setScene(GroupsPane.groupScene()); }
         });
 
         JFXButton logout = new JFXButton("Logout");
@@ -179,70 +163,40 @@ public class GoalSettingPane extends Application {
 
         LocalDate nowDate = LocalDate.now();
 
-        Label thirdLabel = new Label("Diet");
+        // Exercise Goal
+
+        Label thirdLabel = new Label("Exercise");
         thirdLabel.setFont(Font.font("Arial", 20));
         gridPaneSetting.add(thirdLabel, 0, 0, 2, 1);
         thirdLabel.setAlignment(Pos.CENTER);
-        thirdLabel.setTranslateX(-150);
+        thirdLabel.setTranslateX(-500);
         thirdLabel.setTranslateY(250);
         GridPane.setHalignment(thirdLabel, HPos.CENTER);
         GridPane.setMargin(thirdLabel, new Insets(20, 0, 20, 0));
 
-        Label startDate = new Label("Starting Date");
-        startDate.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        gridPaneSetting.add(startDate, 0, 0, 2, 1);
-        startDate.setAlignment(Pos.CENTER);
-        startDate.setTranslateX(-370);
-        startDate.setTranslateY(310);
-        GridPane.setHalignment(startDate, HPos.CENTER);
-        GridPane.setMargin(startDate, new Insets(20, 0, 20, 0));
-
-        DatePicker dpStartingDate = new DatePicker(nowDate);
-        dpStartingDate.setPrefHeight(40);
-        dpStartingDate.setPrefWidth(300);
-        dpStartingDate.setTranslateX(-300);
-        dpStartingDate.setTranslateY(250);
-        gridPaneSetting.add(dpStartingDate, 1, 2);
 
         Label deadlineDate = new Label("Deadline");
         deadlineDate.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneSetting.add(deadlineDate, 0, 0, 2, 1);
         deadlineDate.setAlignment(Pos.CENTER);
-        deadlineDate.setTranslateX(-370);
-        deadlineDate.setTranslateY(360);
+        deadlineDate.setTranslateX(-600);
+        deadlineDate.setTranslateY(330);
         GridPane.setHalignment(deadlineDate, HPos.CENTER);
         GridPane.setMargin(deadlineDate, new Insets(20, 0, 20, 0));
 
         DatePicker dpDeadLine = new DatePicker(nowDate.plusDays(7));
         dpDeadLine.setPrefHeight(40);
         dpDeadLine.setPrefWidth(300);
-        dpDeadLine.setTranslateX(-300);
-        dpDeadLine.setTranslateY(300);
+        dpDeadLine.setTranslateX(-530);
+        dpDeadLine.setTranslateY(270);
         gridPaneSetting.add(dpDeadLine, 1, 2);
-
-        Label targetWeight = new Label("Target Weight");
-        targetWeight.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        gridPaneSetting.add(targetWeight, 0, 0, 2, 1);
-        targetWeight.setAlignment(Pos.CENTER);
-        targetWeight.setTranslateX(-370);
-        targetWeight.setTranslateY(410);
-        GridPane.setHalignment(targetWeight, HPos.CENTER);
-        GridPane.setMargin(targetWeight, new Insets(20, 0, 20, 0));
-
-        TextField tfTargetWeight = new TextField();
-        tfTargetWeight.setPrefHeight(40);
-        tfTargetWeight.setMaxWidth(400);
-        tfTargetWeight.setTranslateX(-300);
-        tfTargetWeight.setTranslateY(350);
-        gridPaneSetting.add(tfTargetWeight, 1, 2);
-
 
         Label exercise = new Label("Exercise");
         exercise.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneSetting.add(exercise, 0, 0, 2, 1);
         exercise.setAlignment(Pos.CENTER);
-        exercise.setTranslateX(-370);
-        exercise.setTranslateY(460);
+        exercise.setTranslateX(-600);
+        exercise.setTranslateY(380);
         GridPane.setHalignment(exercise, HPos.CENTER);
         GridPane.setMargin(exercise, new Insets(20, 0, 20, 0));
 
@@ -251,49 +205,40 @@ public class GoalSettingPane extends Application {
         cbExercise.getItems().addAll("Swimming", "Jogging");
         cbExercise.setPrefHeight(40);
         cbExercise.setPrefWidth(300);
-        cbExercise.setTranslateX(-300);
-        cbExercise.setTranslateY(400);
+        cbExercise.setTranslateX(-530);
+        cbExercise.setTranslateY(320);
         gridPaneSetting.add(cbExercise, 1, 2);
 
         Label duration = new Label("Duration");
         duration.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneSetting.add(duration, 0, 0, 2, 1);
         duration.setAlignment(Pos.CENTER);
-        duration.setTranslateX(-370);
-        duration.setTranslateY(510);
+        duration.setTranslateX(-600);
+        duration.setTranslateY(430);
         GridPane.setHalignment(duration, HPos.CENTER);
         GridPane.setMargin(duration, new Insets(20, 0, 20, 0));
 
         TextField tfDuration = new TextField();
         tfDuration.setPrefHeight(40);
         tfDuration.setMaxWidth(400);
-        tfDuration.setTranslateX(-300);
-        tfDuration.setTranslateY(450);
+        tfDuration.setTranslateX(-530);
+        tfDuration.setTranslateY(370);
         gridPaneSetting.add(tfDuration, 1, 2);
 
+        Button btnExercise = new Button("Set Exercise Goal");
+        btnExercise.setPrefHeight(40);
+        btnExercise.setDefaultButton(true);
+        btnExercise.setPrefWidth(300);
+        btnExercise.setTranslateX(-250);
+        btnExercise.setTranslateY(600);
+        btnExercise.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
+        GridPane.setMargin(btnExercise, new Insets(20, 0, 20, 0));
 
-        Button btnSave = new Button("Set the Goal");
-        btnSave.setPrefHeight(40);
-        btnSave.setDefaultButton(true);
-        btnSave.setPrefWidth(300);
-        btnSave.setTranslateX(-0);
-        btnSave.setTranslateY(600);
-        btnSave.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
-        GridPane.setMargin(btnSave, new Insets(20, 0, 20, 0));
-
-        btnSave.setOnAction(new EventHandler<ActionEvent>() {
+        btnExercise.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
-                double targetWeight;
                 double duration;
-
-                try {
-                    targetWeight = Double.parseDouble(tfTargetWeight.getText());
-                } catch (NumberFormatException e) {
-                    showMsg("Invalid Target Weight");
-                    return;
-                }
 
                 try {
                     duration = Double.parseDouble(tfDuration.getText());
@@ -303,18 +248,106 @@ public class GoalSettingPane extends Application {
                 }
 
 
-                LocalDate startDate = dpStartingDate.getValue();
                 LocalDate deadlineDate = dpDeadLine.getValue();
                 String exercise = (String) cbExercise.getValue();
                 String username = tfUsername.getText();
 
                 Stage stage = new Stage();
                 GoalStartPane root = new GoalStartPane(stage);
-                root.targetWeight = targetWeight;
                 root.duration = duration;
-                root.startDate = startDate;
                 root.deadlineDate = deadlineDate;
                 root.exercise = exercise;
+                root.username = username;
+
+                root.createLayout();
+
+                Scene scene = new Scene(root);
+
+                stage.setScene(scene);
+
+                stage.setTitle(root.getTitle());
+                stage.showAndWait();
+
+            }
+        });
+
+
+
+        // Weight Goal
+
+        Label forthLabel = new Label("Weight");
+        forthLabel.setFont(Font.font("Arial", 20));
+        gridPaneSetting.add(forthLabel, 0, 0, 2, 1);
+        forthLabel.setAlignment(Pos.CENTER);
+        forthLabel.setTranslateX(0);
+        forthLabel.setTranslateY(250);
+        GridPane.setHalignment(forthLabel, HPos.CENTER);
+        GridPane.setMargin(forthLabel, new Insets(20, 0, 20, 0));
+
+        Label deadlineDateWeight = new Label("Deadline");
+        deadlineDateWeight.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        gridPaneSetting.add(deadlineDateWeight, 0, 0, 2, 1);
+        deadlineDateWeight.setAlignment(Pos.CENTER);
+        deadlineDateWeight.setTranslateX(-120);
+        deadlineDateWeight.setTranslateY(330);
+        GridPane.setHalignment(deadlineDateWeight, HPos.CENTER);
+        GridPane.setMargin(deadlineDateWeight, new Insets(20, 0, 20, 0));
+
+        DatePicker dpDeadLineWeight = new DatePicker(nowDate.plusDays(7));
+        dpDeadLineWeight.setPrefHeight(40);
+        dpDeadLineWeight.setPrefWidth(300);
+        dpDeadLineWeight.setTranslateX(-50);
+        dpDeadLineWeight.setTranslateY(270);
+        gridPaneSetting.add(dpDeadLineWeight, 1, 2);
+
+
+        Label targetWeight = new Label("Target Weight");
+        targetWeight.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        gridPaneSetting.add(targetWeight, 0, 0, 2, 1);
+        targetWeight.setAlignment(Pos.CENTER);
+        targetWeight.setTranslateX(-120);
+        targetWeight.setTranslateY(380);
+        GridPane.setHalignment(targetWeight, HPos.CENTER);
+        GridPane.setMargin(targetWeight, new Insets(20, 0, 20, 0));
+
+        TextField tfTargetWeight = new TextField();
+        tfTargetWeight.setPrefHeight(40);
+        tfTargetWeight.setMaxWidth(400);
+        tfTargetWeight.setTranslateX(-50);
+        tfTargetWeight.setTranslateY(320);
+        gridPaneSetting.add(tfTargetWeight, 1, 2);
+
+
+
+        Button btnWeight = new Button("Set Weight Goal");
+        btnWeight.setPrefHeight(40);
+        btnWeight.setDefaultButton(true);
+        btnWeight.setPrefWidth(300);
+        btnWeight.setTranslateX(200);
+        btnWeight.setTranslateY(600);
+        btnWeight.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
+        GridPane.setMargin(btnWeight, new Insets(20, 0, 20, 0));
+
+        btnWeight.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                double targetWeight;
+
+                try {
+                    targetWeight = Double.parseDouble(tfTargetWeight.getText());
+                } catch (NumberFormatException e) {
+                    showMsg("Invalid Target Weight");
+                    return;
+                }
+
+                LocalDate deadlineDate = dpDeadLine.getValue();
+                String username = tfUsername.getText();
+
+                Stage stage = new Stage();
+                GoalStartPane root = new GoalStartPane(stage);
+                root.targetWeight = targetWeight;
+                root.deadlineDate = deadlineDate;
                 root.username = username;
 
                 root.createLayout();
@@ -333,7 +366,7 @@ public class GoalSettingPane extends Application {
         menu.setLeft(vBox);
         menu.setRight(gridPaneSetting);
 
-        gridPaneSetting.getChildren().addAll(btnSave);
+        gridPaneSetting.getChildren().addAll(btnExercise, btnWeight);
 
         return new Scene(menu, 1200, 700);
 

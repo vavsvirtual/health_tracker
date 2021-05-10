@@ -133,7 +133,6 @@ public class GoalStartPane extends BorderPane implements EventHandler<ActionEven
         labelTimeLeft = createLabel(getTimeLeft());
 
         GridPane gridPane = createGridPane();
-        gridPane.add(createLabel("Starting Date"), 0, 0);
         gridPane.add(createLabel("Deadline"), 0, 1);
         gridPane.add(createLabel("Target Weight"), 0, 2);
         gridPane.add(createLabel("Exercise"), 0, 3);
@@ -141,7 +140,6 @@ public class GoalStartPane extends BorderPane implements EventHandler<ActionEven
 
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
-        gridPane.add(createLabel(startDate.format(formatter)), 1, 0);
         gridPane.add(createLabel(deadlineDate.format(formatter)), 1, 1);
         gridPane.add(createLabel(String.format("%.2f kg", targetWeight)), 1, 2);
         gridPane.add(createLabel(exercise), 1, 3);
