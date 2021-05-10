@@ -5,7 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -21,13 +20,11 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.scene.image.Image;
 
-import static javafx.scene.Node.*;
-
 
 public class Main extends Application{
-    private static Stage stage;
+    public static Stage stage;
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         primaryStage.setTitle("Health Tracker");
         stage = primaryStage;
         Scene scene = logInScene();
@@ -118,11 +115,11 @@ public class Main extends Application{
 
                 System.out.println("User " + userField.getText() + " has logged in");
 
-//                try {
-//                    stage.setScene(ProfilePane.profilePane());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    stage.setScene(ProfilePane.profileScene());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
 
