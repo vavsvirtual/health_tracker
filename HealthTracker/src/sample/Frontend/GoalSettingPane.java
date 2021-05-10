@@ -131,7 +131,7 @@ public class GoalSettingPane extends Application {
         headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 40));
         gridPaneSetting.add(headerLabel, 0, 0, 2, 1);
         headerLabel.setAlignment(Pos.CENTER);
-        headerLabel.setTranslateX(-300);
+        headerLabel.setTranslateX(-170);
         headerLabel.setTranslateY(0);
         GridPane.setHalignment(headerLabel, HPos.CENTER);
         GridPane.setMargin(headerLabel, new Insets(20, 0, 20, 0));
@@ -140,17 +140,17 @@ public class GoalSettingPane extends Application {
         secondLabel.setFont(Font.font("Arial", 20));
         gridPaneSetting.add(secondLabel, 0, 0, 2, 1);
         secondLabel.setAlignment(Pos.CENTER);
-        secondLabel.setTranslateX(-300);
+        secondLabel.setTranslateX(-170);
         secondLabel.setTranslateY(70);
         GridPane.setHalignment(secondLabel, HPos.CENTER);
         GridPane.setMargin(secondLabel, new Insets(20, 0, 20, 0));
 
         Label username = new Label("Username");
-        username.setFont(Font.font("Arial", 15));
+        username.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneSetting.add(username, 0, 0, 2, 1);
         username.setAlignment(Pos.CENTER);
-        username.setTranslateX(-0);
-        username.setTranslateY(150);
+        username.setTranslateX(-370);
+        username.setTranslateY(140);
         GridPane.setHalignment(username, HPos.CENTER);
         GridPane.setMargin(username, new Insets(20, 0, 20, 0));
 
@@ -158,15 +158,15 @@ public class GoalSettingPane extends Application {
         tfUsername.setPrefHeight(40);
         tfUsername.setPrefWidth(300);
         tfUsername.setTranslateX(-300);
-        tfUsername.setTranslateY(50);
+        tfUsername.setTranslateY(40);
         gridPaneSetting.add(tfUsername, 1, 4);
 
         Label email = new Label("Email Address");
         email.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneSetting.add(email, 0, 0, 2, 1);
         email.setAlignment(Pos.CENTER);
-        email.setTranslateX(-600);
-        email.setTranslateY(150);
+        email.setTranslateX(-370);
+        email.setTranslateY(190);
         GridPane.setHalignment(email, HPos.CENTER);
         GridPane.setMargin(email, new Insets(20, 0, 20, 0));
 
@@ -174,17 +174,17 @@ public class GoalSettingPane extends Application {
         tfEmail.setPrefHeight(40);
         tfEmail.setPrefWidth(300);
         tfEmail.setTranslateX(-300);
-        tfEmail.setTranslateY(100);
+        tfEmail.setTranslateY(90);
         gridPaneSetting.add(tfEmail, 1, 4);
 
         LocalDate nowDate = LocalDate.now();
 
         Label thirdLabel = new Label("Diet");
-        thirdLabel.setFont(Font.font("Arial", FontWeight.BOLD, 30));
+        thirdLabel.setFont(Font.font("Arial", 20));
         gridPaneSetting.add(thirdLabel, 0, 0, 2, 1);
         thirdLabel.setAlignment(Pos.CENTER);
-        thirdLabel.setTranslateX(30);
-        thirdLabel.setTranslateY(70);
+        thirdLabel.setTranslateX(-150);
+        thirdLabel.setTranslateY(250);
         GridPane.setHalignment(thirdLabel, HPos.CENTER);
         GridPane.setMargin(thirdLabel, new Insets(20, 0, 20, 0));
 
@@ -192,48 +192,48 @@ public class GoalSettingPane extends Application {
         startDate.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneSetting.add(startDate, 0, 0, 2, 1);
         startDate.setAlignment(Pos.CENTER);
-        startDate.setTranslateX(-600);
-        startDate.setTranslateY(150);
+        startDate.setTranslateX(-370);
+        startDate.setTranslateY(310);
         GridPane.setHalignment(startDate, HPos.CENTER);
         GridPane.setMargin(startDate, new Insets(20, 0, 20, 0));
 
         DatePicker dpStartingDate = new DatePicker(nowDate);
         dpStartingDate.setPrefHeight(40);
         dpStartingDate.setPrefWidth(300);
-        dpStartingDate.setTranslateX(-530);
-        dpStartingDate.setTranslateY(150);
+        dpStartingDate.setTranslateX(-300);
+        dpStartingDate.setTranslateY(250);
         gridPaneSetting.add(dpStartingDate, 1, 2);
 
         Label deadlineDate = new Label("Deadline");
         deadlineDate.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneSetting.add(deadlineDate, 0, 0, 2, 1);
         deadlineDate.setAlignment(Pos.CENTER);
-        deadlineDate.setTranslateX(-600);
-        deadlineDate.setTranslateY(150);
+        deadlineDate.setTranslateX(-370);
+        deadlineDate.setTranslateY(360);
         GridPane.setHalignment(deadlineDate, HPos.CENTER);
         GridPane.setMargin(deadlineDate, new Insets(20, 0, 20, 0));
 
         DatePicker dpDeadLine = new DatePicker(nowDate.plusDays(7));
         dpDeadLine.setPrefHeight(40);
         dpDeadLine.setPrefWidth(300);
-        dpDeadLine.setTranslateX(-530);
-        dpDeadLine.setTranslateY(150);
+        dpDeadLine.setTranslateX(-300);
+        dpDeadLine.setTranslateY(300);
         gridPaneSetting.add(dpDeadLine, 1, 2);
 
         Label targetWeight = new Label("Target Weight");
         targetWeight.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneSetting.add(targetWeight, 0, 0, 2, 1);
         targetWeight.setAlignment(Pos.CENTER);
-        targetWeight.setTranslateX(-600);
-        targetWeight.setTranslateY(150);
+        targetWeight.setTranslateX(-370);
+        targetWeight.setTranslateY(410);
         GridPane.setHalignment(targetWeight, HPos.CENTER);
         GridPane.setMargin(targetWeight, new Insets(20, 0, 20, 0));
 
         TextField tfTargetWeight = new TextField();
         tfTargetWeight.setPrefHeight(40);
         tfTargetWeight.setMaxWidth(400);
-        tfTargetWeight.setTranslateX(-530);
-        tfTargetWeight.setTranslateY(90);
+        tfTargetWeight.setTranslateX(-300);
+        tfTargetWeight.setTranslateY(350);
         gridPaneSetting.add(tfTargetWeight, 1, 2);
 
 
@@ -241,8 +241,8 @@ public class GoalSettingPane extends Application {
         exercise.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneSetting.add(exercise, 0, 0, 2, 1);
         exercise.setAlignment(Pos.CENTER);
-        exercise.setTranslateX(-600);
-        exercise.setTranslateY(150);
+        exercise.setTranslateX(-370);
+        exercise.setTranslateY(460);
         GridPane.setHalignment(exercise, HPos.CENTER);
         GridPane.setMargin(exercise, new Insets(20, 0, 20, 0));
 
@@ -251,33 +251,33 @@ public class GoalSettingPane extends Application {
         cbExercise.getItems().addAll("Swimming", "Jogging");
         cbExercise.setPrefHeight(40);
         cbExercise.setPrefWidth(300);
-        cbExercise.setTranslateX(-530);
-        cbExercise.setTranslateY(150);
+        cbExercise.setTranslateX(-300);
+        cbExercise.setTranslateY(400);
         gridPaneSetting.add(cbExercise, 1, 2);
 
         Label duration = new Label("Duration");
         duration.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneSetting.add(duration, 0, 0, 2, 1);
         duration.setAlignment(Pos.CENTER);
-        duration.setTranslateX(-600);
-        duration.setTranslateY(150);
+        duration.setTranslateX(-370);
+        duration.setTranslateY(510);
         GridPane.setHalignment(duration, HPos.CENTER);
         GridPane.setMargin(duration, new Insets(20, 0, 20, 0));
 
         TextField tfDuration = new TextField();
         tfDuration.setPrefHeight(40);
         tfDuration.setMaxWidth(400);
-        tfDuration.setTranslateX(-530);
-        tfDuration.setTranslateY(90);
+        tfDuration.setTranslateX(-300);
+        tfDuration.setTranslateY(450);
         gridPaneSetting.add(tfDuration, 1, 2);
 
 
         Button btnSave = new Button("Set the Goal");
         btnSave.setPrefHeight(40);
         btnSave.setDefaultButton(true);
-        btnSave.setPrefWidth(100);
-        btnSave.setTranslateX(-130);
-        btnSave.setTranslateY(500);
+        btnSave.setPrefWidth(300);
+        btnSave.setTranslateX(-0);
+        btnSave.setTranslateY(600);
         btnSave.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
         GridPane.setMargin(btnSave, new Insets(20, 0, 20, 0));
 
