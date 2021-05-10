@@ -1,10 +1,6 @@
 package client;
 
-import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.transitions.hamburger.HamburgerNextArrowBasicTransition;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,11 +17,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 
 
-
 public class GroupsPane extends Application {
-    private static Stage stage;
+    public static Stage stage;
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
 
         primaryStage.setTitle("Groups");
         stage = primaryStage;
@@ -36,7 +32,7 @@ public class GroupsPane extends Application {
     }
 
 
-    public static Scene groupScene() throws Exception {
+    public static Scene groupScene() {
 
         VBox vBox = new VBox(50);
 
@@ -48,41 +44,40 @@ public class GroupsPane extends Application {
         profile.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         profile.setPrefSize(230, 100);
 
-
+        profile.setOnAction(event -> {
+            stage.setScene(ProfilePane.profileScene());
+        });
 
         JFXButton goals = new JFXButton("Goals");
         goals.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         goals.setPrefWidth(230);
 
+        goals.setOnAction(event -> {
+            stage.setScene(GoalSettingPane.goalSettingScene());
+        });
+
         JFXButton summary = new JFXButton("Weekly Summary");
         summary.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         summary.setPrefWidth(230);
+
+//        summary.setOnAction(event -> {
+//            stage.setScene(WeeklySummary.summaryScene());
+//        });
 
         JFXButton groups = new JFXButton("Groups");
         groups.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         groups.setPrefWidth(230);
 
-        groups.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                try {
-                    stage.setScene(GroupsPane.groupScene());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        groups.setOnAction(event -> {
+            stage.setScene(GroupsPane.groupScene());
         });
 
         JFXButton logout = new JFXButton("Logout");
         logout.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         logout.setPrefWidth(230);
-        logout.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                try {
-                    stage.setScene(Main.logInScene());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+
+        logout.setOnAction(event -> {
+            stage.setScene(Main.logInScene());
         });
 
         vBox.setAlignment(Pos.BASELINE_LEFT);
@@ -126,7 +121,7 @@ public class GroupsPane extends Application {
         nameField.setMaxWidth(400);
         nameField.setTranslateX(-530);
         nameField.setTranslateY(90);
-        gridPaneGroup.add(nameField, 1,2);
+        gridPaneGroup.add(nameField, 1, 2);
 
 
         Label goalLabel = new Label("Group Goal");
@@ -146,7 +141,7 @@ public class GroupsPane extends Application {
         cbGoal.setPrefWidth(300);
         cbGoal.setTranslateX(-530);
         cbGoal.setTranslateY(150);
-        gridPaneGroup.add(cbGoal, 1,2);
+        gridPaneGroup.add(cbGoal, 1, 2);
 
         Label addFriend = new Label("Add Friend");
         addFriend.setFont(Font.font("Arial", FontWeight.BOLD, 15));
@@ -162,7 +157,7 @@ public class GroupsPane extends Application {
         friendField.setPrefWidth(300);
         friendField.setTranslateX(-530);
         friendField.setTranslateY(170);
-        gridPaneGroup.add(friendField, 1,4);
+        gridPaneGroup.add(friendField, 1, 4);
 
         Button addFriendButton = new Button("Add Friend");
         addFriendButton.setPrefHeight(40);
@@ -174,7 +169,7 @@ public class GroupsPane extends Application {
         GridPane.setMargin(addFriendButton, new Insets(20, 0, 20, 0));
 
         addFriendButton.setOnAction(t -> {
-            if(cbGoal.getSelectionModel().isEmpty()) {
+            if (cbGoal.getSelectionModel().isEmpty()) {
                 showAlert(Alert.AlertType.ERROR, "Error!", "Please add a friend");
             }
         });
@@ -190,11 +185,11 @@ public class GroupsPane extends Application {
         GridPane.setMargin(createGroupButton, new Insets(20, 0, 20, 0));
 
         createGroupButton.setOnAction(t -> {
-            if(nameField.getText().isEmpty()) {
+            if (nameField.getText().isEmpty()) {
                 showAlert(Alert.AlertType.ERROR, "Form Error!", "Please enter a unique group name");
                 return;
             }
-            if(cbGoal.getSelectionModel().isEmpty()) {
+            if (cbGoal.getSelectionModel().isEmpty()) {
                 showAlert(Alert.AlertType.ERROR, "Error!", "Please select a goal for the group");
                 return;
             }
@@ -203,7 +198,6 @@ public class GroupsPane extends Application {
 
             System.out.println("Created group " + nameField.getText() + " successfully");
         });
-
 
 
         Label thirdLabel = new Label("Join Group");
@@ -232,7 +226,7 @@ public class GroupsPane extends Application {
         cbJoin.setPrefWidth(300);
         cbJoin.setTranslateX(-50);
         cbJoin.setTranslateY(90);
-        gridPaneGroup.add(cbJoin, 1,2);
+        gridPaneGroup.add(cbJoin, 1, 2);
 
         Button joinGroupButton = new Button("Join a Group");
         joinGroupButton.setPrefHeight(40);
@@ -245,9 +239,8 @@ public class GroupsPane extends Application {
 
         joinGroupButton.setOnAction(t -> {
 
-            if(cbJoin.getSelectionModel().isEmpty()) {
+            if (cbJoin.getSelectionModel().isEmpty()) {
                 showAlert(Alert.AlertType.ERROR, "Error!", "Please select a group to join");
-                return;
             }
 
         });
