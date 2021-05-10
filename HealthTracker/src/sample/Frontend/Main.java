@@ -21,8 +21,9 @@ import javafx.stage.Window;
 import javafx.scene.image.Image;
 
 
-public class Main extends Application{
+public class Main extends Application {
     public static Stage stage;
+
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Health Tracker");
@@ -33,7 +34,7 @@ public class Main extends Application{
         primaryStage.show();
     }
 
-    public static Scene logInScene(){
+    public static Scene logInScene() {
 
         HBox root = new HBox();
 
@@ -41,7 +42,7 @@ public class Main extends Application{
 
         String imageUrl = "https://images.unsplash.com/photo-1514995428455-447d4443fa7f?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80";
 
-        Image image = new Image(imageUrl,550,700,false,true);
+        Image image = new Image(imageUrl, 550, 700, false, true);
 
         ImageView imageView = new ImageView(image);
 
@@ -61,22 +62,22 @@ public class Main extends Application{
 
         Label headerLabel = new Label("User Login");
         headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        gridPaneLogin.add(headerLabel, 0,0,2,1);
+        gridPaneLogin.add(headerLabel, 0, 0, 2, 1);
         headerLabel.setTranslateX(200);
         GridPane.setHalignment(headerLabel, HPos.CENTER);
-        GridPane.setMargin(headerLabel, new Insets(20, 0,20,0));
+        GridPane.setMargin(headerLabel, new Insets(20, 0, 20, 0));
 
 
         Label userLabel = new Label("Username :");
         userLabel.setTranslateX(-80);
-        gridPaneLogin.add(userLabel, 1,2);
+        gridPaneLogin.add(userLabel, 1, 2);
 
         TextField userField = new TextField();
         userField.setPromptText("Username");
         userField.setFocusTraversable(false);
         userField.setPrefHeight(40);
         userField.setPrefWidth(400);
-        gridPaneLogin.add(userField, 1,2);
+        gridPaneLogin.add(userField, 1, 2);
 
 
         Label passwordLabel = new Label("Password : ");
@@ -98,30 +99,24 @@ public class Main extends Application{
         createLoginButton.setTranslateX(410);
         createLoginButton.setTranslateY(210);
         createLoginButton.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
-        GridPane.setMargin(createLoginButton, new Insets(20, 0,20,0));
+        GridPane.setMargin(createLoginButton, new Insets(20, 0, 20, 0));
 
 
-        createLoginButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(userField.getText().isEmpty()) {
-                    showAlert(Alert.AlertType.ERROR, gridPaneLogin.getScene().getWindow(), "Form Error!", "Please enter your username");
-                    return;
-                }
-                if(passwordField.getText().isEmpty()) {
-                    showAlert(Alert.AlertType.ERROR, gridPaneLogin.getScene().getWindow(), "Form Error!", "Please enter a password");
-                    return;
-                }
-
-                System.out.println("User " + userField.getText() + " has logged in");
-
-                try {
-                    stage.setScene(ProfilePane.profileScene());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
+        createLoginButton.setOnAction((ActionEvent event) -> {
+            if (userField.getText().isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, gridPaneLogin.getScene().getWindow(), "Form Error!", "Please enter your username");
+                return;
             }
+            if (passwordField.getText().isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, gridPaneLogin.getScene().getWindow(), "Form Error!", "Please enter a password");
+                return;
+            }
+
+            System.out.println("User " + userField.getText() + " has logged in");
+
+
+            stage.setScene(ProfilePane.profileScene());
+
 
         });
 
@@ -133,10 +128,10 @@ public class Main extends Application{
         createAccountButton.setTranslateX(410);
         createAccountButton.setTranslateY(260);
         createAccountButton.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
-        GridPane.setMargin(createAccountButton, new Insets(20, 0,20,0));
+        GridPane.setMargin(createAccountButton, new Insets(20, 0, 20, 0));
 
-        createAccountButton.setOnAction(new EventHandler<ActionEvent>(){
-            public void handle(ActionEvent t){
+        createAccountButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
                 stage.setScene(CreateAccountScene());
             }
         });
@@ -159,7 +154,7 @@ public class Main extends Application{
 
         String imageUrl = "https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80";
 
-        Image image = new Image(imageUrl,550,700,false,true);
+        Image image = new Image(imageUrl, 550, 700, false, true);
 
         ImageView imageView = new ImageView(image);
 
@@ -179,10 +174,10 @@ public class Main extends Application{
 
         Label headerLabel = new Label("User Registration");
         headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        gridPaneRegister.add(headerLabel, 0,0,2,1);
+        gridPaneRegister.add(headerLabel, 0, 0, 2, 1);
         headerLabel.setTranslateX(100);
         headerLabel.setTranslateY(-30);
-        GridPane.setMargin(headerLabel, new Insets(20, 0,20,0));
+        GridPane.setMargin(headerLabel, new Insets(20, 0, 20, 0));
 
 
         Label nameLabel = new Label("Full Name : ");
@@ -241,23 +236,23 @@ public class Main extends Application{
         submitButton.setTranslateY(270);
         submitButton.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold; ");
         GridPane.setHalignment(submitButton, HPos.CENTER);
-        GridPane.setMargin(submitButton, new Insets(20, 0,20,50));
+        GridPane.setMargin(submitButton, new Insets(20, 0, 20, 50));
 
-        submitButton.setOnAction(new EventHandler<ActionEvent>(){
-            public void handle(ActionEvent t){
-                if(nameField.getText().isEmpty()) {
+        submitButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                if (nameField.getText().isEmpty()) {
                     showAlert(Alert.AlertType.ERROR, gridPaneRegister.getScene().getWindow(), "Form Error!", "Please enter your name");
                     return;
                 }
-                if(userField.getText().isEmpty()) {
+                if (userField.getText().isEmpty()) {
                     showAlert(Alert.AlertType.ERROR, gridPaneRegister.getScene().getWindow(), "Form Error!", "Please enter your username");
                     return;
                 }
-                if(emailField.getText().isEmpty()) {
+                if (emailField.getText().isEmpty()) {
                     showAlert(Alert.AlertType.ERROR, gridPaneRegister.getScene().getWindow(), "Form Error!", "Please enter your email id");
                     return;
                 }
-                if(passwordField.getText().isEmpty()) {
+                if (passwordField.getText().isEmpty()) {
                     showAlert(Alert.AlertType.ERROR, gridPaneRegister.getScene().getWindow(), "Form Error!", "Please enter a password");
                     return;
                 }
@@ -276,10 +271,10 @@ public class Main extends Application{
         backButton.setTranslateY(320);
         backButton.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold; ");
         GridPane.setHalignment(backButton, HPos.CENTER);
-        GridPane.setMargin(backButton, new Insets(20, 0,20,50));
+        GridPane.setMargin(backButton, new Insets(20, 0, 20, 50));
 
-        backButton.setOnAction(new EventHandler<ActionEvent>(){
-            public void handle(ActionEvent t){
+        backButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
                 stage.setScene(logInScene());
             }
         });
@@ -289,11 +284,10 @@ public class Main extends Application{
         pane.setRight(root);
 
         gridPaneRegister.getChildren().addAll(nameLabel, nameField, userLabel, userField, emailLabel, emailField,
-                passwordLabel,passwordField, submitButton, backButton);
-        return new Scene(pane,1200, 700);
+                passwordLabel, passwordField, submitButton, backButton);
+        return new Scene(pane, 1200, 700);
 
     }
-
 
 
     private static void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {

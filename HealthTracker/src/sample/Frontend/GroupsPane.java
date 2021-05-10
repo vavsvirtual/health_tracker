@@ -1,6 +1,8 @@
 package client;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -44,40 +46,55 @@ public class GroupsPane extends Application {
         profile.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         profile.setPrefSize(230, 100);
 
-        profile.setOnAction(event -> {
-            stage.setScene(ProfilePane.profileScene());
+        profile.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stage.setScene(ProfilePane.profileScene());
+            }
         });
 
         JFXButton goals = new JFXButton("Goals");
         goals.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         goals.setPrefWidth(230);
 
-        goals.setOnAction(event -> {
-            stage.setScene(GoalSettingPane.goalSettingScene());
+        goals.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stage.setScene(GoalSettingPane.goalSettingScene());
+            }
         });
 
         JFXButton summary = new JFXButton("Weekly Summary");
         summary.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         summary.setPrefWidth(230);
 
-//        summary.setOnAction(event -> {
-//            stage.setScene(WeeklySummary.summaryScene());
-//        });
+        summary.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stage.setScene(WeeklySummary.summaryScene());
+            }
+        });
 
         JFXButton groups = new JFXButton("Groups");
         groups.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         groups.setPrefWidth(230);
 
-        groups.setOnAction(event -> {
-            stage.setScene(GroupsPane.groupScene());
+        groups.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stage.setScene(GroupsPane.groupScene());
+            }
         });
 
         JFXButton logout = new JFXButton("Logout");
         logout.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         logout.setPrefWidth(230);
 
-        logout.setOnAction(event -> {
-            stage.setScene(Main.logInScene());
+        logout.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stage.setScene(Main.logInScene());
+            }
         });
 
         vBox.setAlignment(Pos.BASELINE_LEFT);

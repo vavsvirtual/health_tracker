@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.jfoenix.controls.JFXBadge;
 import com.jfoenix.controls.JFXButton;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -39,6 +40,7 @@ public class GoalSettingPane extends Application {
 
     public static Stage stage;
 
+
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Goal Settings");
@@ -52,6 +54,8 @@ public class GoalSettingPane extends Application {
 
     public static Scene goalSettingScene() {
 
+        //Side Menu
+
         VBox vBox = new VBox(50);
 
         vBox.setStyle("-fx-background-color: #3D405B;");
@@ -62,39 +66,64 @@ public class GoalSettingPane extends Application {
         profile.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         profile.setPrefSize(230, 100);
 
-        profile.setOnAction(event -> {
-            stage.setScene(ProfilePane.profileScene());
+        profile.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stage.setScene(ProfilePane.profileScene());
+            }
         });
 
         JFXButton goals = new JFXButton("Goals");
         goals.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         goals.setPrefWidth(230);
 
+        goals.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stage.setScene(GoalSettingPane.goalSettingScene());
+            }
+        });
+
         JFXButton summary = new JFXButton("Weekly Summary");
         summary.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         summary.setPrefWidth(230);
+
+        summary.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stage.setScene(WeeklySummary.summaryScene());
+            }
+        });
 
         JFXButton groups = new JFXButton("Groups");
         groups.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         groups.setPrefWidth(230);
 
-        groups.setOnAction(event -> {
-            stage.setScene(GroupsPane.groupScene());
+        groups.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stage.setScene(GroupsPane.groupScene());
+            }
         });
 
         JFXButton logout = new JFXButton("Logout");
         logout.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         logout.setPrefWidth(230);
 
-        logout.setOnAction(event -> {
-            stage.setScene(Main.logInScene());
+        logout.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stage.setScene(Main.logInScene());
+            }
         });
+
 
         vBox.setAlignment(Pos.BASELINE_LEFT);
 
         vBox.getChildren().addAll(profile, goals, summary, groups, logout);
         vBox.setPadding(new Insets(0, 0, 0, 0));
 
+        // Goal Setting
 
         GridPane gridPaneSetting = new GridPane();
 
@@ -107,43 +136,12 @@ public class GoalSettingPane extends Application {
         GridPane.setHalignment(headerLabel, HPos.CENTER);
         GridPane.setMargin(headerLabel, new Insets(20, 0, 20, 0));
 
-//        ImageView ivPhoto = new ImageView();
-//        Image image = new Image(GoalSettingPane.class.getResourceAsStream("photo_default.jpg"));
-//        ivPhoto.fitWidthProperty().set(150);
-//        ivPhoto.fitHeightProperty().set(150);
-//        ivPhoto.setImage(image);
-//        ivPhoto.setTranslateX(-130);
-//        ivPhoto.setTranslateY(500);
-//
-//        ivPhoto.setOnMouseClicked(event -> {
-//
-//            JFileChooser chooser = new JFileChooser(new File("."));
-//            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-//            chooser.setFileFilter(
-//                    new FileNameExtensionFilter("image files", "jpg", "png", "bmp"));
-//
-//            int status = chooser.showOpenDialog(null);
-//            if (status == JFileChooser.APPROVE_OPTION) {
-//                File selectedFile = chooser.getSelectedFile();
-//                if (selectedFile != null) {
-//                    try {
-//                        Image image1 = new Image(new FileInputStream(selectedFile));
-//                        ivPhoto.setImage(image1);
-//
-//                        File photoFile = selectedFile;
-//                    } catch (FileNotFoundException e) {
-//                        showMsg("failed to read image");
-//                    }
-//                }
-//            }
-//        });
-
         Label secondLabel = new Label("General");
         secondLabel.setFont(Font.font("Arial", 20));
         gridPaneSetting.add(secondLabel, 0, 0, 2, 1);
         secondLabel.setAlignment(Pos.CENTER);
         secondLabel.setTranslateX(-300);
-        secondLabel.setTranslateY(250);
+        secondLabel.setTranslateY(70);
         GridPane.setHalignment(secondLabel, HPos.CENTER);
         GridPane.setMargin(secondLabel, new Insets(20, 0, 20, 0));
 
@@ -151,7 +149,7 @@ public class GoalSettingPane extends Application {
         username.setFont(Font.font("Arial", 15));
         gridPaneSetting.add(username, 0, 0, 2, 1);
         username.setAlignment(Pos.CENTER);
-        username.setTranslateX(-00);
+        username.setTranslateX(-0);
         username.setTranslateY(150);
         GridPane.setHalignment(username, HPos.CENTER);
         GridPane.setMargin(username, new Insets(20, 0, 20, 0));
@@ -160,7 +158,7 @@ public class GoalSettingPane extends Application {
         tfUsername.setPrefHeight(40);
         tfUsername.setPrefWidth(300);
         tfUsername.setTranslateX(-300);
-        tfUsername.setTranslateY(170);
+        tfUsername.setTranslateY(50);
         gridPaneSetting.add(tfUsername, 1, 4);
 
         Label email = new Label("Email Address");
@@ -175,52 +173,9 @@ public class GoalSettingPane extends Application {
         TextField tfEmail = new TextField();
         tfEmail.setPrefHeight(40);
         tfEmail.setPrefWidth(300);
-        tfEmail.setTranslateX(-530);
-        tfEmail.setTranslateY(170);
+        tfEmail.setTranslateX(-300);
+        tfEmail.setTranslateY(100);
         gridPaneSetting.add(tfEmail, 1, 4);
-
-
-//        public void handle (ActionEvent event){
-//            double targetWeight;
-//            double duration;
-//
-//            try {
-//                targetWeight = Double.parseDouble(tfTargetWeight.getText());
-//            } catch (NumberFormatException e) {
-//                showMsg("Invalid Target Weight");
-//                return;
-//            }
-//
-//            try {
-//                duration = Double.parseDouble(tfDuration.getText());
-//            } catch (NumberFormatException e) {
-//                showMsg("Invalid Duration");
-//                return;
-//            }
-//
-//            LocalDate startDate = dpStartingDate.getValue();
-//            LocalDate deadlineDate = dpDeadLine.getValue();
-//            String exercise = cbExercise.getValue();
-//            String username = tfUsername.getText();
-//
-//            Stage stage = new Stage();
-//            GoalStartScene root = new GoalStartScene(stage);
-//            root.targetWeight = targetWeight;
-//            root.duration = duration;
-//            root.startDate = startDate;
-//            root.deadlineDate = deadlineDate;
-//            root.exercise = exercise;
-//            root.username = username;
-//            root.photoFile = photoFile;
-//
-//            root.createLayout();
-//
-//            Scene scene = new Scene(root);
-//
-//            stage.setScene(scene);
-//
-//            stage.showAndWait();
-//        }
 
         LocalDate nowDate = LocalDate.now();
 
@@ -281,6 +236,7 @@ public class GoalSettingPane extends Application {
         tfTargetWeight.setTranslateY(90);
         gridPaneSetting.add(tfTargetWeight, 1, 2);
 
+
         Label exercise = new Label("Exercise");
         exercise.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneSetting.add(exercise, 0, 0, 2, 1);
@@ -325,8 +281,44 @@ public class GoalSettingPane extends Application {
         btnSave.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
         GridPane.setMargin(btnSave, new Insets(20, 0, 20, 0));
 
-        btnSave.setOnAction(event -> {
-            stage.setScene(GoalStartPane.goalStartScene());
+        btnSave.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                double targetWeight;
+                double duration;
+
+                try {
+                    targetWeight = Double.parseDouble(tfTargetWeight.getText());
+                } catch (NumberFormatException e) {
+                    showMsg("Invalid Target Weight");
+                    return;
+                }
+
+                try {
+                    duration = Double.parseDouble(tfDuration.getText());
+                } catch (NumberFormatException e) {
+                    showMsg("Invalid Duration");
+                    return;
+                }
+
+
+                LocalDate startDate = dpStartingDate.getValue();
+                LocalDate deadlineDate = dpDeadLine.getValue();
+                String exercise = (String) cbExercise.getValue();
+                String username = tfUsername.getText();
+
+                Stage stage = new Stage();
+                GoalStartPane root = new GoalStartPane();
+                root.targetWeight = targetWeight;
+                root.duration = duration;
+                root.startDate = startDate;
+                root.deadlineDate = deadlineDate;
+                root.exercise = exercise;
+                root.username = username;
+
+                stage.setScene(GoalStartPane.goalStartScene());
+            }
         });
 
         BorderPane menu = new BorderPane();
@@ -346,7 +338,6 @@ public class GoalSettingPane extends Application {
     }
 
     public static void main(String[] args) {
-
         launch(args);
     }
 
