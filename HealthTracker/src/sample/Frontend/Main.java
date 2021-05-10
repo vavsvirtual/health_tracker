@@ -1,10 +1,11 @@
-package Frontend;
+package client;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -19,6 +20,8 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.scene.image.Image;
+
+import static javafx.scene.Node.*;
 
 
 public class Main extends Application{
@@ -115,7 +118,11 @@ public class Main extends Application{
 
                 System.out.println("User " + userField.getText() + " has logged in");
 
-                //stage.setScene(ProfilePane.ProfilePane());
+//                try {
+//                    stage.setScene(ProfilePane.profilePane());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
 
             }
 
@@ -302,7 +309,6 @@ public class Main extends Application{
     }
 
     public static void main(String[] args) {
-
         launch(args);
     }
 
