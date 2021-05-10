@@ -309,7 +309,7 @@ public class GoalSettingPane extends Application {
                 String username = tfUsername.getText();
 
                 Stage stage = new Stage();
-                GoalStartPane root = new GoalStartPane();
+                GoalStartPane root = new GoalStartPane(stage);
                 root.targetWeight = targetWeight;
                 root.duration = duration;
                 root.startDate = startDate;
@@ -317,7 +317,15 @@ public class GoalSettingPane extends Application {
                 root.exercise = exercise;
                 root.username = username;
 
-                stage.setScene(GoalStartPane.goalStartScene());
+                root.createLayout();
+
+                Scene scene = new Scene(root);
+
+                stage.setScene(scene);
+
+                stage.setTitle(root.getTitle());
+                stage.showAndWait();
+
             }
         });
 
