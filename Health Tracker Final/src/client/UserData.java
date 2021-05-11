@@ -7,8 +7,10 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
-    /**
+/**
      * Project      : health_tracker
      * File         : UserData.java
      * Last Edit    : 09/05/2021
@@ -33,8 +35,8 @@ import java.util.Collections;
         private Weight currentWeight;
         private final ArrayList<Day> userDays;
         //Food and drink lists
-        private final ArrayList<Food> foodList;
-        private final ArrayList<Drink> drinkList;
+        private final HashSet<String> foodSet;
+        private final HashSet<String> drinkSet;
 
         //Constructor
         public UserData(String userName, String fullName, String email){
@@ -44,8 +46,8 @@ import java.util.Collections;
             //Create days arrayList
             this.userDays = new ArrayList<>();
             //Load in food & drink types
-            foodList = (ArrayList<Food>) readObject(FOOD_TYPES_FILE_PATH);
-            drinkList = (ArrayList<Drink>) readObject(DRINK_TYPES_FILE_PATH);
+            foodSet = (HashSet<String>) readObject(FOOD_TYPES_FILE_PATH);
+            drinkSet = (HashSet<String>) readObject(DRINK_TYPES_FILE_PATH);
         }
 
         //Getters
@@ -65,11 +67,11 @@ import java.util.Collections;
         public Weight getCurrentWeight(){
             return currentWeight;
         }
-        public ArrayList<Drink> getDrinkList() {
-            return drinkList;
+        public HashSet<String> getDrinkSet() {
+            return drinkSet;
         }
-        public ArrayList<Food> getFoodList() {
-            return foodList;
+        public HashSet<String> getFoodSet() {
+            return foodSet;
         }
         //Getters for user info
         public String getUserName() {
@@ -105,23 +107,17 @@ import java.util.Collections;
             sortDays();
             return true;
         }
-        public boolean addDrink(Drink drink){
-            for(Drink d : drinkList){
-                if(d.getName().equalsIgnoreCase(drink.getName())){
-                    return false;
-                }
+        public boolean addDrink(String drink){
+            if(drinkSet.add(drink)){
+                return saveObject(drinkSet, DRINK_TYPES_FILE_PATH);
             }
-            drinkList.add(drink);
-            return saveObject(drinkList, DRINK_TYPES_FILE_PATH);
+            return false;
         }
-        public boolean addFood(Food food){
-            for(Food f : foodList){
-                if(f.getName().equalsIgnoreCase(food.getName())){
-                    return false;
-                }
+        public boolean addFood(String food){
+            if(foodSet.add(food)){
+                return saveObject(foodSet, FOOD_TYPES_FILE_PATH);
             }
-            foodList.add(food);
-            return saveObject(foodList, FOOD_TYPES_FILE_PATH);
+            return false;
         }
         public boolean addExercise(Exercise exercise, LocalDate localDate){
             Day day = getDay(localDate);
@@ -136,14 +132,27 @@ import java.util.Collections;
                 return added;
             }
         }
-        //Removers
-        public void removeFood(Food food){
-            foodList.remove(food);
-            saveObject(foodList, FOOD_TYPES_FILE_PATH);
+        public boolean addMeal(Meal meal, LocalDate localDate){
+            Day day = getDay(localDate);
+            if(day != null){
+                return day.addMeal(meal);
+            }else{
+                day = new Day(localDate);
+                boolean added = day.addMeal(meal);
+                if(added){
+                    added = addDay(day);
+                }
+                return added;
+            }
         }
-        public void removeDrink(Drink drink){
-            drinkList.remove(drink);
-            saveObject(drinkList, DRINK_TYPES_FILE_PATH);
+        //Removers
+        public void removeFood(String food){
+            foodSet.remove(food);
+            saveObject(foodSet, FOOD_TYPES_FILE_PATH);
+        }
+        public void removeDrink(String drink){
+            drinkSet.remove(drink);
+            saveObject(drinkSet, DRINK_TYPES_FILE_PATH);
         }
 
         //Sort day array
@@ -183,6 +192,29 @@ import java.util.Collections;
                 return false;
             }
         }
+        /*//Food & Drink recreator
+        public static void main(String[] args) {
+            HashSet<String> foodSet = new HashSet<>();
+            HashSet<String> drinkSet = new HashSet<>();
+            foodSet.add("spaghetti bolognese");
+            foodSet.add("rice & curry");
+            foodSet.add("ham sandwich");
+            foodSet.add("shepherd's pie");
+            foodSet.add("roast dinner");
+            foodSet.add("rice & curry");
+
+            drinkSet.add("coca-cola");
+            drinkSet.add("tea");
+            drinkSet.add("coffee");
+            drinkSet.add("milk");
+            drinkSet.add("orange juice");
+
+            System.out.println(saveObject(foodSet, FOOD_TYPES_FILE_PATH));
+            System.out.println(saveObject(drinkSet, DRINK_TYPES_FILE_PATH));
+
+
+
+        }*/
 
         /*//Test harness
         public static void main(String[] args) {
@@ -193,9 +225,9 @@ import java.util.Collections;
             Food spaghetti = new Food("Spaghetti", 201);
             userData.addFood(spaghetti);
             //Checking for spaghetti food
-            ArrayList<Food> foodList = userData.getFoodList();
+            ArrayList<Food> foodSet = userData.getfoodSet();
             boolean successA1 = false;
-            for (Food food : foodList) {
+            for (Food food : foodSet) {
                 if(food == spaghetti){
                     successA1 = true;
                     break;
@@ -207,7 +239,7 @@ import java.util.Collections;
             //Removing the food object
             userData.removeFood(spaghetti);
             boolean successA3 = true;
-            for (Food food : foodList) {
+            for (Food food : foodSet) {
                 if(food == spaghetti){
                     successA3 = false;
                     break;
@@ -218,9 +250,9 @@ import java.util.Collections;
             Drink testDrink = new Drink("Test Drink", 20);
             userData.addDrink(testDrink);
             //Checking for testDrink
-            ArrayList<Drink> drinkList = userData.getDrinkList();
+            ArrayList<Drink> drinkSet = userData.getdrinkSet();
             boolean successB1 = false;
-            for (Drink drink : drinkList) {
+            for (Drink drink : drinkSet) {
                 if(drink == testDrink){
                     successB1 = true;
                     break;
@@ -232,7 +264,7 @@ import java.util.Collections;
             //Removing the drink object
             userData.removeDrink(testDrink);
             boolean successB3 = true;
-            for (Drink drink : drinkList) {
+            for (Drink drink : drinkSet) {
                 if(drink == testDrink){
                     successB3 = false;
                     break;

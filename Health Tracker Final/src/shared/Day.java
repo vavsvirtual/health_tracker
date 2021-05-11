@@ -1,6 +1,7 @@
 package shared;
 
 //Import statements
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -15,7 +16,8 @@ import java.util.ArrayList;
  *                  (exercise/diet/weight/goal history) or future goals
  */
 
-public class Day implements Comparable<Day>{
+public class Day implements Serializable, Comparable<Day>{
+    private static final long serialVersionUID = 1037432L;
     //Local variables
     private final LocalDate date;
     private ArrayList<Exercise> exercises = new ArrayList<>(10);
@@ -125,8 +127,8 @@ public class Day implements Comparable<Day>{
         boolean successB3 = !currentDay.addWeight(new Weight(100f));
 
         //Meals
-        boolean successB4 = currentDay.addMeal(new Meal());
-        boolean successB5 = !futureDay.addMeal(new Meal());
+        boolean successB4 = currentDay.addMeal(new Meal("Food", "Drink"));
+        boolean successB5 = !futureDay.addMeal(new Meal("Food", "Drink"));
 
         //Exercise
         boolean successB6 = currentDay.addExercise(new Exercise(Exercise.ExerciseType.CYCLING, 20));

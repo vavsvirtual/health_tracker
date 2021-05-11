@@ -137,7 +137,7 @@ public class Main extends Application {
                     //If cant load create new userData object & save it
                     if(userData == null){
                         userData = new UserData(userField.getText().toLowerCase(), res.getValue()[1], res.getValue()[2]);
-                        boolean userDataCreated = UserData.saveObject(userData, dataFilePath);
+                        boolean userDataCreated = saveUserData();
                         //Failure, warn user that their info might not save correctly
                         if(!userDataCreated){
                             showAlert(Alert.AlertType.ERROR, gridPaneLogin.getScene().getWindow(), "User Data",
@@ -326,6 +326,11 @@ public class Main extends Application {
                 passwordLabel, passwordField, submitButton, backButton);
         return new Scene(pane, 1200, 700);
 
+    }
+
+    public static boolean saveUserData(){
+        String dataFilePath = UserData.FILE_PATH_BEGINNING + "user_data/" + userData.getUserName().toLowerCase() + ".ser";
+        return UserData.saveObject(userData, dataFilePath);
     }
 
 

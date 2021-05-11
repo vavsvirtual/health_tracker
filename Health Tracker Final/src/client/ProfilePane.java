@@ -447,7 +447,7 @@ public class ProfilePane extends Application {
                                 "\nRemember, Duration must be a whole number");
                     }else {
                         boolean success = Main.userData.addExercise(exercise, dpExerciseDate.getValue());
-                        if(success){
+                        if(success && Main.saveUserData()){
                             showAlert(AlertType.CONFIRMATION, "Exercise Log", "Exercise logged");
                         }else{
                             showAlert(AlertType.ERROR, "Exercise Log", "Sorry we couldn't add that, double check" +
@@ -482,7 +482,7 @@ public class ProfilePane extends Application {
 
         ComboBox cbFood = new ComboBox<String>();
         cbFood.setEditable(true);
-        cbFood.getItems().addAll("Hamburger", "Salad", "Ice Cream");
+        cbFood.getItems().addAll(Main.userData.getFoodSet());
         cbFood.setPrefHeight(40);
         cbFood.setPrefWidth(300);
         cbFood.setTranslateX(-20);
@@ -500,7 +500,7 @@ public class ProfilePane extends Application {
 
         ComboBox cbDrink = new ComboBox<String>();
         cbDrink.setEditable(true);
-        cbDrink.getItems().addAll("Water", "Cola", "Sprite");
+        cbDrink.getItems().addAll(Main.userData.getDrinkSet());
         cbDrink.setPrefHeight(40);
         cbDrink.setPrefWidth(300);
         cbDrink.setTranslateX(-20);
@@ -569,26 +569,52 @@ public class ProfilePane extends Application {
         btnAddDiet.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
         GridPane.setHalignment(btnAddDiet, HPos.CENTER);
 
-        /*btnAddExercise.setOnAction(new EventHandler<ActionEvent>() {
+        btnAddDiet.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent arg0) {
-                double weight, height;
-                try {
-                    height = Double.parseDouble(tfHeight.getText());
-                } catch (NumberFormatException e) {
-                    showMsg("Invalid Height");
-                    return;
+                //local arguments
+                String food = cbFood.getValue().toString();
+                String drink = cbDrink.getValue().toString();
+                //Check is meal type has been selected
+                if (cbMealType.getValue() == null) {
+                    showAlert(AlertType.WARNING, "Diet Log", "Please select an meal type");
+                } else if (dpDietDate.getValue() == null || dpDietDate.getValue().isAfter(LocalDate.now())) {
+                    showAlert(AlertType.WARNING, "Diet Log", "Please select a valid day, one not in the future");
+                } else if (food == null || drink == null || food.length() == 0 || drink.length() == 0) {
+                    showAlert(AlertType.WARNING, "Diet Log", "Please enter or select both a food and drink");
+                } else {
+                    Double calorieCount = -1d;
+                    try {
+                        calorieCount = Double.parseDouble(tfCalorieCount.getText());
+                    }catch (NumberFormatException exception) {
+                        //do nothing
+                    }
+                    if(calorieCount > 0){
+                        //If food & drinks are new add to set
+                        Main.userData.addDrink(drink);
+                        Main.userData.addFood(food);
+                        //Reissue food and drink sets
+                        cbDrink.getItems().removeAll(Main.userData.getDrinkSet());
+                        cbDrink.getItems().addAll(Main.userData.getDrinkSet());
+                        cbFood.getItems().removeAll(Main.userData.getFoodSet());
+                        cbFood.getItems().addAll(Main.userData.getFoodSet());
+
+                        Meal meal = new Meal(food, drink,(Meal.MealType)cbMealType.getValue());
+                        boolean success = Main.userData.addMeal(meal, dpDietDate.getValue());
+                        if(success && Main.saveUserData()){
+                            System.out.println("Logged Meal: " + meal.getFoodName() + " & " + meal.getDrinkName());
+                            showAlert(AlertType.CONFIRMATION, "Diet Log", "Success! Your meal has been logged");
+                        }else{
+                            showAlert(AlertType.ERROR, "Diet Log", "Sorry we couldn't add that, double check" +
+                                    " & try again later");
+                        }
+                    }else{
+                        showAlert(AlertType.WARNING, "Diet Log", "Please enter a valid calorie count");
+                    }
                 }
-                try {
-                    weight = Double.parseDouble(tfWeight.getText());
-                } catch (NumberFormatException e) {
-                    showMsg("Invalid Weight");
-                    return;
-                }
-                double bmi = weight / (height * height);
-                tfBMI.setText(String.format("%.2f", bmi));
             }
-        });*/
+
+        });
 
 
 

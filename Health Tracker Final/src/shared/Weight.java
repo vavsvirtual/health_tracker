@@ -1,5 +1,7 @@
 package shared;
 
+import java.io.Serializable;
+
 /**
  * Project      : health_tracker
  * File         : Weight.java
@@ -11,7 +13,8 @@ package shared;
  *                  to assist in data manipulation for health tracking
  */
 
-public class Weight {
+public class Weight implements Serializable {
+    private static final long serialVersionUID = 231892L;
     public static final double KG_TO_POUNDS = 2.204623;
     private final double weightKg;
 
