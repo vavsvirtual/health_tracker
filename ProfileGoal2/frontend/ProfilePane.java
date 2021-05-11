@@ -60,19 +60,25 @@ public class ProfilePane extends BorderPane implements EventHandler<ActionEvent>
     Button btnSave;
 
     public ProfilePane() {
-        setPrefWidth(600);
+        setPrefWidth(1000);
         setPrefHeight(600);
 
         VBox rootBox = new VBox(10);
         rootBox.setPadding(new Insets(10));
 
         rootBox.getChildren().add(createPhotoPart());
-        rootBox.getChildren().add(createGeneralPart());
-        rootBox.getChildren().add(createPersonalPart());
-        rootBox.getChildren().add(createExercisePart());
-        rootBox.getChildren().add(createDietPart());
 
+        VBox vBox1 = new VBox(10);
+        vBox1.getChildren().add(createGeneralPart());
+        vBox1.getChildren().add(createPersonalPart());
+        VBox vBox2 = new VBox(10);
+        vBox2.getChildren().add(createExercisePart());
+        vBox2.getChildren().add(createDietPart());
+
+        HBox hBox = new HBox(30, vBox1, vBox2);
+        rootBox.getChildren().add(hBox);
         rootBox.getChildren().add(createSaveButtonPart());
+
         setCenter(rootBox);
     }
 
@@ -97,7 +103,7 @@ public class ProfilePane extends BorderPane implements EventHandler<ActionEvent>
         cbDrink.getItems().addAll("Water", "Cola", "Sprite");
 
         cbMealType = new ComboBox<String>();
-        cbMealType.setEditable(true);
+
         cbMealType.getItems().addAll("Vegan", "Fruit", "Starch");
 
         tfCalorieCount = new TextField();
@@ -124,7 +130,7 @@ public class ProfilePane extends BorderPane implements EventHandler<ActionEvent>
         tfDuration = new TextField();
         tfDistance = new TextField();
         cbTypeOfSports = new ComboBox<String>();
-        cbTypeOfSports.setEditable(true);
+
         cbTypeOfSports.getItems().addAll("Swimming", "Togging", "Yoga");
 
         GridPane gridPane = createGridPane();
