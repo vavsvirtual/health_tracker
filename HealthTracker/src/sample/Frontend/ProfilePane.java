@@ -539,8 +539,59 @@ public class ProfilePane extends Application {
         btnSave.setTranslateY(620);
         btnSave.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
         GridPane.setMargin(btnSave, new Insets(20, 0, 20, 0));
-
+        
+        
         btnSave.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent arg0) {
+                double distance,duration,calorieCount;
+                long   username,name,email;
+
+                  try{
+                      username = Long.parseLong(tfUsername.getText());
+                  } catch (NumberFormatException e){
+                      showMsg("Please enter your username");
+                      return;
+                  }
+
+                try{
+                    name = Long.parseLong(tfRealName.getText());
+                } catch (NumberFormatException e){
+                    showMsg("Please enter your real name");
+                    return;
+                }
+
+                try{
+                    email = Long.parseLong(tfEmail.getText());
+                } catch (NumberFormatException e){
+                    showMsg("Please enter your email Address");
+                    return;
+                }
+
+                  try {
+                      duration = Double.parseDouble (tfDuration.getText());
+                  } catch (NumberFormatException e){
+                      showMsg("Please enter your duration for exercise");
+                      return;
+                  }
+
+                  try{
+                      distance = Double.parseDouble (tfDistance.getText());
+                  } catch (NumberFormatException e){
+                      showMsg("please enter your distance for Exercise");
+                      return;
+                  }
+
+                  try{
+                      calorieCount = Double.parseDouble (tfCalorieCount.getText());
+                  } catch (NumberFormatException e){
+                      showMsg("Please enter your calorie count for Diet");
+                  }
+
+            }
+        });
+
+       /* btnSave.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
@@ -574,7 +625,7 @@ public class ProfilePane extends Application {
                 }
 
             }
-        });
+        }); */
 
 
         BorderPane menu = new BorderPane();
