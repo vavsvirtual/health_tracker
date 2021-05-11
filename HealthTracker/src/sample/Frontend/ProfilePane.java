@@ -434,19 +434,25 @@ public class ProfilePane extends Application {
             @Override
             public void handle(ActionEvent event) { stage2.setScene(GoalSettingPane.goalSettingScene()); }
         });
-        JFXButton summary = new JFXButton("Weekly Summary");
-        summary.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
-        summary.setPrefWidth(230);
-        summary.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) { stage2.setScene(WeeklySummary.summaryScene()); }
-        });
+       //JFXButton summary = new JFXButton("Weekly Summary");
+        //summary.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
+        //summary.setPrefWidth(230);
+        //summary.setOnAction(new EventHandler<ActionEvent>() {
+           // @Override
+            //public void handle(ActionEvent event) { stage2.setScene(WeeklySummary.summaryScene()); }
+       // });
         JFXButton groups = new JFXButton("Groups");
         groups.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         groups.setPrefWidth(230);
         groups.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) { stage2.setScene(GroupsPane.groupScene()); }
+            public void handle(ActionEvent event) {
+                try {
+                    stage2.setScene(GroupsPane.groupScene());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         });
         JFXButton logout = new JFXButton("Logout");
         logout.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
@@ -456,7 +462,7 @@ public class ProfilePane extends Application {
             public void handle(ActionEvent event) { stage2.setScene(Main.logInScene()); }
         });
         vBox.setAlignment(Pos.BASELINE_LEFT);
-        vBox.getChildren().addAll(profile, goals, summary, groups, logout);
+        vBox.getChildren().addAll(profile, goals, groups, logout);//delete summary
         vBox.setPadding(new Insets(0, 0, 0, 0));
         // Profile
         GridPane gridPaneProfile = new GridPane();
@@ -473,6 +479,7 @@ public class ProfilePane extends Application {
         TextField tfCalorieCount = new TextField();
 
         //date picker for Diet
+        LocalDate nowDate = LocalDate.now();
         Label DietDate = new Label("Date");
         DietDate.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneProfile.add(DietDate, 0, 0, 2, 1);
@@ -503,7 +510,7 @@ public class ProfilePane extends Application {
         ExerciseDate.setAlignment(Pos.CENTER);
         ExerciseDate.setTranslateX(-600);
         ExerciseDate.setTranslateY(330);
-        GridPane.setHalignment(ExerciseDate HPos.CENTER);
+        GridPane.setHalignment(ExerciseDate,HPos.CENTER);
         GridPane.setMargin(ExerciseDate, new Insets(20, 0, 20, 0));
         DatePicker dpExerciseDate = new DatePicker(nowDate.plusDays(7));
         dpExerciseDate.setPrefHeight(40);
