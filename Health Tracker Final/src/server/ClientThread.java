@@ -83,11 +83,11 @@ public class ClientThread extends Thread {
                 if (!Account.checkEmailFormat(account.getEmail())) {
                     System.out.println("Registration request returned: " + false);
                     sendMessage(false, new String[]{"Registration Rejected: Email format wrong"}, null);
-                    //Attempt to add to hashmap, if added username isn't already taken
+                //Attempt to add to hashmap, if added username isn't already taken
                 }else if(Server.addUser(account.getUserName(), account)){
                     System.out.println("Registration request returned: " + true);
                     sendMessage(true, new String[]{"Registration Successful"}, null);
-                    //Attempt to add to hashmap, username already taken, inform user
+                //Attempt to add to hashmap, username already taken, inform user
                 }else {
                     System.out.println("Registration request returned: " + false);
                     sendMessage(false, new String[]{"Registration Rejected: Username already in use"}, null);

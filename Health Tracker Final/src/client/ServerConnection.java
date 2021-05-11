@@ -1,6 +1,7 @@
 package client;
 
 //Import statements
+import javafx.util.Pair;
 import shared.Message;
 //Hashing imports
 import javax.crypto.SecretKeyFactory;
@@ -18,7 +19,7 @@ import java.net.Socket;
 /**
  * Project      : health_tracker
  * File         : ServerConnection.java
- * Last Edit    : 07/05/2021
+ * Last Edit    : 09/05/2021
  * PRG Lang     : Java
  * Author(s)    : Team 4.5 | Vav Scott 100287100
  *
@@ -32,6 +33,7 @@ public class ServerConnection{
 
     //Constructors
     public ServerConnection(int port, String host, int maxWaitMs) throws IOException {
+        //Open connection, Set timeout for server response, create in/out streams
         Socket serverSocket = new Socket(host, port);
         serverSocket.setSoTimeout(maxWaitMs);
         outStream = new ObjectOutputStream(serverSocket.getOutputStream());
@@ -56,13 +58,14 @@ public class ServerConnection{
         }
     }
 
-    public boolean login(String username, String password){
+    public Pair<Boolean, String> login(String username, String password){
         //Obtaining salt
         byte[] salt;
         Message res = sendMessage(Message.messageType.SALT_REQUEST, new String[]{username}, null);
-        if (!res.getSuccess()){//No salt obtained (Meaning no account under that username)
+        //If no salt obtained -> no account under that username
+        if (!res.getSuccess()){
             System.out.println("LOGIN FAIL: Username not in Database");
-            return false;
+            return new Pair(false, "No account under that username");
         }else{
             salt = res.getByteMessage()[0];
         }
@@ -71,20 +74,19 @@ public class ServerConnection{
             //Hashing password & sending credentials
             byte[] hashPass = hashPassword(salt, password);
             res = sendMessage(Message.messageType.LOGIN, new String[]{username}, new byte[][]{hashPass});
-            return res.getSuccess();
+            return new Pair(res.getSuccess(), res.getStringMessage()[0]);
         }catch(NoSuchAlgorithmException | InvalidKeySpecException exception){
             exception.printStackTrace();
-            return false;
+            return new Pair(false, "Couldn't hash password, please try again");
         }
     }
 
     //Register
-    public boolean register(String username, String password, String fullName, String email){
+    public Pair<Boolean, String> register(String username, String password, String fullName, String email){
         //Checking if password meets minimum requirements
         if (!checkPassFormat(password)){
-            return false;
+            return new Pair(false, "Password Requires 1 letter, 1 number and must be 8 characters or more");
         }
-
         //Hashing password
         byte[] salt = generateSalt();
         byte[] hashPass;
@@ -92,12 +94,12 @@ public class ServerConnection{
             hashPass = hashPassword(salt, password);
         }catch(NoSuchAlgorithmException | InvalidKeySpecException exception){
             exception.printStackTrace();
-            return false;
+            return new Pair(false, "Couldn't hash password, please try again");
         }
         //Sending data to server and awaiting response
         String[] stringMessage = {username, fullName, email};
         Message res = sendMessage(Message.messageType.REGISTER, stringMessage, new byte[][]{salt, hashPass});
-        return res.getSuccess();
+        return new Pair(res.getSuccess(), res.getStringMessage()[0]);
     }
 
     //Password Rule Validator
@@ -130,5 +132,5 @@ public class ServerConnection{
         random.nextBytes(salt);
         return salt;
     }
+    //Test harness not required
 }
-

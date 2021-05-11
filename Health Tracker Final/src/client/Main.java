@@ -19,10 +19,14 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.scene.image.Image;
+import javafx.util.Pair;
+
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 
 public class Main extends Application {
-
+    private static ServerConnection connection = null;
     private static Stage stage;
 
     @Override
@@ -33,6 +37,15 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.show();
+
+        //Attempt to connect to server
+        try{
+            connection = new ServerConnection();
+        }catch(IOException ioException){
+            System.out.println("Connection failed");
+            showAlert(Alert.AlertType.ERROR, logInScene().getWindow(), "No Connection", "We can't contact the server right now, try again later");
+        }
+
     }
 
     public static Scene logInScene() {
@@ -105,17 +118,17 @@ public class Main extends Application {
 
         createLoginButton.setOnAction((ActionEvent event) -> {
             if (userField.getText().isEmpty()) {
-                showAlert(Alert.AlertType.ERROR, gridPaneLogin.getScene().getWindow(), "Form Error!", "Please enter your username");
+                showAlert(Alert.AlertType.ERROR, gridPaneLogin.getScene().getWindow(), "Warning", "Please enter your username");
                 return;
             }
-            if (passwordField.getText().isEmpty()) {
-                showAlert(Alert.AlertType.ERROR, gridPaneLogin.getScene().getWindow(), "Form Error!", "Please enter a password");
+            else if (passwordField.getText().isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, gridPaneLogin.getScene().getWindow(), "Warning", "Please enter a password");
                 return;
-            }
+            }/*else{
+                Pair<Boolean, String> res = connection.login(userField.getText(), passwordField.getText());
 
-            System.out.println("User " + userField.getText() + " has logged in");
+            }*/
 
-            //stage.setScene(GoalSettingPane.goalSettingScene());
             stage.setScene(ProfilePane.profileScene(stage));
 
 
@@ -124,7 +137,6 @@ public class Main extends Application {
 
         Button createAccountButton = new Button("Create Account");
         createAccountButton.setPrefHeight(40);
-        createAccountButton.setDefaultButton(true);
         createAccountButton.setPrefWidth(400);
         createAccountButton.setTranslateX(410);
         createAccountButton.setTranslateY(260);
