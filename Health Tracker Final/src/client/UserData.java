@@ -1,10 +1,7 @@
 package client;
 
 //Import statement
-import shared.Day;
-import shared.Drink;
-import shared.Food;
-import shared.Weight;
+import shared.*;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -125,6 +122,19 @@ import java.util.Collections;
             }
             foodList.add(food);
             return saveObject(foodList, FOOD_TYPES_FILE_PATH);
+        }
+        public boolean addExercise(Exercise exercise, LocalDate localDate){
+            Day day = getDay(localDate);
+            if(day != null){
+                return day.addExercise(exercise);
+            }else{
+                day = new Day(localDate);
+                boolean added = day.addExercise(exercise);
+                if(added){
+                    added = addDay(day);
+                }
+                return added;
+            }
         }
         //Removers
         public void removeFood(Food food){

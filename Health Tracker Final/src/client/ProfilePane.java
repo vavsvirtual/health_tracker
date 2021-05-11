@@ -22,6 +22,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import shared.Exercise;
+import shared.Meal;
 
 
 public class ProfilePane extends Application {
@@ -129,7 +131,6 @@ public class ProfilePane extends Application {
         // Profile
         GridPane gridPaneProfile = new GridPane();
 
-        LocalDate nowDate = LocalDate.now();
 
         Label headerLabel = new Label("Profile");
         headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 40));
@@ -144,8 +145,8 @@ public class ProfilePane extends Application {
         Label secondLabel = new Label("General");
         secondLabel.setFont(Font.font("Arial", 20));
         gridPaneProfile.add(secondLabel, 0, 0, 2, 1);
-        secondLabel.setAlignment(Pos.CENTER);
-        secondLabel.setTranslateX(-400);
+        secondLabel.setAlignment(Pos.CENTER_LEFT);
+        secondLabel.setTranslateX(-485);
         secondLabel.setTranslateY(70);
         GridPane.setHalignment(secondLabel, HPos.CENTER);
         GridPane.setMargin(secondLabel, new Insets(20, 0, 20, 0));
@@ -209,7 +210,7 @@ public class ProfilePane extends Application {
         personalInformation.setFont(Font.font("Arial", 20));
         gridPaneProfile.add(personalInformation, 0, 0, 2, 1);
         personalInformation.setAlignment(Pos.CENTER);
-        personalInformation.setTranslateX(-400);
+        personalInformation.setTranslateX(-425);
         personalInformation.setTranslateY(280);
         GridPane.setHalignment(personalInformation, HPos.CENTER);
         GridPane.setMargin(personalInformation, new Insets(20, 0, 20, 0));
@@ -294,7 +295,7 @@ public class ProfilePane extends Application {
         tfHealthOverview.setTranslateY(460);
         gridPaneProfile.add(tfHealthOverview, 1, 2);
 
-        Button btnGenerate = new Button("Generate");
+        /*Button btnGenerate = new Button("Generate");
         btnGenerate.setPrefHeight(40);
         btnGenerate.setDefaultButton(true);
         btnGenerate.setPrefWidth(100);
@@ -322,21 +323,19 @@ public class ProfilePane extends Application {
                 double bmi = weight / (height * height);
                 tfBMI.setText(String.format("%.2f", bmi));
             }
-        });
+        });*/
 
-
-        // Exercise
 
         Label exercise1 = new Label("Exercise");
         exercise1.setFont(Font.font("Arial", 20));
         gridPaneProfile.add(exercise1, 0, 0, 2, 1);
         exercise1.setAlignment(Pos.CENTER);
-        exercise1.setTranslateX(0);
+        exercise1.setTranslateX(20);
         exercise1.setTranslateY(70);
         GridPane.setHalignment(exercise1, HPos.CENTER);
         GridPane.setMargin(exercise1, new Insets(20, 0, 20, 0));
 
-        Label duration = new Label("Duration");
+        Label duration = new Label("Duration (Mins)");
         duration.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneProfile.add(duration, 0, 0, 2, 1);
         duration.setAlignment(Pos.CENTER);
@@ -352,7 +351,7 @@ public class ProfilePane extends Application {
         tfDuration.setTranslateY(60);
         gridPaneProfile.add(tfDuration, 1, 2);
 
-        Label distance = new Label("Distance");
+        Label distance = new Label("Distance (Km)");
         distance.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneProfile.add(distance, 0, 0, 2, 1);
         distance.setAlignment(Pos.CENTER);
@@ -368,17 +367,18 @@ public class ProfilePane extends Application {
         tfDistance.setTranslateY(110);
         gridPaneProfile.add(tfDistance, 1, 2);
 
-        Label exercise = new Label("Exercise");
-        exercise.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        gridPaneProfile.add(exercise, 0, 0, 2, 1);
-        exercise.setAlignment(Pos.CENTER);
-        exercise.setTranslateX(-100);
-        exercise.setTranslateY(220);
-        GridPane.setHalignment(exercise, HPos.CENTER);
-        GridPane.setMargin(exercise, new Insets(20, 0, 20, 0));
+        Label exerciseType = new Label("Exercise Type");
+        exerciseType.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        gridPaneProfile.add(exerciseType, 0, 0, 2, 1);
+        exerciseType.setAlignment(Pos.CENTER);
+        exerciseType.setTranslateX(-100);
+        exerciseType.setTranslateY(220);
+        GridPane.setHalignment(exerciseType, HPos.CENTER);
+        GridPane.setMargin(exerciseType, new Insets(20, 0, 20, 0));
 
+        //ExerciseTypes (pulled from the enums in the exercise class)
         ComboBox cbTypeOfSports = new ComboBox<String>();
-        cbTypeOfSports.getItems().addAll("Swimming", "Togging", "Yoga");
+        cbTypeOfSports.getItems().addAll(Exercise.ExerciseType.values());
         cbTypeOfSports.setPrefHeight(40);
         cbTypeOfSports.setPrefWidth(300);
         cbTypeOfSports.setTranslateX(-20);
@@ -395,12 +395,69 @@ public class ProfilePane extends Application {
         GridPane.setHalignment(ExerciseDate,HPos.CENTER);
         GridPane.setMargin(ExerciseDate, new Insets(20, 0, 20, 0));
 
-        DatePicker dpExerciseDate = new DatePicker(nowDate.plusDays(7));
+        DatePicker dpExerciseDate = new DatePicker(LocalDate.now());
         dpExerciseDate.setPrefHeight(40);
         dpExerciseDate.setPrefWidth(300);
         dpExerciseDate.setTranslateX(-20);
         dpExerciseDate.setTranslateY(210);
         gridPaneProfile.add(dpExerciseDate, 1, 2);
+
+
+        //Add Exercise Button
+        Button btnAddExercise = new Button("Add Exercise");
+        btnAddExercise.setPrefHeight(40);
+        btnAddExercise.setDefaultButton(true);
+        btnAddExercise.setPrefWidth(150);
+        btnAddExercise.setTranslateX(355);
+        btnAddExercise.setTranslateY(70);
+        btnAddExercise.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
+        GridPane.setHalignment(btnAddExercise, HPos.CENTER);
+
+        btnAddExercise.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent arg0) {
+                double distanceKm = -1;
+                int durationMins = -1;
+                if(cbTypeOfSports.getValue() == null){
+                    showAlert(AlertType.WARNING, "Exercise Log","Please select an exercise type");
+                }else if(dpExerciseDate.getValue() == null || dpExerciseDate.getValue().isAfter(LocalDate.now())){
+                    showAlert(AlertType.WARNING, "Exercise Log","Please select a valid day, one not in the future");
+                }else{
+                    try{
+                        distanceKm = Double.parseDouble(tfDistance.getText());
+                    }catch(NumberFormatException exception){
+                        //Do nothing
+                    }
+                    try{
+                        durationMins = Integer.parseInt(tfDuration.getText());
+                    }catch(NumberFormatException exception){
+                        //Do nothing
+                    }
+                    Exercise exercise = null;
+                    if(distanceKm > 0 && durationMins > 0){
+                        exercise = new Exercise((Exercise.ExerciseType) cbTypeOfSports.getValue(), durationMins, distanceKm);
+                    }else if(distanceKm > 0){
+                        exercise = new Exercise((Exercise.ExerciseType) cbTypeOfSports.getValue(), distanceKm);
+                    }else if(durationMins > 0){
+                        exercise = new Exercise((Exercise.ExerciseType) cbTypeOfSports.getValue(), durationMins);
+                    }
+                    //If exercise still null then values weren't input correctly
+                    if(exercise == null){
+                        showAlert(AlertType.WARNING, "Exercise Log", "Please enter a valid Distance or Duration" +
+                                "\nRemember, Duration must be a whole number");
+                    }else {
+                        boolean success = Main.userData.addExercise(exercise, dpExerciseDate.getValue());
+                        if(success){
+                            showAlert(AlertType.CONFIRMATION, "Exercise Log", "Exercise logged");
+                        }else{
+                            showAlert(AlertType.ERROR, "Exercise Log", "Sorry we couldn't add that, double check" +
+                                    " & try again later");
+                        }
+                    }
+                }
+            }
+        });
+
 
 
         // Diet
@@ -410,7 +467,7 @@ public class ProfilePane extends Application {
         gridPaneProfile.add(diet, 0, 0, 2, 1);
         diet.setAlignment(Pos.CENTER);
         diet.setTranslateX(0);
-        diet.setTranslateY(330);
+        diet.setTranslateY(320);
         GridPane.setHalignment(diet, HPos.CENTER);
         GridPane.setMargin(diet, new Insets(20, 0, 20, 0));
 
@@ -460,7 +517,7 @@ public class ProfilePane extends Application {
         GridPane.setMargin(meal, new Insets(20, 0, 20, 0));
 
         ComboBox cbMealType = new ComboBox<String>();
-        cbMealType.getItems().addAll("Vegan", "Fruit", "Starch");
+        cbMealType.getItems().addAll(Meal.MealType.values());
         cbMealType.setPrefHeight(40);
         cbMealType.setPrefWidth(300);
         cbMealType.setTranslateX(-20);
@@ -495,20 +552,55 @@ public class ProfilePane extends Application {
         GridPane.setHalignment(DietDate, HPos.CENTER);
         GridPane.setMargin(DietDate, new Insets(20, 0, 20, 0));
 
-        DatePicker dpDietDate = new DatePicker(nowDate.plusDays(7));
+        DatePicker dpDietDate = new DatePicker(LocalDate.now());
         dpDietDate.setPrefHeight(40);
         dpDietDate.setPrefWidth(300);
         dpDietDate.setTranslateX(-20);
         dpDietDate.setTranslateY(510);
         gridPaneProfile.add(dpDietDate, 1, 2);
 
+        //Add Diet Button
+        Button btnAddDiet = new Button("Add Diet");
+        btnAddDiet.setPrefHeight(40);
+        btnAddDiet.setDefaultButton(true);
+        btnAddDiet.setPrefWidth(150);
+        btnAddDiet.setTranslateX(355);
+        btnAddDiet.setTranslateY(320);
+        btnAddDiet.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
+        GridPane.setHalignment(btnAddDiet, HPos.CENTER);
 
-        Button btnSave = new Button("Save");
+        /*btnAddExercise.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent arg0) {
+                double weight, height;
+                try {
+                    height = Double.parseDouble(tfHeight.getText());
+                } catch (NumberFormatException e) {
+                    showMsg("Invalid Height");
+                    return;
+                }
+                try {
+                    weight = Double.parseDouble(tfWeight.getText());
+                } catch (NumberFormatException e) {
+                    showMsg("Invalid Weight");
+                    return;
+                }
+                double bmi = weight / (height * height);
+                tfBMI.setText(String.format("%.2f", bmi));
+            }
+        });*/
+
+
+
+
+
+
+        Button btnSave = new Button("Save User Info");
         btnSave.setPrefHeight(40);
         btnSave.setDefaultButton(true);
         btnSave.setPrefWidth(300);
-        btnSave.setTranslateX(0);
-        btnSave.setTranslateY(620);
+        btnSave.setTranslateX(-220);
+        btnSave.setTranslateY(575);
         btnSave.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
         GridPane.setMargin(btnSave, new Insets(20, 0, 20, 0));
 
@@ -553,7 +645,7 @@ public class ProfilePane extends Application {
         menu.setLeft(vBox);
         menu.setRight(gridPaneProfile);
 
-        gridPaneProfile.getChildren().addAll(btnGenerate, btnSave);
+        gridPaneProfile.getChildren().addAll(btnSave,btnAddExercise, btnAddDiet);
 
         return new Scene(menu, 1200, 700);
     }
