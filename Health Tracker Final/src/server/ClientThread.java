@@ -86,7 +86,7 @@ public class ClientThread extends Thread {
                 //Attempt to add to hashmap, if added username isn't already taken
                 }else if(Server.addUser(account.getUserName(), account)){
                     System.out.println("Registration request returned: " + true);
-                    sendMessage(true, new String[]{"Registration Successful"}, null);
+                    sendMessage(true, new String[]{"Registration Successful: Please login"}, null);
                 //Attempt to add to hashmap, username already taken, inform user
                 }else {
                     System.out.println("Registration request returned: " + false);

@@ -1,6 +1,7 @@
 package server;
 
 //Import statements
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
@@ -15,7 +16,8 @@ import java.util.regex.Pattern;
  *                  storing user details and providing member for data verification
  */
 
-public class Account{
+public class Account implements Serializable {
+    private static final long serialVersionUID = 8219501L;
     //Account variables
     private String userName, fullName, email;
     private final byte[] salt;

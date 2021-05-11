@@ -118,20 +118,22 @@ public class Main extends Application {
 
         createLoginButton.setOnAction((ActionEvent event) -> {
             if (userField.getText().isEmpty()) {
-                showAlert(Alert.AlertType.ERROR, gridPaneLogin.getScene().getWindow(), "Warning", "Please enter your username");
+                showAlert(Alert.AlertType.WARNING, gridPaneLogin.getScene().getWindow(), "Warning", "Please enter your username");
                 return;
             }
             else if (passwordField.getText().isEmpty()) {
-                showAlert(Alert.AlertType.ERROR, gridPaneLogin.getScene().getWindow(), "Warning", "Please enter a password");
+                showAlert(Alert.AlertType.WARNING, gridPaneLogin.getScene().getWindow(), "Warning", "Please enter a password");
                 return;
-            }/*else{
+            }else{
                 Pair<Boolean, String> res = connection.login(userField.getText(), passwordField.getText());
-
-            }*/
-
-            stage.setScene(ProfilePane.profileScene(stage));
-
-
+                if(res.getKey()){
+                    showAlert(Alert.AlertType.CONFIRMATION, gridPaneLogin.getScene().getWindow(), "Login", res.getValue());
+                    //Load userdata
+                    stage.setScene(ProfilePane.profileScene(stage));
+                }else{
+                    showAlert(Alert.AlertType.ERROR, gridPaneLogin.getScene().getWindow(), "Login", res.getValue());
+                }
+            }
         });
 
 
@@ -254,25 +256,34 @@ public class Main extends Application {
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
                 if (nameField.getText().isEmpty()) {
-                    showAlert(Alert.AlertType.ERROR, gridPaneRegister.getScene().getWindow(), "Form Error!", "Please enter your name");
+                    showAlert(Alert.AlertType.WARNING, gridPaneRegister.getScene().getWindow(), "Form Error!", "Please enter your name");
                     return;
                 }
-                if (userField.getText().isEmpty()) {
-                    showAlert(Alert.AlertType.ERROR, gridPaneRegister.getScene().getWindow(), "Form Error!", "Please enter your username");
+                else if (userField.getText().isEmpty()) {
+                    showAlert(Alert.AlertType.WARNING, gridPaneRegister.getScene().getWindow(), "Form Error!", "Please enter your username");
                     return;
                 }
-                if (emailField.getText().isEmpty()) {
-                    showAlert(Alert.AlertType.ERROR, gridPaneRegister.getScene().getWindow(), "Form Error!", "Please enter your email id");
+                else if (emailField.getText().isEmpty()) {
+                    showAlert(Alert.AlertType.WARNING, gridPaneRegister.getScene().getWindow(), "Form Error!", "Please enter your email id");
                     return;
                 }
-                if (passwordField.getText().isEmpty()) {
-                    showAlert(Alert.AlertType.ERROR, gridPaneRegister.getScene().getWindow(), "Form Error!", "Please enter a password");
+                else if (passwordField.getText().isEmpty()) {
+                    showAlert(Alert.AlertType.WARNING, gridPaneRegister.getScene().getWindow(), "Form Error!", "Please enter a password");
                     return;
+                }else{
+                    Pair<Boolean, String> res = connection.register(userField.getText(), passwordField.getText(), nameField.getText(), emailField.getText());
+                    //Registration accepted
+                    if(res.getKey()){
+                        System.out.println("Account for user " + userField.getText() + " was created successfully");
+                        //Go to login
+                        stage.setScene(logInScene());
+                        showAlert(Alert.AlertType.CONFIRMATION, gridPaneRegister.getScene().getWindow(), "Register", res.getValue());
+                    //Registration failed -> warn user why
+                    }else{
+                        System.out.println("Account for user " + userField.getText() + " was not created");
+                        showAlert(Alert.AlertType.ERROR, gridPaneRegister.getScene().getWindow(), "Register", res.getValue());
+                    }
                 }
-
-                showAlert(Alert.AlertType.CONFIRMATION, gridPaneRegister.getScene().getWindow(), "Registration Successful!", "Welcome " + userField.getText());
-
-                System.out.println("Account for user " + userField.getText() + " was created successfully");
             }
         });
 

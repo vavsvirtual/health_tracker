@@ -49,6 +49,12 @@ public class Server {
             System.exit(1);
         }
         System.out.println("Successfully made ServerSocket");
+        //DEBUG:
+        for(String string : Accounts.keySet()){
+            System.out.print(string + ", ");
+        }
+        System.out.println("\b\b");
+
 
         //Handle Client connections
         while (true) {
