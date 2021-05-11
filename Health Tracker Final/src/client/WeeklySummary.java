@@ -120,6 +120,11 @@ public class WeeklySummary extends Application {
 
 
         vBox.setAlignment(Pos.BASELINE_LEFT);
+        //Setting focus to just this pane
+        profile.setFocusTraversable(false);
+        goals.setFocusTraversable(false);
+        groups.setFocusTraversable(false);
+        logout.setFocusTraversable(false);
 
         vBox.getChildren().addAll(profile, goals, summary, groups, logout);
         vBox.setPadding(new Insets(0, 0, 0, 0));
