@@ -12,16 +12,25 @@ package shared;
  */
 
 public class Goal {
-    private final Weight weight;
+    private Weight weightGoal;
+    private Exercise exerciseGoal;
 
     //Constructor (weight goal)
-    public Goal(Weight weight){
-        this.weight = weight;
+    public Goal(Weight weightGoal){
+        this.weightGoal = weightGoal;
+    }
+    //Constructor (exercise goal)
+    public Goal(Exercise exerciseGoal){
+        this.exerciseGoal = exerciseGoal;
     }
 
-    //Getters
-    public Weight getWeight() {
-        return weight;
+    //Weight goal getter
+    public Weight getWeightGoal() {
+        return weightGoal;
+    }
+    //Exercise goal getter
+    public Exercise getExerciseGoal() {
+        return exerciseGoal;
     }
 
     //Test harness not required
