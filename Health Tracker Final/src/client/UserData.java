@@ -138,6 +138,20 @@ import java.util.Set;
                 return added;
             }
         }
+        public boolean addGoal(Goal goal, LocalDate localDate){
+            if(!LocalDate.now().isBefore(localDate)){
+                return false;
+            }
+            Day day = getDay(localDate);
+            if(day != null){
+                day.addGoal(goal);
+                return true;
+            }else{
+                day = new Day(localDate);
+                day.addGoal(goal);
+                return addDay(day);
+            }
+        }
         public boolean addMeal(Meal meal, LocalDate localDate){
             Day day = getDay(localDate);
             if(day != null){

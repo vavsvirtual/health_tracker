@@ -1,5 +1,7 @@
 package shared;
 
+import java.io.Serializable;
+
 /**
  * Project      : health_tracker
  * File         : Goal.java
@@ -11,7 +13,8 @@ package shared;
  *                  at a later date (eg. Exercise for x time)
  */
 
-public class Goal {
+public class Goal implements Serializable {
+    private static final long serialVersionUID = 9043212L;
     private Weight weightGoal;
     private Exercise exerciseGoal;
 

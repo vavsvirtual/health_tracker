@@ -1,6 +1,7 @@
 package client;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.application.Application;
@@ -23,6 +24,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import shared.Exercise;
+import shared.Goal;
+import shared.Weight;
 
 public class GoalSettingPane extends Application {
 
@@ -144,47 +148,6 @@ public class GoalSettingPane extends Application {
         GridPane.setHalignment(headerLabel, HPos.CENTER);
         GridPane.setMargin(headerLabel, new Insets(20, 0, 20, 0));
 
-        Label secondLabel = new Label("General");
-        secondLabel.setFont(Font.font("Arial", 20));
-        gridPaneSetting.add(secondLabel, 0, 0, 2, 1);
-        secondLabel.setAlignment(Pos.CENTER);
-        secondLabel.setTranslateX(-170);
-        secondLabel.setTranslateY(70);
-        GridPane.setHalignment(secondLabel, HPos.CENTER);
-        GridPane.setMargin(secondLabel, new Insets(20, 0, 20, 0));
-
-        Label username = new Label("Username");
-        username.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        gridPaneSetting.add(username, 0, 0, 2, 1);
-        username.setAlignment(Pos.CENTER);
-        username.setTranslateX(-370);
-        username.setTranslateY(140);
-        GridPane.setHalignment(username, HPos.CENTER);
-        GridPane.setMargin(username, new Insets(20, 0, 20, 0));
-
-        TextField tfUsername = new TextField();
-        tfUsername.setPrefHeight(40);
-        tfUsername.setPrefWidth(300);
-        tfUsername.setTranslateX(-300);
-        tfUsername.setTranslateY(40);
-        gridPaneSetting.add(tfUsername, 1, 4);
-
-        Label email = new Label("Email Address");
-        email.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        gridPaneSetting.add(email, 0, 0, 2, 1);
-        email.setAlignment(Pos.CENTER);
-        email.setTranslateX(-370);
-        email.setTranslateY(190);
-        GridPane.setHalignment(email, HPos.CENTER);
-        GridPane.setMargin(email, new Insets(20, 0, 20, 0));
-
-        TextField tfEmail = new TextField();
-        tfEmail.setPrefHeight(40);
-        tfEmail.setPrefWidth(300);
-        tfEmail.setTranslateX(-300);
-        tfEmail.setTranslateY(90);
-        gridPaneSetting.add(tfEmail, 1, 4);
-
         LocalDate nowDate = LocalDate.now();
 
         // Exercise Goal
@@ -193,8 +156,8 @@ public class GoalSettingPane extends Application {
         thirdLabel.setFont(Font.font("Arial", 20));
         gridPaneSetting.add(thirdLabel, 0, 0, 2, 1);
         thirdLabel.setAlignment(Pos.CENTER);
-        thirdLabel.setTranslateX(-500);
-        thirdLabel.setTranslateY(250);
+        thirdLabel.setTranslateX(-490);
+        thirdLabel.setTranslateY(290);
         GridPane.setHalignment(thirdLabel, HPos.CENTER);
         GridPane.setMargin(thirdLabel, new Insets(20, 0, 20, 0));
 
@@ -225,15 +188,14 @@ public class GoalSettingPane extends Application {
         GridPane.setMargin(exercise, new Insets(20, 0, 20, 0));
 
         ComboBox cbExercise = new ComboBox<String>();
-        cbExercise.setEditable(true);
-        cbExercise.getItems().addAll("Swimming", "Jogging");
+        cbExercise.getItems().addAll(Exercise.ExerciseType.values());
         cbExercise.setPrefHeight(40);
         cbExercise.setPrefWidth(300);
         cbExercise.setTranslateX(-530);
         cbExercise.setTranslateY(320);
         gridPaneSetting.add(cbExercise, 1, 2);
 
-        Label duration = new Label("Duration");
+        Label duration = new Label("Duration (Mins)");
         duration.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneSetting.add(duration, 0, 0, 2, 1);
         duration.setAlignment(Pos.CENTER);
@@ -253,45 +215,39 @@ public class GoalSettingPane extends Application {
         btnExercise.setPrefHeight(40);
         btnExercise.setDefaultButton(true);
         btnExercise.setPrefWidth(300);
-        btnExercise.setTranslateX(-250);
-        btnExercise.setTranslateY(600);
+        btnExercise.setTranslateX(-230);
+        btnExercise.setTranslateY(500);
         btnExercise.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
         GridPane.setMargin(btnExercise, new Insets(20, 0, 20, 0));
 
         btnExercise.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {
-
-                double duration;
-
-                try {
-                    duration = Double.parseDouble(tfDuration.getText());
-                } catch (NumberFormatException e) {
-                    showMsg("Invalid Duration");
-                    return;
+            public void handle(ActionEvent arg0) {
+                int durationMins = -1;
+                if(cbExercise.getValue() == null){
+                    showAlert(AlertType.WARNING, "Exercise Goal","Please select an exercise type");
+                }else if(!LocalDate.now().isBefore(dpDeadLine.getValue())){
+                    showAlert(AlertType.WARNING, "Exercise Goal","Please enter a date in the future");
+                }else{
+                    try{
+                        durationMins = Integer.parseInt(tfDuration.getText());
+                        if(durationMins > 0 && (LocalDate.now().until(dpDeadLine.getValue(), ChronoUnit.DAYS))*1440 > durationMins){
+                            Exercise exercise = new Exercise((Exercise.ExerciseType) cbExercise.getValue(), durationMins);
+                            Goal goal = new Goal(exercise);
+                            if(Main.userData.addGoal(goal, dpDeadLine.getValue()) && Main.saveUserData()){
+                                showAlert(AlertType.CONFIRMATION, "Exercise Goal", "Your exercise goal has been saved");
+                            }else{
+                                showAlert(AlertType.ERROR, "Exercise Goal", "Sorry we couldn't add that, double check" +
+                                        " & try again later");
+                            }
+                        }else{
+                            throw new NumberFormatException();
+                        }
+                    }catch(NumberFormatException exception){
+                        showAlert(AlertType.WARNING, "Exercise Goal","Please enter a duration above 0 and " +
+                                "no longer than the minutes until your deadline");
+                    }
                 }
-
-
-                LocalDate deadlineDate = dpDeadLine.getValue();
-                String exercise = (String) cbExercise.getValue();
-                String username = tfUsername.getText();
-
-                Stage stage = new Stage();
-                GoalStartPane root = new GoalStartPane(stage);
-                root.duration = duration;
-                root.deadlineDate = deadlineDate;
-                root.exercise = exercise;
-                root.username = username;
-
-                root.createLayout();
-
-                Scene scene = new Scene(root);
-
-                stage.setScene(scene);
-
-                stage.setTitle(root.getTitle());
-                stage.showAndWait();
-
             }
         });
 
@@ -302,12 +258,12 @@ public class GoalSettingPane extends Application {
         forthLabel.setFont(Font.font("Arial", 20));
         gridPaneSetting.add(forthLabel, 0, 0, 2, 1);
         forthLabel.setAlignment(Pos.CENTER);
-        forthLabel.setTranslateX(0);
-        forthLabel.setTranslateY(250);
+        forthLabel.setTranslateX(-20);
+        forthLabel.setTranslateY(290);
         GridPane.setHalignment(forthLabel, HPos.CENTER);
         GridPane.setMargin(forthLabel, new Insets(20, 0, 20, 0));
 
-        Label deadlineDateWeight = new Label("Deadline");
+        Label deadlineDateWeight = new Label("Goal Deadline");
         deadlineDateWeight.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneSetting.add(deadlineDateWeight, 0, 0, 2, 1);
         deadlineDateWeight.setAlignment(Pos.CENTER);
@@ -324,7 +280,7 @@ public class GoalSettingPane extends Application {
         gridPaneSetting.add(dpDeadLineWeight, 1, 2);
 
 
-        Label targetWeight = new Label("Target Weight");
+        Label targetWeight = new Label("Target Weight (Kg)");
         targetWeight.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneSetting.add(targetWeight, 0, 0, 2, 1);
         targetWeight.setAlignment(Pos.CENTER);
@@ -345,12 +301,39 @@ public class GoalSettingPane extends Application {
         btnWeight.setPrefHeight(40);
         btnWeight.setDefaultButton(true);
         btnWeight.setPrefWidth(300);
-        btnWeight.setTranslateX(200);
-        btnWeight.setTranslateY(600);
+        btnWeight.setTranslateX(250);
+        btnWeight.setTranslateY(500);
         btnWeight.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
         GridPane.setMargin(btnWeight, new Insets(20, 0, 20, 0));
 
+
         btnWeight.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                double goalWeight;
+                try{
+                    goalWeight = Double.parseDouble(tfTargetWeight.getText());
+                    if(goalWeight <= 0){
+                        throw new NumberFormatException();
+                    }
+                    if(!LocalDate.now().isBefore(dpDeadLineWeight.getValue())){
+                        showAlert(AlertType.WARNING, "Weight Goal", "Please enter a date in the future");
+                    }else{
+                        Weight weight = new Weight(goalWeight);
+                        Goal goal = new Goal(weight);
+                        if(Main.userData.addGoal(goal, dpDeadLineWeight.getValue()) && Main.saveUserData()){
+                            showAlert(AlertType.CONFIRMATION, "Weight Goal", "Your weight goal has been saved");
+                        }else{
+                            showAlert(AlertType.ERROR, "Weight Goal", "Sorry we couldn't add that, double check" +
+                                " & try again later");
+                            }
+                    }
+                }catch(NumberFormatException exception){
+                    showAlert(AlertType.WARNING, "Weight Goal", "Please enter a valid number");
+                }
+            }
+        });
+        /*btnWeight.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
@@ -364,13 +347,13 @@ public class GoalSettingPane extends Application {
                 }
 
                 LocalDate deadlineDate = dpDeadLine.getValue();
-                String username = tfUsername.getText();
+                //String username = tfUsername.getText();
 
                 Stage stage = new Stage();
                 GoalStartPane root = new GoalStartPane(stage);
                 root.targetWeight = targetWeight;
                 root.deadlineDate = deadlineDate;
-                root.username = username;
+                //root.username = username;
 
                 root.createLayout();
 
@@ -382,7 +365,7 @@ public class GoalSettingPane extends Application {
                 stage.showAndWait();
 
             }
-        });
+        });*/
 
         BorderPane menu = new BorderPane();
         menu.setLeft(vBox);
@@ -398,6 +381,13 @@ public class GoalSettingPane extends Application {
         Alert alert = new Alert(AlertType.WARNING);
         alert.setContentText(text);
         alert.showAndWait();
+    }
+    private static void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.show();
     }
 
     public static void main(String[] args) {
