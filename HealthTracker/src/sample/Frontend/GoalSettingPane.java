@@ -1,6 +1,7 @@
 package client;
 
 import java.time.LocalDate;
+
 import com.jfoenix.controls.JFXButton;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -28,7 +29,7 @@ public class GoalSettingPane extends Application {
     private static Stage stage;
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Goal Settings");
         stage = primaryStage;
         Scene scene = goalSettingScene();
@@ -55,7 +56,11 @@ public class GoalSettingPane extends Application {
         profile.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                stage.setScene(ProfilePane.profileScene());
+                try {
+                    stage.setScene(ProfilePane.profileScene());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -66,7 +71,11 @@ public class GoalSettingPane extends Application {
         goals.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                stage.setScene(GoalSettingPane.goalSettingScene());
+                try {
+                    stage.setScene(GoalSettingPane.goalSettingScene());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -77,7 +86,11 @@ public class GoalSettingPane extends Application {
         summary.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                stage.setScene(WeeklySummary.summaryScene());
+                try {
+                    stage.setScene(WeeklySummary.summaryScene());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -87,7 +100,13 @@ public class GoalSettingPane extends Application {
 
         groups.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) { stage.setScene(GroupsPane.groupScene()); }
+            public void handle(ActionEvent event) {
+                try {
+                    stage.setScene(GroupsPane.groupScene());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         });
 
         JFXButton logout = new JFXButton("Logout");
@@ -97,7 +116,11 @@ public class GoalSettingPane extends Application {
         logout.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                stage.setScene(Main.logInScene());
+                try {
+                    stage.setScene(Main.logInScene());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -105,7 +128,6 @@ public class GoalSettingPane extends Application {
         vBox.setAlignment(Pos.BASELINE_LEFT);
 
         vBox.getChildren().addAll(profile, goals, summary, groups, logout);
-        vBox.setPadding(new Insets(0, 0, 0, 0));
 
         // Goal Setting
 
@@ -272,7 +294,6 @@ public class GoalSettingPane extends Application {
         });
 
 
-
         // Weight Goal
 
         Label forthLabel = new Label("Weight");
@@ -316,7 +337,6 @@ public class GoalSettingPane extends Application {
         tfTargetWeight.setTranslateX(-50);
         tfTargetWeight.setTranslateY(320);
         gridPaneSetting.add(tfTargetWeight, 1, 2);
-
 
 
         Button btnWeight = new Button("Set Weight Goal");

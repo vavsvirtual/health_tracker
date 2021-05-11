@@ -22,7 +22,8 @@ import javafx.scene.image.Image;
 
 
 public class Main extends Application {
-    public static Stage stage;
+
+    private static Stage stage;
 
     @Override
     public void start(Stage primaryStage) {

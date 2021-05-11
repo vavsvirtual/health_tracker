@@ -4,12 +4,17 @@ import com.jfoenix.controls.JFXButton;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class WeeklySummary extends Application {
@@ -29,20 +34,19 @@ public class WeeklySummary extends Application {
 
     public static Scene summaryScene() {
 
-        VBox vBox = new VBox(50);
-
-        vBox.setStyle("-fx-background-color: #3D405B;");
-
-        vBox.setPrefWidth(230);
-
-        JFXButton profile = new JFXButton("Profile");
-        profile.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
-        profile.setPrefSize(230, 100);
-
         profile.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                stage.setScene(ProfilePane.profileScene());
+//                try {
+//                    stage.setScene(ProfilePane.profileScene());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+
+                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                ProfilePane.profileScene();
+
             }
         });
 
@@ -53,7 +57,16 @@ public class WeeklySummary extends Application {
         goals.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                stage.setScene(GoalSettingPane.goalSettingScene());
+//                try {
+//                    stage.setScene(GoalSettingPane.goalSettingScene());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+
+                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                GoalSettingPane.goalSettingScene();
+
             }
         });
 
@@ -64,7 +77,16 @@ public class WeeklySummary extends Application {
         summary.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                stage.setScene(WeeklySummary.summaryScene());
+//                try {
+//                    stage.setScene(WeeklySummary.summaryScene());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+
+                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                WeeklySummary.summaryScene();
+
             }
         });
 
@@ -75,7 +97,16 @@ public class WeeklySummary extends Application {
         groups.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                stage.setScene(GroupsPane.groupScene());
+//                try {
+//                    stage.setScene(GroupsPane.groupScene());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+
+                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                GroupsPane.groupScene();
+
             }
         });
 
@@ -86,7 +117,16 @@ public class WeeklySummary extends Application {
         logout.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                stage.setScene(Main.logInScene());
+//                try {
+//                    stage.setScene(Main.logInScene());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+
+                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                Main.logInScene();
+
             }
         });
 
@@ -96,16 +136,23 @@ public class WeeklySummary extends Application {
         vBox.setPadding(new Insets(0, 0, 0, 0));
 
 
-        GridPane gridPaneGroup = new GridPane();
+        GridPane gridPaneSummary = new GridPane();
 
-        //code here
+        Label headerLabel = new Label("Weekly Summary");
+        headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 40));
+        gridPaneSummary.add(headerLabel, 0, 0, 2, 1);
+        headerLabel.setAlignment(Pos.CENTER);
+        headerLabel.setTranslateX(-250);
+        headerLabel.setTranslateY(0);
+        GridPane.setHalignment(headerLabel, HPos.CENTER);
+        GridPane.setMargin(headerLabel, new Insets(20, 0, 20, 0));
 
 
         BorderPane menu = new BorderPane();
         menu.setLeft(vBox);
-        menu.setRight(gridPaneGroup);
+        menu.setRight(gridPaneSummary);
 
-        gridPaneGroup.getChildren().addAll();
+        gridPaneSummary.getChildren().addAll();
 
         return new Scene(menu, 1200, 700);
 

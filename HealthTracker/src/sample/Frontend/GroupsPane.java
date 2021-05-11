@@ -20,7 +20,8 @@ import javafx.scene.layout.*;
 
 
 public class GroupsPane extends Application {
-    public static Stage stage;
+
+    private static Stage stage;
 
     @Override
     public void start(Stage primaryStage) {
@@ -49,7 +50,14 @@ public class GroupsPane extends Application {
         profile.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                stage.setScene(ProfilePane.profileScene());
+                try {
+                    stage.setScene(ProfilePane.profileScene());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+//                Stage stage = (Stage) ProfilePane.profileScene().getScene().getWindow();
+
             }
         });
 
@@ -60,7 +68,11 @@ public class GroupsPane extends Application {
         goals.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                stage.setScene(GoalSettingPane.goalSettingScene());
+                try {
+                    stage.setScene(GoalSettingPane.goalSettingScene());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -71,7 +83,11 @@ public class GroupsPane extends Application {
         summary.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                stage.setScene(WeeklySummary.summaryScene());
+                try {
+                    stage.setScene(WeeklySummary.summaryScene());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -82,7 +98,11 @@ public class GroupsPane extends Application {
         groups.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                stage.setScene(GroupsPane.groupScene());
+                try {
+                    stage.setScene(GroupsPane.groupScene());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -93,15 +113,17 @@ public class GroupsPane extends Application {
         logout.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                stage.setScene(Main.logInScene());
+                try {
+                    stage.setScene(Main.logInScene());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
         vBox.setAlignment(Pos.BASELINE_LEFT);
 
         vBox.getChildren().addAll(profile, goals, summary, groups, logout);
-        vBox.setPadding(new Insets(0, 0, 0, 0));
-
 
         GridPane gridPaneGroup = new GridPane();
 
@@ -116,7 +138,7 @@ public class GroupsPane extends Application {
 
 
         Label secondLabel = new Label("Create Group");
-        secondLabel.setFont(Font.font("Arial", FontWeight.BOLD, 30));
+        secondLabel.setFont(Font.font("Arial", 20));
         gridPaneGroup.add(secondLabel, 0, 0, 2, 1);
         secondLabel.setAlignment(Pos.CENTER);
         secondLabel.setTranslateX(-430);
@@ -151,6 +173,7 @@ public class GroupsPane extends Application {
         GridPane.setMargin(goalLabel, new Insets(20, 0, 20, 0));
 
         ComboBox cbGoal = new ComboBox();
+        cbGoal.setEditable(true);
         cbGoal.getItems().addAll(
                 "Exercise", "Calories", "Custom"
         );
@@ -218,7 +241,7 @@ public class GroupsPane extends Application {
 
 
         Label thirdLabel = new Label("Join Group");
-        thirdLabel.setFont(Font.font("Arial", FontWeight.BOLD, 30));
+        thirdLabel.setFont(Font.font("Arial", 20));
         gridPaneGroup.add(thirdLabel, 0, 0, 2, 1);
         thirdLabel.setAlignment(Pos.CENTER);
         thirdLabel.setTranslateX(30);
@@ -236,6 +259,7 @@ public class GroupsPane extends Application {
         GridPane.setMargin(goalLabel_one, new Insets(20, 0, 20, 0));
 
         ComboBox cbJoin = new ComboBox();
+        cbJoin.setEditable(true);
         cbJoin.getItems().addAll(
                 "Group 10", "Group 11", "Group 12", "Group 13", "Group 14"
         );
@@ -270,6 +294,9 @@ public class GroupsPane extends Application {
 
         return new Scene(menu, 1200, 700);
     }
+
+
+
 
 
     private static void showAlert(Alert.AlertType alertType, String title, String message) {
