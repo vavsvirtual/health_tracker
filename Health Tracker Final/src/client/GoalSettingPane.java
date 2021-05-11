@@ -11,13 +11,8 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -302,6 +297,21 @@ public class GoalSettingPane extends Application {
         tfTargetWeight.setTranslateY(320);
         gridPaneSetting.add(tfTargetWeight, 1, 2);
 
+        Label gainingOrLoosing = new Label("Tick if you wish to gain weight:");
+        gainingOrLoosing.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        gridPaneSetting.add(gainingOrLoosing, 0, 0, 2, 1);
+        gainingOrLoosing.setAlignment(Pos.CENTER);
+        gainingOrLoosing.setTranslateX(70);
+        gainingOrLoosing.setTranslateY(433);
+        GridPane.setHalignment(gainingOrLoosing, HPos.CENTER);
+        GridPane.setMargin(gainingOrLoosing, new Insets(20, 0, 20, 0));
+
+
+        CheckBox cbGainingWeight = new CheckBox();
+        cbGainingWeight.setTranslateX(210);
+        cbGainingWeight.setTranslateY(370);
+        gridPaneSetting.add(cbGainingWeight, 1, 2);
+
 
         Button btnWeight = new Button("Set Weight Goal");
         btnWeight.setPrefHeight(40);
@@ -317,16 +327,30 @@ public class GoalSettingPane extends Application {
             @Override
             public void handle(ActionEvent event) {
                 double goalWeight;
+                boolean gainingWeight = cbGainingWeight.isSelected();
                 try{
+                    //Parse weight
                     goalWeight = Double.parseDouble(tfTargetWeight.getText());
                     if(goalWeight <= 0){
                         throw new NumberFormatException();
                     }
-                    if(!LocalDate.now().isBefore(dpDeadLineWeight.getValue())){
+                    //Check if you have already met your goal
+                    double currentWeight = Main.userData.getCurrentWeight().getWeightKg();
+                    double goalBmi = Weight.calculateBMI(goalWeight, Main.userData.getHeightCm());
+                    if((gainingWeight && goalWeight <= currentWeight) || (!gainingWeight && goalWeight >= currentWeight)){
+                        showAlert(AlertType.WARNING, "Weight Goal", "Your current weight has already met this goal, set a different goal");
+                    //Check if your goal could be harmful
+                    }else if(((goalBmi < Weight.BMIRank.NORMAL.getLowerBound()) && !gainingWeight) || ((goalBmi > Weight.BMIRank.OBESE.getLowerBound())&&gainingWeight)){
+                        String gainLoose = gainingWeight ? "gaining" : "loosing";
+                        showAlert(AlertType.WARNING, "Weight Goal", "Your current height suggests that purposely "
+                                + gainLoose + " that much weight could harm your health.\nPlease enter a different goal");
+                    //Check your goal is in the future
+                    }else if(!LocalDate.now().isBefore(dpDeadLineWeight.getValue())){
                         showAlert(AlertType.WARNING, "Weight Goal", "Please enter a date in the future");
+                    //Create goal
                     }else{
                         Weight weight = new Weight(goalWeight);
-                        Goal goal = new Goal(weight);
+                        Goal goal = new Goal(weight, gainingWeight);
                         if(Main.userData.addGoal(goal, dpDeadLineWeight.getValue()) && Main.saveUserData()){
                             showAlert(AlertType.CONFIRMATION, "Weight Goal", "Your weight goal has been saved");
                         }else{

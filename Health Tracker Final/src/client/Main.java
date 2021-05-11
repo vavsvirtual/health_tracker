@@ -47,7 +47,6 @@ public class Main extends Application {
             System.out.println("Connection failed");
             showAlert(Alert.AlertType.ERROR, logInScene().getWindow(), "No Connection", "We can't contact the server right now, try again later");
         }
-
     }
 
     public static Scene logInScene() {
@@ -144,6 +143,10 @@ public class Main extends Application {
                                     "Can't save your user data, information input may be lost");
                         }
                     }
+                    //login success
+                    //Check to see if goals have finished
+                    //userData.checkExpiredGoals();
+                    //Load up the profilescene
                     stage.setScene(ProfilePane.profileScene(stage));
                 }else{
                     showAlert(Alert.AlertType.ERROR, gridPaneLogin.getScene().getWindow(), "Login", res.getValue()[0]);

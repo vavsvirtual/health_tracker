@@ -15,12 +15,16 @@ import java.io.Serializable;
 
 public class Goal implements Serializable {
     private static final long serialVersionUID = 9043212L;
+    private boolean expired;
+    private boolean goalMet;
+    private boolean gainingWeight;
     private Weight weightGoal;
     private Exercise exerciseGoal;
 
     //Constructor (weight goal)
-    public Goal(Weight weightGoal){
+    public Goal(Weight weightGoal, boolean gainingWeight){
         this.weightGoal = weightGoal;
+        this.gainingWeight = gainingWeight;
     }
     //Constructor (exercise goal)
     public Goal(Exercise exerciseGoal){
@@ -34,6 +38,23 @@ public class Goal implements Serializable {
     //Exercise goal getter
     public Exercise getExerciseGoal() {
         return exerciseGoal;
+    }
+    //Goal expired getter
+    public boolean getExpired() {
+        return expired;
+    }
+    //Goal met getter
+    public boolean getGoalMet() {
+        return goalMet;
+    }
+
+    //Goal expired setter
+    public void setExpired(boolean expired) {
+        this.expired = expired;
+    }
+    //Goal met setter
+    public void setGoalMet(boolean goalMet) {
+        this.goalMet = goalMet;
     }
 
     //Test harness not required
