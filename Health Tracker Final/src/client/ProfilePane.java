@@ -331,9 +331,13 @@ public class ProfilePane extends Application {
                 //Take weight
                 if(!tfWeight.getText().isEmpty()){
                     try{
-                        Main.userData.setCurrentWeight(new Weight(Double.parseDouble(tfWeight.getText())));
-                        tfWeight.setPromptText(String.valueOf(Main.userData.getCurrentWeight().getWeightKg()));
-                        weightUpdated = true;
+                        boolean success = Main.userData.updateCurrentWeight(new Weight(Double.parseDouble(tfWeight.getText())));
+                        if(success) {
+                            tfWeight.setPromptText(String.valueOf(Main.userData.getCurrentWeight().getWeightKg()));
+                            weightUpdated = true;
+                        }else{
+                            showAlert(AlertType.WARNING, "Personal Information", "You've logged your weight too many times today, please try again tomorrow");
+                        }
                     }catch(NumberFormatException exception){
                         showAlert(AlertType.WARNING, "Personal Information", "Please enter a valid weight");
                     }

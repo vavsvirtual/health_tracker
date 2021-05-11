@@ -91,8 +91,14 @@ import java.util.Set;
         public void setHeightImperial(int feet, int inches){
             this.heightCm = Math.toIntExact(Math.round((feet*12 + inches)/CM_TO_INCHES));
         }
-        public void setCurrentWeight(Weight weight){
-            currentWeight = weight;
+        //Updaters (log the information in the history as well as update local variable)
+        public boolean updateCurrentWeight(Weight weight){
+            if(addWeight(weight, LocalDate.now())){
+                currentWeight = weight;
+                return true;
+            }else{
+                return false;
+            }
         }
 
         //Adders
@@ -139,6 +145,19 @@ import java.util.Set;
             }else{
                 day = new Day(localDate);
                 boolean added = day.addMeal(meal);
+                if(added){
+                    added = addDay(day);
+                }
+                return added;
+            }
+        }
+        public boolean addWeight(Weight weight, LocalDate localDate){
+            Day day = getDay(localDate);
+            if(day != null){
+                return day.addWeight(weight);
+            }else{
+                day = new Day(localDate);
+                boolean added = day.addWeight(weight);
                 if(added){
                     added = addDay(day);
                 }
