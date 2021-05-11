@@ -32,14 +32,14 @@ public class GoalSettingPane extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Goal Settings");
         stage = primaryStage;
-        Scene scene = goalSettingScene();
+        Scene scene = goalSettingScene(stage);
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.show();
     }
 
-
-    public static Scene goalSettingScene() {
+    public static Scene goalSettingScene(Stage primaryStage) {
+        stage = primaryStage;
 
         //Side Menu
 
@@ -57,7 +57,7 @@ public class GoalSettingPane extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    stage.setScene(ProfilePane.profileScene());
+                    stage.setScene(ProfilePane.profileScene(stage));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -72,7 +72,7 @@ public class GoalSettingPane extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    stage.setScene(GoalSettingPane.goalSettingScene());
+                    stage.setScene(GoalSettingPane.goalSettingScene(stage));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -88,7 +88,7 @@ public class GoalSettingPane extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    stage.setScene(WeeklySummary.summaryScene());
+                    stage.setScene(WeeklySummary.summaryScene(stage));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -103,7 +103,7 @@ public class GoalSettingPane extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    stage.setScene(GroupsPane.groupScene());
+                    stage.setScene(GroupsPane.groupScene(stage));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

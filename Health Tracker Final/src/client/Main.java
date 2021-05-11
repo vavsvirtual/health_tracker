@@ -115,8 +115,8 @@ public class Main extends Application {
 
             System.out.println("User " + userField.getText() + " has logged in");
 
-
-            stage.setScene(ProfilePane.profileScene());
+            //stage.setScene(GoalSettingPane.goalSettingScene());
+            stage.setScene(ProfilePane.profileScene(stage));
 
 
         });

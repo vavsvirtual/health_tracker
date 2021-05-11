@@ -7,32 +7,21 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Alert.AlertType;;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class ProfilePane extends Application {
@@ -43,12 +32,14 @@ public class ProfilePane extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Profile");
         stage = primaryStage;
-        Scene scene = profileScene();
+        Scene scene = profileScene(stage);
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.show();
     }
-    public static Scene profileScene() {
+
+    public static Scene profileScene(Stage primaryStage) {
+        stage = primaryStage;
         // SideMenu
         VBox vBox = new VBox(50);
         vBox.setStyle("-fx-background-color: #3D405B;");
@@ -62,7 +53,7 @@ public class ProfilePane extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    stage.setScene(ProfilePane.profileScene());
+                    stage.setScene(ProfilePane.profileScene(stage));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -77,7 +68,7 @@ public class ProfilePane extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    stage.setScene(GoalSettingPane.goalSettingScene());
+                    stage.setScene(GoalSettingPane.goalSettingScene(stage));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -93,7 +84,7 @@ public class ProfilePane extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    stage.setScene(WeeklySummary.summaryScene());
+                    stage.setScene(WeeklySummary.summaryScene(stage));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -108,7 +99,7 @@ public class ProfilePane extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    stage.setScene(GroupsPane.groupScene());
+                    stage.setScene(GroupsPane.groupScene(stage));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

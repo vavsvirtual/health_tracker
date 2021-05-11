@@ -19,14 +19,15 @@ public class SideMenu extends Application {
 
         primaryStage.setTitle("Groups");
         stage = primaryStage;
-        Scene scene = sideMenuScene();
+        Scene scene = sideMenuScene(stage);
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.show();
     }
 
 
-    public static Scene sideMenuScene() {
+    public static Scene sideMenuScene(Stage primaryStage) {
+        stage = primaryStage;
 
 
 
@@ -45,7 +46,7 @@ public class SideMenu extends Application {
         @Override
         public void handle(ActionEvent event) {
             try {
-                stage.setScene(ProfilePane.profileScene());
+                stage.setScene(ProfilePane.profileScene(stage));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -60,7 +61,7 @@ public class SideMenu extends Application {
         @Override
         public void handle(ActionEvent event) {
             try {
-                stage.setScene(GoalSettingPane.goalSettingScene());
+                stage.setScene(GoalSettingPane.goalSettingScene(stage));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -75,7 +76,7 @@ public class SideMenu extends Application {
         @Override
         public void handle(ActionEvent event) {
             try {
-                stage.setScene(WeeklySummary.summaryScene());
+                stage.setScene(WeeklySummary.summaryScene(stage));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -90,7 +91,7 @@ public class SideMenu extends Application {
         @Override
         public void handle(ActionEvent event) {
             try {
-                stage.setScene(GroupsPane.groupScene());
+                stage.setScene(GroupsPane.groupScene(stage));
             } catch (Exception e) {
                 e.printStackTrace();
             }
