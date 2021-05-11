@@ -24,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import shared.Exercise;
 import shared.Meal;
+import shared.Weight;
 
 
 public class ProfilePane extends Application {
@@ -215,7 +216,7 @@ public class ProfilePane extends Application {
         GridPane.setHalignment(personalInformation, HPos.CENTER);
         GridPane.setMargin(personalInformation, new Insets(20, 0, 20, 0));
 
-        Label height = new Label("Height");
+        Label height = new Label("Height (Cm)");
         height.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneProfile.add(height, 0, 0, 2, 1);
         height.setAlignment(Pos.CENTER);
@@ -225,13 +226,14 @@ public class ProfilePane extends Application {
         GridPane.setMargin(height, new Insets(20, 0, 20, 0));
 
         TextField tfHeight = new TextField();
+        tfHeight.setPromptText(String.valueOf(Main.userData.getHeightCm()));
         tfHeight.setPrefHeight(40);
         tfHeight.setMaxWidth(400);
         tfHeight.setTranslateX(-520);
         tfHeight.setTranslateY(260);
         gridPaneProfile.add(tfHeight, 1, 2);
 
-        Label weight = new Label("Weight");
+        Label weight = new Label("Weight (Kg)");
         weight.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneProfile.add(weight, 0, 0, 2, 1);
         weight.setAlignment(Pos.CENTER);
@@ -241,13 +243,16 @@ public class ProfilePane extends Application {
         GridPane.setMargin(weight, new Insets(20, 0, 20, 0));
 
         TextField tfWeight = new TextField();
+        if(Main.userData.getCurrentWeight() != null){
+            tfWeight.setPromptText(String.valueOf(Main.userData.getCurrentWeight().getWeightKg()));
+        }
         tfWeight.setPrefHeight(40);
         tfWeight.setMaxWidth(400);
         tfWeight.setTranslateX(-520);
         tfWeight.setTranslateY(310);
         gridPaneProfile.add(tfWeight, 1, 2);
 
-        Label bMI = new Label("Current BMI");
+        Label bMI = new Label("BMI Category");
         bMI.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneProfile.add(bMI, 0, 0, 2, 1);
         bMI.setAlignment(Pos.CENTER);
@@ -257,6 +262,10 @@ public class ProfilePane extends Application {
         GridPane.setMargin(bMI, new Insets(20, 0, 20, 0));
 
         TextField tfBMI = new TextField();
+        if(Main.userData.getHeightCm()!= 0 && Main.userData.getCurrentWeight()!= null){
+            tfBMI.setText(Weight.evalBMI(Weight.calculateBMI(Main.userData.getCurrentWeight().getWeightKg(), Main.userData.getHeightCm())).getStringName());
+        }
+        tfBMI.setEditable(false);
         tfBMI.setPrefHeight(40);
         tfBMI.setMaxWidth(400);
         tfBMI.setTranslateX(-520);
@@ -295,35 +304,57 @@ public class ProfilePane extends Application {
         tfHealthOverview.setTranslateY(460);
         gridPaneProfile.add(tfHealthOverview, 1, 2);
 
-        /*Button btnGenerate = new Button("Generate");
-        btnGenerate.setPrefHeight(40);
-        btnGenerate.setDefaultButton(true);
-        btnGenerate.setPrefWidth(100);
-        btnGenerate.setTranslateX(-130);
-        btnGenerate.setTranslateY(580);
-        btnGenerate.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
-        GridPane.setMargin(btnGenerate, new Insets(20, 0, 20, 0));
+        Button btnSave = new Button("Save User Info");
+        btnSave.setPrefHeight(40);
+        btnSave.setDefaultButton(true);
+        btnSave.setPrefWidth(300);
+        btnSave.setTranslateX(-220);
+        btnSave.setTranslateY(575);
+        btnSave.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
+        GridPane.setMargin(btnSave, new Insets(20, 0, 20, 0));
 
-        btnGenerate.setOnAction(new EventHandler<ActionEvent>() {
+        btnSave.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent arg0) {
-                double weight, height;
-                try {
-                    height = Double.parseDouble(tfHeight.getText());
-                } catch (NumberFormatException e) {
-                    showMsg("Invalid Height");
-                    return;
+            public void handle(ActionEvent event) {
+                boolean heightUpdated = false;
+                boolean weightUpdated = false;
+                //Take height
+                if(!tfHeight.getText().isEmpty()){
+                    try{
+                        Main.userData.setHeightCm(Integer.parseInt(tfHeight.getText()));
+                        tfHeight.setPromptText(String.valueOf(Main.userData.getHeightCm()));
+                        heightUpdated = true;
+                    }catch(NumberFormatException exception){
+                        showAlert(AlertType.WARNING, "Personal Information", "Please enter a valid integer height");
+                    }
                 }
-                try {
-                    weight = Double.parseDouble(tfWeight.getText());
-                } catch (NumberFormatException e) {
-                    showMsg("Invalid Weight");
-                    return;
+                //Take weight
+                if(!tfWeight.getText().isEmpty()){
+                    try{
+                        Main.userData.setCurrentWeight(new Weight(Double.parseDouble(tfWeight.getText())));
+                        tfWeight.setPromptText(String.valueOf(Main.userData.getCurrentWeight().getWeightKg()));
+                        weightUpdated = true;
+                    }catch(NumberFormatException exception){
+                        showAlert(AlertType.WARNING, "Personal Information", "Please enter a valid weight");
+                    }
                 }
-                double bmi = weight / (height * height);
-                tfBMI.setText(String.format("%.2f", bmi));
+                if(Main.userData.getHeightCm()!= 0 && Main.userData.getCurrentWeight()!= null){
+                    tfBMI.setText(Weight.evalBMI(Weight.calculateBMI(Main.userData.getCurrentWeight().getWeightKg(), Main.userData.getHeightCm())).getStringName());
+                }
+                if(heightUpdated || weightUpdated) {
+                    if(Main.saveUserData()) {
+                        String message = heightUpdated ? "height" : "";
+                        message = message + (heightUpdated && weightUpdated ? " & " : "");
+                        message = message + (weightUpdated ? "weight" : "");
+                        showAlert(AlertType.CONFIRMATION, "Personal Information", "Your " + message + " has been updated");
+                    }else{
+                        showAlert(AlertType.ERROR, "Personal Information", "Sorry we couldn't save that, double check" +
+                                " & try again later");
+                    }
+                }
+
             }
-        });*/
+        });
 
 
         Label exercise1 = new Label("Exercise");
@@ -573,8 +604,8 @@ public class ProfilePane extends Application {
             @Override
             public void handle(ActionEvent arg0) {
                 //local arguments
-                String food = cbFood.getValue().toString();
-                String drink = cbDrink.getValue().toString();
+                String food = String.valueOf(cbFood.getValue());
+                String drink = String.valueOf(cbDrink.getValue());
                 //Check is meal type has been selected
                 if (cbMealType.getValue() == null) {
                     showAlert(AlertType.WARNING, "Diet Log", "Please select an meal type");
@@ -615,57 +646,6 @@ public class ProfilePane extends Application {
             }
 
         });
-
-
-
-
-
-
-        Button btnSave = new Button("Save User Info");
-        btnSave.setPrefHeight(40);
-        btnSave.setDefaultButton(true);
-        btnSave.setPrefWidth(300);
-        btnSave.setTranslateX(-220);
-        btnSave.setTranslateY(575);
-        btnSave.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
-        GridPane.setMargin(btnSave, new Insets(20, 0, 20, 0));
-
-        btnSave.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-                if (username.getText().isEmpty()) {
-                    showAlert(Alert.AlertType.ERROR, "Error!", "Please enter username");
-                }
-                if (name.getText().isEmpty()) {
-                    showAlert(Alert.AlertType.ERROR, "Error!", "Please enter name");
-                }
-                if (email.getText().isEmpty()) {
-                    showMsg("Please enter email address");
-                }
-
-                if (height.getText().isEmpty()) {
-                    showMsg("Please enter height");
-                }
-                if (weight.getText().isEmpty()) {
-                    showMsg("Please enter weight");
-                }
-                if (bMI.getText().isEmpty()) {
-                    showMsg("Please enter BMI");
-                }
-                if (targetWeight.getText().isEmpty()) {
-                    showMsg("Please enter target weight");
-                }
-                if (overView.getText().isEmpty()) {
-                    showMsg("Please enter overview");
-                }
-                if (email.getText().isEmpty()) {
-                    showMsg("Please enter email address");
-                }
-
-            }
-        });
-
 
         BorderPane menu = new BorderPane();
         menu.setLeft(vBox);

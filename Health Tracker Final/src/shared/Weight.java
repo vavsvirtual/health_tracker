@@ -20,15 +20,17 @@ public class Weight implements Serializable {
 
     //Enum to represent the BMI categories
     public enum BMIRank{
-        UNDERWEIGHT(Double.MIN_VALUE, 18.5),
-        NORMAL(18.5, 25),
-        OVERWEIGHT(25,30),
-        OBESE(30,40),
-        VERY_OBESE(40, Double.MAX_VALUE);
+        UNDERWEIGHT(Double.MIN_VALUE, 18.5, "Underweight"),
+        NORMAL(18.5, 25, "Healthy weight"),
+        OVERWEIGHT(25,30, "Overweight"),
+        OBESE(30,40, "Obese"),
+        VERY_OBESE(40, Double.MAX_VALUE, "Very Obese");
 
         //BMI bounding values
+        private String stringName;
         private final double lowerBound, upperBound;
-        private BMIRank(double lowerBound, double upperBound){
+        private BMIRank(double lowerBound, double upperBound, String stringName){
+            this.stringName = stringName;
             this.lowerBound = lowerBound;
             this.upperBound = upperBound;
         }
@@ -37,6 +39,9 @@ public class Weight implements Serializable {
         }
         public double getUpperBound() {
             return upperBound;
+        }
+        public String getStringName() {
+            return stringName;
         }
     }
 

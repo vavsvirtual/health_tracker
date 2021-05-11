@@ -1,5 +1,7 @@
 package shared;
 
+import java.io.Serializable;
+
 /**
  * Project      : health_tracker
  * File         : Exercise.java
@@ -11,7 +13,8 @@ package shared;
  */
 
 
-public class Exercise{
+public class Exercise implements Serializable {
+    private static final long serialVersionUID = 8392101L;
     public enum ExerciseType{
         //Individual sports
         RUNNING,
