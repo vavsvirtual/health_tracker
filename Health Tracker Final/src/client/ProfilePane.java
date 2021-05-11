@@ -160,11 +160,12 @@ public class ProfilePane extends Application {
         GridPane.setHalignment(username, HPos.CENTER);
         GridPane.setMargin(username, new Insets(20, 0, 20, 0));
 
-        TextField tfUsername = new TextField();
+        TextField tfUsername = new TextField(Main.userData.getUserName());
         tfUsername.setPrefHeight(40);
         tfUsername.setMaxWidth(400);
         tfUsername.setTranslateX(-520);
         tfUsername.setTranslateY(60);
+        tfUsername.setEditable(false);
         gridPaneProfile.add(tfUsername, 1, 2);
 
         Label name = new Label("Name");
@@ -176,11 +177,12 @@ public class ProfilePane extends Application {
         GridPane.setHalignment(name, HPos.CENTER);
         GridPane.setMargin(name, new Insets(20, 0, 20, 0));
 
-        TextField tfRealName = new TextField();
+        TextField tfRealName = new TextField(Main.userData.getFullName());
         tfRealName.setPrefHeight(40);
         tfRealName.setMaxWidth(400);
         tfRealName.setTranslateX(-520);
         tfRealName.setTranslateY(110);
+        tfRealName.setEditable(false);
         gridPaneProfile.add(tfRealName, 1, 2);
 
         Label email = new Label("Email Address");
@@ -192,11 +194,12 @@ public class ProfilePane extends Application {
         GridPane.setHalignment(email, HPos.CENTER);
         GridPane.setMargin(email, new Insets(20, 0, 20, 0));
 
-        TextField tfEmail = new TextField();
+        TextField tfEmail = new TextField(Main.userData.getEmail());
         tfEmail.setPrefHeight(40);
         tfEmail.setMaxWidth(400);
         tfEmail.setTranslateX(-520);
         tfEmail.setTranslateY(160);
+        tfEmail.setEditable(false);
         gridPaneProfile.add(tfEmail, 1, 2);
 
 

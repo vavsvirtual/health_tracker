@@ -62,7 +62,13 @@ public class ClientThread extends Thread {
                 //If username exists, check password
                 if(account != null){
                     if (account.checkPassword(message.getByteMessage()[0])) {
-                        sendMessage(true, new String[]{"Login Accepted: Welcome "  + message.getStringMessage()[0]}, null);
+                        //Returning user data with login success
+                        String[] returnString = new String[]{
+                                "Login Accepted: Welcome "  + message.getStringMessage()[0],
+                                account.getFullName(),
+                                account.getEmail(),
+                        };
+                        sendMessage(true, returnString, null);
                         System.out.println("Login request returned: " + true);
                     } else {
                         sendMessage(false, new String[]{"Login rejected: Password wrong"}, null);

@@ -58,14 +58,13 @@ public class ServerConnection{
         }
     }
 
-    public Pair<Boolean, String> login(String username, String password){
+    public Pair<Boolean, String[]> login(String username, String password){
         //Obtaining salt
         byte[] salt;
         Message res = sendMessage(Message.messageType.SALT_REQUEST, new String[]{username}, null);
         //If no salt obtained -> no account under that username
         if (!res.getSuccess()){
-            System.out.println("LOGIN FAIL: Username not in Database");
-            return new Pair(false, "No account under that username");
+            return new Pair(false, new String[] {"No account under that username"});
         }else{
             salt = res.getByteMessage()[0];
         }
@@ -74,10 +73,10 @@ public class ServerConnection{
             //Hashing password & sending credentials
             byte[] hashPass = hashPassword(salt, password);
             res = sendMessage(Message.messageType.LOGIN, new String[]{username}, new byte[][]{hashPass});
-            return new Pair(res.getSuccess(), res.getStringMessage()[0]);
+            return new Pair(res.getSuccess(), res.getStringMessage());
         }catch(NoSuchAlgorithmException | InvalidKeySpecException exception){
             exception.printStackTrace();
-            return new Pair(false, "Couldn't hash password, please try again");
+            return new Pair(false, new String[] {"Couldn't hash password, please try again"});
         }
     }
 

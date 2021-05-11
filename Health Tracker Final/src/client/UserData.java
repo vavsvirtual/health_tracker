@@ -21,12 +21,17 @@ import java.util.Collections;
      * Description  : A class to hold local user data for our health tracker app
      */
 
-    public class UserData {
+    public class UserData implements Serializable{
+        private static final long serialVersionUID = 1039289L;
         //Constant Variables
         public static final double CM_TO_INCHES = 0.3937008;
         public static final String FOOD_TYPES_FILE_PATH = "./client_data/foodTypes.ser";
         public static final String DRINK_TYPES_FILE_PATH = "./client_data/drinkTypes.ser";
+        public static final String FILE_PATH_BEGINNING = "./client_data/";
         //Account related variables
+        private final String userName;
+        private final String fullName;
+        private final String email;
         private int heightCm;
         private Weight currentWeight;
         private final ArrayList<Day> userDays;
@@ -35,14 +40,12 @@ import java.util.Collections;
         private final ArrayList<Drink> drinkList;
 
         //Constructor
-        public UserData(int heightCm, Weight currentWeight){
-            //Obtain userdata
-            this.heightCm = heightCm;
-            this.currentWeight = currentWeight;
+        public UserData(String userName, String fullName, String email){
+            this.userName = userName;
+            this.fullName = fullName;
+            this.email = email;
+            //Create days arrayList
             this.userDays = new ArrayList<>();
-            //Add weight measurement to history
-            userDays.add(new Day());
-            userDays.get(0).addWeight(currentWeight);
             //Load in food & drink types
             foodList = (ArrayList<Food>) readObject(FOOD_TYPES_FILE_PATH);
             drinkList = (ArrayList<Drink>) readObject(DRINK_TYPES_FILE_PATH);
@@ -70,6 +73,16 @@ import java.util.Collections;
         }
         public ArrayList<Food> getFoodList() {
             return foodList;
+        }
+        //Getters for user info
+        public String getUserName() {
+            return userName;
+        }
+        public String getEmail() {
+            return email;
+        }
+        public String getFullName() {
+            return fullName;
         }
 
         //Setters
@@ -129,7 +142,7 @@ import java.util.Collections;
         }
 
         //Object loader (used for food and drink types)
-        private static Object readObject(String filePath){
+        public static Object readObject(String filePath){
             Object object = null;
             try {
                 FileInputStream fileIn = new FileInputStream(filePath);
@@ -145,7 +158,7 @@ import java.util.Collections;
             return object;
         }
         //Object Saver (used when updating food and drink types)
-        private static boolean saveObject(Object object, String filePath) {
+        public static boolean saveObject(Object object, String filePath) {
             try {
                 FileOutputStream fileOut = new FileOutputStream(filePath);
                 ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -161,7 +174,7 @@ import java.util.Collections;
             }
         }
 
-        //Test harness
+        /*//Test harness
         public static void main(String[] args) {
             //--------- SETUP ---------
             UserData userData = new UserData(200, new Weight(10, 1));
@@ -250,5 +263,5 @@ import java.util.Collections;
             System.out.println("ADD A DUPLICATE DAY: \t" + (successC2 ? "Pass" : "Fail"));
             System.out.println("GET NON EXISTENT DAY: \t" + (successC3 ? "Pass" : "Fail"));
 
-        }
+        }*/
     }

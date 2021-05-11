@@ -22,10 +22,12 @@ import javafx.scene.image.Image;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 
 public class Main extends Application {
+    public static UserData userData;
     private static ServerConnection connection = null;
     private static Stage stage;
 
@@ -125,13 +127,26 @@ public class Main extends Application {
                 showAlert(Alert.AlertType.WARNING, gridPaneLogin.getScene().getWindow(), "Warning", "Please enter a password");
                 return;
             }else{
-                Pair<Boolean, String> res = connection.login(userField.getText(), passwordField.getText());
+                Pair<Boolean, String[]> res = connection.login(userField.getText(), passwordField.getText());
                 if(res.getKey()){
-                    showAlert(Alert.AlertType.CONFIRMATION, gridPaneLogin.getScene().getWindow(), "Login", res.getValue());
+                    showAlert(Alert.AlertType.CONFIRMATION, gridPaneLogin.getScene().getWindow(), "Login", res.getValue()[0]);
+                    //Res layout: Boolean, Responce, FullName, Email
                     //Load userdata
+                    String dataFilePath = UserData.FILE_PATH_BEGINNING + "user_data/" + userField.getText().toLowerCase() + ".ser";
+                    userData = (UserData) UserData.readObject(dataFilePath);
+                    //If cant load create new userData object & save it
+                    if(userData == null){
+                        userData = new UserData(userField.getText().toLowerCase(), res.getValue()[1], res.getValue()[2]);
+                        boolean userDataCreated = UserData.saveObject(userData, dataFilePath);
+                        //Failure, warn user that their info might not save correctly
+                        if(!userDataCreated){
+                            showAlert(Alert.AlertType.ERROR, gridPaneLogin.getScene().getWindow(), "User Data",
+                                    "Can't save your user data, information input may be lost");
+                        }
+                    }
                     stage.setScene(ProfilePane.profileScene(stage));
                 }else{
-                    showAlert(Alert.AlertType.ERROR, gridPaneLogin.getScene().getWindow(), "Login", res.getValue());
+                    showAlert(Alert.AlertType.ERROR, gridPaneLogin.getScene().getWindow(), "Login", res.getValue()[0]);
                 }
             }
         });
@@ -256,19 +271,19 @@ public class Main extends Application {
         submitButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
                 if (nameField.getText().isEmpty()) {
-                    showAlert(Alert.AlertType.WARNING, gridPaneRegister.getScene().getWindow(), "Form Error!", "Please enter your name");
+                    showAlert(Alert.AlertType.WARNING, gridPaneRegister.getScene().getWindow(), "Warning", "Please enter your name");
                     return;
                 }
                 else if (userField.getText().isEmpty()) {
-                    showAlert(Alert.AlertType.WARNING, gridPaneRegister.getScene().getWindow(), "Form Error!", "Please enter your username");
+                    showAlert(Alert.AlertType.WARNING, gridPaneRegister.getScene().getWindow(), "Warning", "Please enter your username");
                     return;
                 }
                 else if (emailField.getText().isEmpty()) {
-                    showAlert(Alert.AlertType.WARNING, gridPaneRegister.getScene().getWindow(), "Form Error!", "Please enter your email id");
+                    showAlert(Alert.AlertType.WARNING, gridPaneRegister.getScene().getWindow(), "Warning", "Please enter your email id");
                     return;
                 }
                 else if (passwordField.getText().isEmpty()) {
-                    showAlert(Alert.AlertType.WARNING, gridPaneRegister.getScene().getWindow(), "Form Error!", "Please enter a password");
+                    showAlert(Alert.AlertType.WARNING, gridPaneRegister.getScene().getWindow(), "Warning", "Please enter a password");
                     return;
                 }else{
                     Pair<Boolean, String> res = connection.register(userField.getText(), passwordField.getText(), nameField.getText(), emailField.getText());
@@ -277,11 +292,11 @@ public class Main extends Application {
                         System.out.println("Account for user " + userField.getText() + " was created successfully");
                         //Go to login
                         stage.setScene(logInScene());
-                        showAlert(Alert.AlertType.CONFIRMATION, gridPaneRegister.getScene().getWindow(), "Register", res.getValue());
+                        showAlert(Alert.AlertType.CONFIRMATION, gridPaneRegister.getScene().getWindow(), "Registration", res.getValue());
                     //Registration failed -> warn user why
                     }else{
-                        System.out.println("Account for user " + userField.getText() + " was not created");
-                        showAlert(Alert.AlertType.ERROR, gridPaneRegister.getScene().getWindow(), "Register", res.getValue());
+                        System.out.println("Account for user " + userField.getText() + " was not created because: " + res.getValue());
+                        showAlert(Alert.AlertType.ERROR, gridPaneRegister.getScene().getWindow(), "Registration", res.getValue());
                     }
                 }
             }
