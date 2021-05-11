@@ -30,6 +30,16 @@ public class Goal implements Serializable {
     public Goal(Exercise exerciseGoal){
         this.exerciseGoal = exerciseGoal;
     }
+    @Override
+    public String toString(){
+        String stringForm = "";
+        if(weightGoal != null){
+            stringForm = "Target Weight: " + weightGoal;
+        }else{
+            stringForm = exerciseGoal.toString();
+        }
+        return stringForm;
+    }
 
     //Weight goal getter
     public Weight getWeightGoal() {
@@ -46,6 +56,10 @@ public class Goal implements Serializable {
     //Goal met getter
     public boolean getGoalMet() {
         return goalMet;
+    }
+    //Goal gainingWeight getter
+    public boolean getGainingWeight() {
+        return gainingWeight;
     }
 
     //Goal expired setter

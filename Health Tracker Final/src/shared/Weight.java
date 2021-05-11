@@ -44,8 +44,6 @@ public class Weight implements Serializable {
             return stringName;
         }
     }
-
-
     //Constructor (metric)
     public Weight(double weightKg){
         this.weightKg = weightKg;
@@ -65,6 +63,10 @@ public class Weight implements Serializable {
     }
     public double getWeightKg(){
         return weightKg;
+    }
+    //To String method
+    public String toString(){
+        return weightKg + "Kg";
     }
 
     //Static methods

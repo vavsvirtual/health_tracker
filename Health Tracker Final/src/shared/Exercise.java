@@ -65,6 +65,17 @@ public class Exercise implements Serializable {
     public double getDistanceMiles() {
         return distanceKm*KM_TO_MILES;
     }
+    //To String
+    public String toString(){
+        String stringForm = type.toString() + " for ";
+        if(distanceKm > 0){
+            stringForm = stringForm + distanceKm + "Km";
+        }if(durationMins > 0){
+            stringForm = stringForm + ((distanceKm > 0) ? " in ": "");
+            stringForm = stringForm + durationMins + " Minutes";
+        }
+        return stringForm;
+    }
 
     //Test harness
     public static void main(String[] args) {

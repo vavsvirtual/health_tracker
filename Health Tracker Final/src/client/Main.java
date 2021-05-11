@@ -20,9 +20,12 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.scene.image.Image;
 import javafx.util.Pair;
+import shared.Goal;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 
@@ -145,9 +148,40 @@ public class Main extends Application {
                     }
                     //login success
                     //Check to see if goals have finished
-                    //userData.checkExpiredGoals();
-                    //Load up the profilescene
-                    stage.setScene(ProfilePane.profileScene(stage));
+                    ArrayList<Pair<Boolean,String>> completedGoals = userData.checkExpiredGoals();
+
+                    //Test goals
+                    /*completedGoals.add(new Pair<Boolean, String>(true, "Test Goal0"));
+                    completedGoals.add(new Pair<Boolean, String>(true, "Test Goal1"));
+                    completedGoals.add(new Pair<Boolean, String>(false, "Test Goal2"));
+                    completedGoals.add(new Pair<Boolean, String>(true, "Test Goal3"));*/
+
+                    if(!completedGoals.isEmpty()){
+                        String masterString = "---Goals expired since last login---\n";
+                        for(Pair<Boolean, String> pair : completedGoals){
+                            masterString += pair.getKey() ?"Completed\t: " :"Failed to meet\t: ";
+                            masterString += pair.getValue() + "\n";
+                        }
+                        //Show the user the goals met/not met
+
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION, masterString,
+                                        ButtonType.YES,
+                                        ButtonType.NO);
+                        alert.setTitle("Goal Information");
+                        alert.setHeaderText("Would you like to set a new goal?");
+                        Optional<ButtonType> result = alert.showAndWait();
+
+                        if (result.get() == ButtonType.YES) {
+                            //Load up goal page
+                            stage.setScene(GoalSettingPane.goalSettingScene(stage));
+                        }else{
+                            //Load up the profilescene
+                            stage.setScene(ProfilePane.profileScene(stage));
+                        }
+                    }else{
+                        //Load up the profilescene
+                        stage.setScene(ProfilePane.profileScene(stage));
+                    }
                 }else{
                     showAlert(Alert.AlertType.ERROR, gridPaneLogin.getScene().getWindow(), "Login", res.getValue()[0]);
                 }

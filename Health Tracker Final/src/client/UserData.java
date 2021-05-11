@@ -1,6 +1,7 @@
 package client;
 
 //Import statement
+import javafx.util.Pair;
 import shared.*;
 
 import java.io.*;
@@ -187,7 +188,32 @@ import java.util.Set;
             drinkSet.remove(drink);
             saveObject(drinkSet, DRINK_TYPES_FILE_PATH);
         }
-
+        //Special functions
+        public ArrayList<Pair<Boolean, String>> checkExpiredGoals(){
+            ArrayList<Pair<Boolean, String>> expiredGoals = new ArrayList<>();
+            //for all the days
+            for(Day day : userDays){
+                //if the day has a goal and it isnt in the future
+                if (!day.getGoals().isEmpty() && LocalDate.now().isAfter(day.getDate())){
+                    //Set goal expire to true, evaluate if you completed it
+                    for(Goal goal : day.getGoals()) {
+                        if (goal.getExpired() != true) {
+                            goal.setExpired(true);
+                            //If its a weight goal & you were gaining weight check you completed it
+                            if (goal.getWeightGoal() != null && goal.getGainingWeight() && currentWeight.getWeightKg() > goal.getWeightGoal().getWeightKg()) {
+                                goal.setGoalMet(true);
+                                expiredGoals.add(new Pair(true, goal.toString()));
+                                //If its a weight goal & you were loosing weight check you completed it
+                            } else if (goal.getWeightGoal() != null && !goal.getGainingWeight() && currentWeight.getWeightKg() < goal.getWeightGoal().getWeightKg()) {
+                                goal.setGoalMet(true);
+                                expiredGoals.add(new Pair(true, goal.toString()));
+                            }
+                        }
+                    }
+                }
+            }
+            return expiredGoals;
+        }
         //Sort day array
         public void sortDays(){
             Collections.sort(userDays);
