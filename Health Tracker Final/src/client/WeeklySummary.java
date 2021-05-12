@@ -45,7 +45,7 @@ public class WeeklySummary extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        primaryStage.setTitle("Groups");
+        primaryStage.setTitle("History");
         stage = primaryStage;
         Scene scene = summaryScene(stage);
         primaryStage.setScene(scene);
@@ -153,24 +153,46 @@ public class WeeklySummary extends Application {
 
         GridPane gridPaneSummary = new GridPane();
 
-        Label headerLabel = new Label("History");
-        headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 40));
-        gridPaneSummary.add(headerLabel, 0, 0, 2, 1);
-        headerLabel.setAlignment(Pos.CENTER);
-        headerLabel.setTranslateX(-300);
-        headerLabel.setTranslateY(0);
-        GridPane.setHalignment(headerLabel, HPos.CENTER);
-        GridPane.setMargin(headerLabel, new Insets(20, 0, 20, 0));
+        gridPaneSummary.setAlignment(Pos.CENTER);
+
+
+//        Label headerLabel = new Label("History");
+//        headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 40));
+//        gridPaneSummary.add(headerLabel, 0, 0, 2, 1);
+//        headerLabel.setAlignment(Pos.CENTER);
+//        headerLabel.setTranslateX(-350);
+//        headerLabel.setTranslateY(0);
+//        GridPane.setHalignment(headerLabel, HPos.CENTER);
+//        GridPane.setMargin(headerLabel, new Insets(20, 0, 20, 0));
 
         // Title
         Label title1 = new Label("Enter a range of date to check");
+//        title1.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+//        gridPaneSummary.add(title1, 0, 0, 2, 1);
+//        title1.setAlignment(Pos.CENTER);
+//        title1.setTranslateX(-350);
+//        title1.setTranslateY(100);
+//        GridPane.setHalignment(title1, HPos.CENTER);
+//        GridPane.setMargin(title1, new Insets(20, 0, 20, 0));
+
+
         Label title2 = new Label(" the history of the selected date range.");
+//        title2.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+//        gridPaneSummary.add(title2, 0, 0, 2, 1);
+//        title2.setAlignment(Pos.CENTER);
+//        title2.setTranslateX(-350);
+//        title2.setTranslateY(130);
+//        GridPane.setHalignment(title2, HPos.CENTER);
+//        GridPane.setMargin(title2, new Insets(20, 0, 20, 0));
+
         VBox titleVb = new VBox();
         titleVb.setAlignment(Pos.CENTER);
         titleVb.getChildren().addAll(title1, title2);
 
+
         // Input date picker
         Label inPickLabel = new Label("Input date:");
+
         DatePicker inPicker = new DatePicker();
         inPicker.setPromptText(pattern);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
@@ -183,12 +205,14 @@ public class WeeklySummary extends Application {
         // From and to date pickers
 
         Label pickLabel1 = new Label("From date:");
+
         DatePicker fmPicker = new DatePicker(LocalDate.now());
         fmPicker.setEditable(false);
         gridPaneSummary.add(pickLabel1, 0, 1);
         gridPaneSummary.add(fmPicker, 1, 1);
 
         Label pickLabel2 = new Label("To date:");
+
         DatePicker toPicker = new DatePicker(LocalDate.now());
         toPicker.setEditable(false);
         gridPaneSummary.add(pickLabel2, 0, 2);
@@ -204,9 +228,28 @@ public class WeeklySummary extends Application {
         btn.setTooltip(new Tooltip("Find if the input date is within the from and to dates."));
         btn.setOnAction(event -> {
 
-            buttonActionListenerRoutine();
+            if (inPicker.getValue() == null) {
+
+                showAlert(Alert.AlertType.ERROR,
+                        "The input date must be in dd-MMM-yy format (for example, 02-Mar-16).");
+                inPicker.requestFocus();
+                return;
+            }
+
+            if (validDate(fmPicker.getValue(), toPicker.getValue(), inPicker.getValue())) {
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Valid date");
+                alert.setHeaderText("Success!");
+                alert.setContentText("The input date is within the selected date range.");
+                alert.showAndWait();
+            } else {
+                showAlert(Alert.AlertType.ERROR,
+                        "The input date is not within the selected date range!");
+            }
 
         });
+        btn.setAlignment(Pos.CENTER);
 
         BorderPane menu = new BorderPane();
         menu.setLeft(vBox);
@@ -218,22 +261,6 @@ public class WeeklySummary extends Application {
 
     }
 
-    private void initAndShowGUI() {
-
-        frame = new JFrame("View History");
-        JFXPanel fxPanel = new JFXPanel();
-        frame.add(fxPanel);
-        frame.setSize(400, 300);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setLocation(new Point(400, 200));
-
-        Platform.runLater(() -> {
-            fxPanel.setScene(summaryScene(stage));
-        });
-
-        frame.requestFocus();
-    }
 
     private static Callback<DatePicker, DateCell> getCustomDateCellFactory(DateParameterType dateParamType) {
 
@@ -281,28 +308,6 @@ public class WeeklySummary extends Application {
         return dayCellFactory;
     }
 
-    private static void buttonActionListenerRoutine() {
-
-        if (inPicker.getValue() == null) {
-
-            showAlert(Alert.AlertType.ERROR,
-                    "The input date must be in dd-MMM-yy format (for example, 02-Mar-16).");
-            inPicker.requestFocus();
-            return;
-        }
-
-        if (validDate(fmPicker.getValue(), toPicker.getValue(), inPicker.getValue())) {
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Valid date");
-            alert.setHeaderText("Success!");
-            alert.setContentText("The input date is within the selected date range.");
-            alert.showAndWait();
-        } else {
-            showAlert(Alert.AlertType.ERROR,
-                    "The input date is not within the selected date range!");
-        }
-    }
 
     private static void showAlert(Alert.AlertType alertType, String content) {
 
