@@ -20,7 +20,10 @@ public class Message implements Serializable {
     public enum messageType{
         SALT_REQUEST,
         LOGIN,
-        REGISTER
+        REGISTER,
+        CREATE_GROUP,
+        JOIN_GROUP,
+        INVITE_TO_GROUP
     }
 
     //Message variables (stores info to be passed)

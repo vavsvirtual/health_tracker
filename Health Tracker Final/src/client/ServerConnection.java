@@ -80,6 +80,42 @@ public class ServerConnection{
         }
     }
 
+    //Create group
+    public Pair<Boolean, String> createGroup(String groupName){
+        groupName = groupName.toLowerCase();
+        Message res = sendMessage(Message.messageType.CREATE_GROUP, new String[]{groupName}, null);
+        //return response
+        if(res.getSuccess()){
+            Main.userData.addGroup(groupName);
+            Main.saveUserData();
+            return new Pair(true, res.getStringMessage()[0]
+                    + "\nGroup Name: " + res.getStringMessage()[1]
+                    + "\nGroup Code: " + Integer.parseInt(res.getStringMessage()[2]));
+        }else{
+            return new Pair(res.getSuccess(), res.getStringMessage()[0]);
+        }
+    }
+
+    //Join Group
+    public Pair<Boolean, String> joinGroup(String groupName, int joinCode){
+        groupName = groupName.toLowerCase();
+        Message res = sendMessage(Message.messageType.JOIN_GROUP, new String[]{groupName, String.valueOf(joinCode)}, null);
+        if(res.getSuccess())    {
+            Main.userData.addGroup(groupName);
+            Main.saveUserData();
+        }
+        return new Pair(res.getSuccess(), res.getStringMessage()[0]);
+    }
+
+    //Invite to Group
+    public Pair<Boolean, String> inviteToGroup(String userName, String groupName){
+        userName = userName.toLowerCase();
+        groupName = groupName.toLowerCase();
+        Message res = sendMessage(Message.messageType.INVITE_TO_GROUP, new String[]{userName, groupName}, null);
+        return new Pair(res.getSuccess(), res.getStringMessage()[0]);
+    }
+
+
     //Register
     public Pair<Boolean, String> register(String username, String password, String fullName, String email){
         //Checking if password meets minimum requirements

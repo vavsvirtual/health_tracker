@@ -13,7 +13,7 @@ import java.util.HashSet;
 /**
      * Project      : health_tracker
      * File         : UserData.java
-     * Last Edit    : 09/05/2021
+     * Last Edit    : 12/05/2021
      * PRG Lang     : Java
      * Author(s)    : Team 4.5 | Vav Scott 100287100
      *
@@ -37,6 +37,8 @@ import java.util.HashSet;
         //Food and drink lists
         private final HashSet<String> foodSet;
         private final HashSet<String> drinkSet;
+        //Array of group names
+        private final HashSet<String> groupInfo;
 
         //Constructor
         public UserData(String userName, String fullName, String email){
@@ -48,6 +50,8 @@ import java.util.HashSet;
             //Load in food & drink types
             foodSet = (HashSet<String>) readObject(FOOD_TYPES_FILE_PATH);
             drinkSet = (HashSet<String>) readObject(DRINK_TYPES_FILE_PATH);
+            //Create group set
+            groupInfo = new HashSet<>();
         }
 
         //Getters
@@ -73,7 +77,12 @@ import java.util.HashSet;
         public HashSet<String> getFoodSet() {
             return foodSet;
         }
-        //Getters for user info
+        //Group getter
+        public HashSet<String> getGroupInfo() {
+            return groupInfo;
+        }
+
+    //Getters for user info
         public String getUserName() {
             return userName;
         }
@@ -177,6 +186,9 @@ import java.util.HashSet;
                 }
                 return added;
             }
+        }
+        public void addGroup(String groupName){
+            groupInfo.add(groupName);
         }
         //Removers
         public void removeFood(String food){

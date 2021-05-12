@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
     public static UserData userData;
-    private static ServerConnection connection = null;
+    public static ServerConnection connection = null;
     private static Stage stage;
 
     @Override

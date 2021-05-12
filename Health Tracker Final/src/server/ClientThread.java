@@ -1,12 +1,14 @@
 package server;
 
 //Import statements
+import javafx.util.Pair;
 import shared.Message;
 //Communication
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.HashSet;
 
 /**
  * Project      : health_tracker
@@ -23,6 +25,8 @@ public class ClientThread extends Thread {
     //Input/Output stream variables
     private ObjectOutputStream outStream;
     private ObjectInputStream inStream;
+    //Keep a copy of account when the user logs in
+    private Account account;
 
     //Constructor
     public ClientThread(Socket socket){
@@ -39,7 +43,6 @@ public class ClientThread extends Thread {
     }
 
     private void processMessage(Message message) {
-        Account account;
         //Decide what to do based on messageType
         switch (message.getType()) {
             case SALT_REQUEST:
@@ -98,6 +101,62 @@ public class ClientThread extends Thread {
                     System.out.println("Registration request returned: " + false);
                     sendMessage(false, new String[]{"Registration Rejected: Username already in use"}, null);
                 }
+                break;
+            case CREATE_GROUP:
+                //Create new group based on the information provided
+                System.out.println("UserGroup Requested");
+                String groupName = message.getStringMessage()[0].toLowerCase();
+                if(Server.addGroup(groupName, account.getUserName())){
+                    int joinCode = Server.Groups.get(groupName).getKey();
+                    account.addGroup(groupName);
+                    Server.saveObject(Server.Accounts, Server.ACCOUNTS_FILE_PATH);
+                    sendMessage(true, new String[]{"Group Created: Give your friends the name & code to let them join",
+                            groupName, String.valueOf(joinCode)}, null);
+                }else{
+                    sendMessage(false, new String[]{"Group Rejected: Please pick a different name"}, null);
+                }
+                break;
+            case JOIN_GROUP:
+                //
+                System.out.println("Request to join group");
+                groupName = message.getStringMessage()[0].toLowerCase();
+                int joinCode = -1;
+                try{
+                    joinCode = Integer.parseInt(message.getStringMessage()[1]);
+                }catch(NumberFormatException exception){
+                    System.out.println("Join failed, join code cant be parsed");
+                    sendMessage(false, new String[]{"Join Rejected: Your join code was broken"}, null);
+                    break;
+                }
+                //Attempt to join user
+                if(Server.addUserToGroup(groupName, account.getUserName(), joinCode)){
+                    account.addGroup(groupName);
+                    Server.saveObject(Server.Accounts, Server.ACCOUNTS_FILE_PATH);
+                    sendMessage(true, new String[]{"Join Accepted: You're now part of this group"}, null);
+                }else{
+                    sendMessage(false, new String[]{"Join Rejected: Please check the group name and join code " +
+                            "& ensure you aren't already in this group"}, null);
+                }
+                break;
+            case INVITE_TO_GROUP:
+                System.out.println("Request to invite someone to group");
+                String usernameToInvite = message.getStringMessage()[0].toLowerCase();
+                groupName = message.getStringMessage()[1].toLowerCase();
+                if(account.inGroup(groupName)) {
+                    joinCode = Server.Groups.get(groupName).getKey();
+                    String emailMessage = "You've been invited to join group: " + groupName + "\nUse the group name & code: " + joinCode + " in app to join";
+                    if(Server.Accounts.get(usernameToInvite)!= null){
+                        String email = Server.Accounts.get(usernameToInvite).getEmail();
+                        if(Server.sendEmail(email, emailMessage)){
+                            sendMessage(true, new String[]{"Request Succeeded: Your friend should get an email soon"}, null);
+                        }else{
+                            sendMessage(false, new String[]{"Request Failed: We couldn't send out the invite right now, try again later"}, null);
+                        }
+                    }
+                }else{
+                    sendMessage(false, new String[]{"Request Refused: You do not have access to this group"}, null);
+                }
+
                 break;
         }
     }

@@ -3,6 +3,7 @@ package server;
 //Import statements
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.regex.Pattern;
 
 /**
@@ -22,6 +23,8 @@ public class Account implements Serializable {
     private String userName, fullName, email;
     private final byte[] salt;
     private byte[] hashPass;
+    //Group names
+    private HashSet<String> groups;
 
     //Account constructor
     public Account(String userName, byte[] salt, byte[] hashPass, String fullName, String email){
@@ -30,6 +33,7 @@ public class Account implements Serializable {
         this.hashPass = hashPass;
         this.fullName = fullName;
         this.email = email.toLowerCase();
+        this.groups = new HashSet<>();
     }
 
     //Getters
@@ -57,6 +61,11 @@ public class Account implements Serializable {
         this.email = email;
     }
 
+    //Adders
+    public void addGroup(String groupName){
+        this.groups.add(groupName);
+    }
+
     //Password handling (security sensitive)
     public boolean checkPassword(byte[] hashPass){
         return Arrays.equals(this.hashPass, hashPass);
@@ -73,6 +82,9 @@ public class Account implements Serializable {
     public static boolean checkEmailFormat(String email) {
         Pattern pattern = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
         return pattern.matcher(email).matches();
+    }
+    public boolean inGroup(String groupName){
+        return groups.contains(groupName);
     }
 
     //Test harness

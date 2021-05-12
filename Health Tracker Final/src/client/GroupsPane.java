@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import com.jfoenix.controls.JFXButton;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.util.Pair;
 
 
 public class GroupsPane extends Application {
@@ -83,7 +84,7 @@ public class GroupsPane extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    stage.setScene(WeeklySummary.summaryScene(stage));
+                    //stage.setScene();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -145,8 +146,8 @@ public class GroupsPane extends Application {
         secondLabel.setFont(Font.font("Arial", 20));
         gridPaneGroup.add(secondLabel, 0, 0, 2, 1);
         secondLabel.setAlignment(Pos.CENTER);
-        secondLabel.setTranslateX(-430);
-        secondLabel.setTranslateY(70);
+        secondLabel.setTranslateX(-465);
+        secondLabel.setTranslateY(110);
         GridPane.setHalignment(secondLabel, HPos.CENTER);
         GridPane.setMargin(secondLabel, new Insets(20, 0, 20, 0));
 
@@ -163,36 +164,24 @@ public class GroupsPane extends Application {
         nameField.setPrefHeight(40);
         nameField.setMaxWidth(400);
         nameField.setTranslateX(-530);
-        nameField.setTranslateY(90);
+        nameField.setTranslateY(85);
         gridPaneGroup.add(nameField, 1, 2);
 
+        Label inviteFriendLabel = new Label("Invite Friend");
+        inviteFriendLabel.setFont(Font.font("Arial", 20));
+        gridPaneGroup.add(inviteFriendLabel, 0, 0, 2, 1);
+        inviteFriendLabel.setAlignment(Pos.CENTER);
+        inviteFriendLabel.setTranslateX(-473);
+        inviteFriendLabel.setTranslateY(250);
+        GridPane.setHalignment(inviteFriendLabel, HPos.CENTER);
+        GridPane.setMargin(inviteFriendLabel, new Insets(20, 0, 20, 0));
 
-        Label goalLabel = new Label("Group Goal");
-        goalLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        gridPaneGroup.add(goalLabel, 0, 0, 2, 1);
-        goalLabel.setAlignment(Pos.CENTER);
-        goalLabel.setTranslateX(-600);
-        goalLabel.setTranslateY(210);
-        GridPane.setHalignment(goalLabel, HPos.CENTER);
-        GridPane.setMargin(goalLabel, new Insets(20, 0, 20, 0));
-
-        ComboBox cbGoal = new ComboBox();
-        cbGoal.setEditable(true);
-        cbGoal.getItems().addAll(
-                "Exercise", "Calories", "Custom"
-        );
-        cbGoal.setPrefHeight(40);
-        cbGoal.setPrefWidth(300);
-        cbGoal.setTranslateX(-530);
-        cbGoal.setTranslateY(150);
-        gridPaneGroup.add(cbGoal, 1, 2);
-
-        Label addFriend = new Label("Add Friend");
+        Label addFriend = new Label("Friends Username");
         addFriend.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneGroup.add(addFriend, 0, 0, 2, 1);
         addFriend.setAlignment(Pos.CENTER);
         addFriend.setTranslateX(-600);
-        addFriend.setTranslateY(270);
+        addFriend.setTranslateY(290);
         GridPane.setHalignment(addFriend, HPos.CENTER);
         GridPane.setMargin(addFriend, new Insets(20, 0, 20, 0));
 
@@ -200,23 +189,55 @@ public class GroupsPane extends Application {
         friendField.setPrefHeight(40);
         friendField.setPrefWidth(300);
         friendField.setTranslateX(-530);
-        friendField.setTranslateY(170);
+        friendField.setTranslateY(190);
         gridPaneGroup.add(friendField, 1, 4);
 
-        Button addFriendButton = new Button("Add Friend");
+        Label groupToInviteToLabel = new Label("Group To Invite To");
+        groupToInviteToLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        gridPaneGroup.add(groupToInviteToLabel, 0, 0, 2, 1);
+        groupToInviteToLabel.setAlignment(Pos.CENTER);
+        groupToInviteToLabel.setTranslateX(-600);
+        groupToInviteToLabel.setTranslateY(354);
+        GridPane.setHalignment(groupToInviteToLabel, HPos.CENTER);
+        GridPane.setMargin(groupToInviteToLabel, new Insets(20, 0, 20, 0));
+
+        ComboBox groupToInviteTo = new ComboBox();
+        if(Main.userData.getGroupInfo() != null){
+            groupToInviteTo.getItems().addAll(Main.userData.getGroupInfo());
+        }
+        groupToInviteTo.setEditable(false);
+        groupToInviteTo.setPrefHeight(40);
+        groupToInviteTo.setPrefWidth(300);
+        groupToInviteTo.setTranslateX(-530);
+        groupToInviteTo.setTranslateY(255);
+        gridPaneGroup.add(groupToInviteTo, 1, 4);
+
+        Button addFriendButton = new Button("Invite Friend");
         addFriendButton.setPrefHeight(40);
         addFriendButton.setDefaultButton(true);
-        addFriendButton.setPrefWidth(100);
-        addFriendButton.setTranslateX(-130);
-        addFriendButton.setTranslateY(330);
+        addFriendButton.setPrefWidth(300);
+        addFriendButton.setTranslateX(-230);
+        addFriendButton.setTranslateY(420);
         addFriendButton.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
         GridPane.setMargin(addFriendButton, new Insets(20, 0, 20, 0));
 
         addFriendButton.setOnAction(t -> {
-            if (cbGoal.getSelectionModel().isEmpty()) {
-                showAlert(Alert.AlertType.ERROR, "Error!", "Please add a friend");
+            if(groupToInviteTo.getValue() == null){
+                showAlert(Alert.AlertType.WARNING, "Invite to Group", "Please select a valid group");
+            }else if(friendField.getText().isEmpty()){
+                showAlert(Alert.AlertType.WARNING, "Invite to Group", "Please enter your friends username");
+            }else{
+                String groupName = groupToInviteTo.getValue().toString().toLowerCase();
+                String userName = friendField.getText().toLowerCase();
+                Pair<Boolean, String> pair = Main.connection.inviteToGroup(userName, groupName);
+                if(pair.getKey()){
+                    showAlert(Alert.AlertType.CONFIRMATION, "Invite to Group", pair.getValue());
+                }else{
+                    showAlert(Alert.AlertType.ERROR, "Invite to Group", pair.getValue());
+                }
             }
         });
+
 
 
         Button createGroupButton = new Button("Create New Group");
@@ -224,23 +245,27 @@ public class GroupsPane extends Application {
         createGroupButton.setDefaultButton(true);
         createGroupButton.setPrefWidth(300);
         createGroupButton.setTranslateX(-230);
-        createGroupButton.setTranslateY(400);
+        createGroupButton.setTranslateY(212);
         createGroupButton.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
         GridPane.setMargin(createGroupButton, new Insets(20, 0, 20, 0));
 
+
         createGroupButton.setOnAction(t -> {
             if (nameField.getText().isEmpty()) {
-                showAlert(Alert.AlertType.ERROR, "Form Error!", "Please enter a unique group name");
-                return;
+                showAlert(Alert.AlertType.WARNING, "Create Group", "Please enter a group name");
+            }else{
+                String groupName = nameField.getText().toLowerCase();
+                Pair<Boolean, String> pair = Main.connection.createGroup(groupName);
+                //Failed to make group
+                if(!pair.getKey()){
+                    showAlert(Alert.AlertType.ERROR, "Create Group", pair.getValue());
+                }else{
+                    showAlert(Alert.AlertType.CONFIRMATION, "Create Group", pair.getValue());
+                    //Refresh group list
+                    groupToInviteTo.getItems().removeAll(Main.userData.getGroupInfo());
+                    groupToInviteTo.getItems().addAll(Main.userData.getGroupInfo());
+                }
             }
-            if (cbGoal.getSelectionModel().isEmpty()) {
-                showAlert(Alert.AlertType.ERROR, "Error!", "Please select a goal for the group");
-                return;
-            }
-
-            showAlert(Alert.AlertType.CONFIRMATION, "Created Group Successful!", "Group " + nameField.getText());
-
-            System.out.println("Created group " + nameField.getText() + " successfully");
         });
 
 
@@ -248,8 +273,8 @@ public class GroupsPane extends Application {
         thirdLabel.setFont(Font.font("Arial", 20));
         gridPaneGroup.add(thirdLabel, 0, 0, 2, 1);
         thirdLabel.setAlignment(Pos.CENTER);
-        thirdLabel.setTranslateX(30);
-        thirdLabel.setTranslateY(70);
+        thirdLabel.setTranslateX(-20);
+        thirdLabel.setTranslateY(105);
         GridPane.setHalignment(thirdLabel, HPos.CENTER);
         GridPane.setMargin(thirdLabel, new Insets(20, 0, 20, 0));
 
@@ -262,30 +287,62 @@ public class GroupsPane extends Application {
         GridPane.setHalignment(goalLabel_one, HPos.CENTER);
         GridPane.setMargin(goalLabel_one, new Insets(20, 0, 20, 0));
 
-        ComboBox cbJoin = new ComboBox();
-        cbJoin.setEditable(true);
-        cbJoin.getItems().addAll(
-                "Group 10", "Group 11", "Group 12", "Group 13", "Group 14"
-        );
-        cbJoin.setPrefHeight(40);
-        cbJoin.setPrefWidth(300);
-        cbJoin.setTranslateX(-50);
-        cbJoin.setTranslateY(90);
-        gridPaneGroup.add(cbJoin, 1, 2);
+        TextField tfGroupNameJoin = new TextField();
+        tfGroupNameJoin.setPrefHeight(40);
+        tfGroupNameJoin.setPrefWidth(300);
+        tfGroupNameJoin.setTranslateX(-70);
+        tfGroupNameJoin.setTranslateY(45);
+        gridPaneGroup.add(tfGroupNameJoin, 1, 4);
+
+        Label joinCodeLabel = new Label("Join Code");
+        joinCodeLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        gridPaneGroup.add(joinCodeLabel, 0, 0, 2, 1);
+        joinCodeLabel.setAlignment(Pos.CENTER);
+        joinCodeLabel.setTranslateX(-120);
+        joinCodeLabel.setTranslateY(215);
+        GridPane.setHalignment(joinCodeLabel, HPos.CENTER);
+        GridPane.setMargin(joinCodeLabel, new Insets(20, 0, 20, 0));
+
+        TextField tfJoinCode = new TextField();
+        tfJoinCode.setPrefHeight(40);
+        tfJoinCode.setPrefWidth(300);
+        tfJoinCode.setTranslateX(-70);
+        tfJoinCode.setTranslateY(110);
+        gridPaneGroup.add(tfJoinCode, 1, 4);
 
         Button joinGroupButton = new Button("Join a Group");
         joinGroupButton.setPrefHeight(40);
         joinGroupButton.setDefaultButton(true);
         joinGroupButton.setPrefWidth(300);
         joinGroupButton.setTranslateX(230);
-        joinGroupButton.setTranslateY(400);
+        joinGroupButton.setTranslateY(275);
         joinGroupButton.setStyle("-fx-background-color: #3D405B; -fx-text-fill: #F4F1DE; -fx-font-weight: bold;");
         GridPane.setMargin(joinGroupButton, new Insets(20, 0, 20, 0));
 
         joinGroupButton.setOnAction(t -> {
-
-            if (cbJoin.getSelectionModel().isEmpty()) {
-                showAlert(Alert.AlertType.ERROR, "Error!", "Please select a group to join");
+            if(tfGroupNameJoin.getText().isEmpty()){
+                showAlert(Alert.AlertType.WARNING, "Join Group", "Please enter a group name");
+            }else if(tfJoinCode.getText().isEmpty()){
+                showAlert(Alert.AlertType.WARNING, "Join Group", "Please enter a join code");
+            }else{
+                try{
+                    int joinCode = Integer.parseInt(tfJoinCode.getText());
+                    String groupName = tfGroupNameJoin.getText();
+                    //Attempt to join
+                    Pair<Boolean, String> pair = Main.connection.joinGroup(groupName, joinCode);
+                    //Success!
+                    if(pair.getKey()){
+                        showAlert(Alert.AlertType.CONFIRMATION, "Join Group", pair.getValue());
+                        //Refresh group list
+                        groupToInviteTo.getItems().removeAll(Main.userData.getGroupInfo());
+                        groupToInviteTo.getItems().addAll(Main.userData.getGroupInfo());
+                    //Failure
+                    }else{
+                        showAlert(Alert.AlertType.ERROR, "Join Group", pair.getValue());
+                    }
+                }catch(NumberFormatException exception){
+                    showAlert(Alert.AlertType.WARNING, "Join Group", "Join code must be a whole number");
+                }
             }
 
         });

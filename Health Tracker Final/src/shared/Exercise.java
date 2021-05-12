@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Project      : health_tracker
  * File         : Exercise.java
- * Last Edit    : 09/05/2021
+ * Last Edit    : 12/05/2021
  * PRG Lang     : Java
  * Author(s)    : Team 4.5 | Vav Scott 100287100
  *
