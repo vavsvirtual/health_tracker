@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Project      : health_tracker
  * File         : Goal.java
- * Last Edit    : 09/05/2021
+ * Last Edit    : 12/05/2021
  * PRG Lang     : Java
  * Author(s)    : Team 4.5 | Vav Scott 100287100
  *
@@ -34,7 +34,7 @@ public class Goal implements Serializable {
     public String toString(){
         String stringForm = "";
         if(weightGoal != null){
-            stringForm = "Target Weight: " + weightGoal;
+            stringForm = "Target weight of " + weightGoal;
         }else{
             stringForm = exerciseGoal.toString();
         }

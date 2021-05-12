@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
      * Project      : health_tracker
@@ -200,18 +199,23 @@ import java.util.Set;
                         if (goal.getExpired() != true) {
                             goal.setExpired(true);
                             //If its a weight goal & you were gaining weight check you completed it
-                            if (goal.getWeightGoal() != null && goal.getGainingWeight() && currentWeight.getWeightKg() > goal.getWeightGoal().getWeightKg()) {
-                                goal.setGoalMet(true);
-                                expiredGoals.add(new Pair(true, goal.toString()));
+                            System.out.println(goal.getWeightGoal());
+                            if (goal.getWeightGoal() != null && goal.getGainingWeight()) {
+                                goal.setGoalMet(currentWeight.getWeightKg() > goal.getWeightGoal().getWeightKg());
+                                expiredGoals.add(new Pair(goal.getGoalMet(), goal.toString()));
                                 //If its a weight goal & you were loosing weight check you completed it
-                            } else if (goal.getWeightGoal() != null && !goal.getGainingWeight() && currentWeight.getWeightKg() < goal.getWeightGoal().getWeightKg()) {
-                                goal.setGoalMet(true);
-                                expiredGoals.add(new Pair(true, goal.toString()));
+                            } else if (goal.getWeightGoal() != null && !goal.getGainingWeight()) {
+                                goal.setGoalMet(currentWeight.getWeightKg() < goal.getWeightGoal().getWeightKg());
+                                expiredGoals.add(new Pair(goal.getGoalMet(), goal.toString()));
+                            //Exercise goals (unsupported atm, just reports null)
+                            }else{
+                                expiredGoals.add(new Pair(null, goal.toString()));
                             }
                         }
                     }
                 }
             }
+            Main.saveUserData();
             return expiredGoals;
         }
         //Sort day array

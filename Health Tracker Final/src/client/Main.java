@@ -23,6 +23,7 @@ import javafx.util.Pair;
 import shared.Goal;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Optional;
@@ -150,20 +151,17 @@ public class Main extends Application {
                     //Check to see if goals have finished
                     ArrayList<Pair<Boolean,String>> completedGoals = userData.checkExpiredGoals();
 
-                    //Test goals
-                    /*completedGoals.add(new Pair<Boolean, String>(true, "Test Goal0"));
-                    completedGoals.add(new Pair<Boolean, String>(true, "Test Goal1"));
-                    completedGoals.add(new Pair<Boolean, String>(false, "Test Goal2"));
-                    completedGoals.add(new Pair<Boolean, String>(true, "Test Goal3"));*/
-
                     if(!completedGoals.isEmpty()){
                         String masterString = "---Goals expired since last login---\n";
                         for(Pair<Boolean, String> pair : completedGoals){
-                            masterString += pair.getKey() ?"Completed\t: " :"Failed to meet\t: ";
-                            masterString += pair.getValue() + "\n";
+                            if(pair.getKey() != null){
+                                masterString += pair.getKey() ?"Completed\t: " :"Failed to meet\t: ";
+                                masterString += pair.getValue() + "\n";
+                            }else{
+                                masterString += "Expired Goal\t: " + pair.getValue() + "\n";
+                            }
                         }
                         //Show the user the goals met/not met
-
                         Alert alert = new Alert(Alert.AlertType.INFORMATION, masterString,
                                         ButtonType.YES,
                                         ButtonType.NO);
@@ -171,6 +169,7 @@ public class Main extends Application {
                         alert.setHeaderText("Would you like to set a new goal?");
                         Optional<ButtonType> result = alert.showAndWait();
 
+                        //If user wants to set a new goal load up goal page
                         if (result.get() == ButtonType.YES) {
                             //Load up goal page
                             stage.setScene(GoalSettingPane.goalSettingScene(stage));
