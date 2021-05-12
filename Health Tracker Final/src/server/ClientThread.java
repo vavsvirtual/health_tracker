@@ -144,7 +144,7 @@ public class ClientThread extends Thread {
                 groupName = message.getStringMessage()[1].toLowerCase();
                 if(account.inGroup(groupName)) {
                     joinCode = Server.Groups.get(groupName).getKey();
-                    String emailMessage = "You've been invited to join group: " + groupName + "\nUse the group name & code: " + joinCode + " in app to join";
+                    String emailMessage = "You've been invited to join group: " + groupName + "\n Use the group name & code: " + joinCode + " in app to join";
                     if(Server.Accounts.get(usernameToInvite)!= null){
                         String email = Server.Accounts.get(usernameToInvite).getEmail();
                         if(Server.sendEmail(email, emailMessage)){

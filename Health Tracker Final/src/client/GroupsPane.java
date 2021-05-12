@@ -76,7 +76,7 @@ public class GroupsPane extends Application {
             }
         });
 
-        JFXButton summary = new JFXButton("Weekly Summary");
+        JFXButton summary = new JFXButton("History");
         summary.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         summary.setPrefWidth(230);
 
@@ -84,7 +84,7 @@ public class GroupsPane extends Application {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    //stage.setScene();
+                    stage.setScene(WeeklySummary.summaryScene(stage));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -79,7 +79,7 @@ public class GoalSettingPane extends Application {
             }
         });
 
-        JFXButton summary = new JFXButton("Weekly Summary");
+        JFXButton summary = new JFXButton("History");
         summary.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         summary.setPrefWidth(230);
 

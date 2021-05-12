@@ -79,7 +79,7 @@ public class ProfilePane extends Application {
             }
         });
 
-        JFXButton summary = new JFXButton("Weekly Summary");
+        JFXButton summary = new JFXButton("History");
         summary.setStyle("-fx-text-fill: #F4F1DE; -fx-font-weight: bold; -fx-font-size: 20; -fx-alignment: center");
         summary.setPrefWidth(230);
 
@@ -277,7 +277,7 @@ public class ProfilePane extends Application {
         tfBMI.setTranslateY(360);
         gridPaneProfile.add(tfBMI, 1, 2);
 
-        Label targetWeight = new Label("Target Weight");
+        /*Label targetWeight = new Label("Target Weight");
         targetWeight.setFont(Font.font("Arial", FontWeight.BOLD, 15));
         gridPaneProfile.add(targetWeight, 0, 0, 2, 1);
         targetWeight.setAlignment(Pos.CENTER);
@@ -307,7 +307,7 @@ public class ProfilePane extends Application {
         tfHealthOverview.setMaxWidth(400);
         tfHealthOverview.setTranslateX(-520);
         tfHealthOverview.setTranslateY(460);
-        gridPaneProfile.add(tfHealthOverview, 1, 2);
+        gridPaneProfile.add(tfHealthOverview, 1, 2);*/
 
         Button btnSave = new Button("Save User Info");
         btnSave.setPrefHeight(40);
