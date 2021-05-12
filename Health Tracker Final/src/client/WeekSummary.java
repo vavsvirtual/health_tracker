@@ -45,7 +45,7 @@ public class WeeklySummary extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        primaryStage.setTitle("Groups");
+        primaryStage.setTitle("History");
         stage = primaryStage;
         Scene scene = summaryScene(stage);
         primaryStage.setScene(scene);
@@ -157,21 +157,48 @@ public class WeeklySummary extends Application {
         headerLabel.setFont(Font.font("Arial", FontWeight.BOLD, 40));
         gridPaneSummary.add(headerLabel, 0, 0, 2, 1);
         headerLabel.setAlignment(Pos.CENTER);
-        headerLabel.setTranslateX(-300);
+        headerLabel.setTranslateX(-350);
         headerLabel.setTranslateY(0);
         GridPane.setHalignment(headerLabel, HPos.CENTER);
         GridPane.setMargin(headerLabel, new Insets(20, 0, 20, 0));
 
         // Title
         Label title1 = new Label("Enter a range of date to check");
+        title1.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        gridPaneSummary.add(title1, 0, 0, 2, 1);
+        title1.setAlignment(Pos.CENTER);
+        title1.setTranslateX(-350);
+        title1.setTranslateY(100);
+        GridPane.setHalignment(title1, HPos.CENTER);
+        GridPane.setMargin(title1, new Insets(20, 0, 20, 0));
+
+
         Label title2 = new Label(" the history of the selected date range.");
-        VBox titleVb = new VBox();
-        titleVb.setAlignment(Pos.CENTER);
-        titleVb.getChildren().addAll(title1, title2);
+        title2.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        gridPaneSummary.add(title2, 0, 0, 2, 1);
+        title2.setAlignment(Pos.CENTER);
+        title2.setTranslateX(-350);
+        title2.setTranslateY(130);
+        GridPane.setHalignment(title2, HPos.CENTER);
+        GridPane.setMargin(title2, new Insets(20, 0, 20, 0));
+
+
 
         // Input date picker
         Label inPickLabel = new Label("Input date:");
+        inPickLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        gridPaneSummary.add(inPickLabel, 0, 0, 2, 1);
+        inPickLabel.setAlignment(Pos.CENTER);
+        inPickLabel.setTranslateX(-350);
+        inPickLabel.setTranslateY(170);
+        GridPane.setHalignment(inPickLabel, HPos.CENTER);
+        GridPane.setMargin(inPickLabel, new Insets(20, 0, 20, 0));
+
         DatePicker inPicker = new DatePicker();
+        inPicker.setPrefHeight(40);
+        inPicker.setPrefWidth(300);
+        inPicker.setTranslateX(-350);
+        inPicker.setTranslateY(250);
         inPicker.setPromptText(pattern);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         StringConverter<LocalDate> converter =
@@ -183,13 +210,37 @@ public class WeeklySummary extends Application {
         // From and to date pickers
 
         Label pickLabel1 = new Label("From date:");
+        pickLabel1.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        gridPaneSummary.add(pickLabel1, 0, 0, 2, 1);
+        pickLabel1.setAlignment(Pos.CENTER);
+        pickLabel1.setTranslateX(-350);
+        pickLabel1.setTranslateY(130);
+        GridPane.setHalignment(pickLabel1, HPos.CENTER);
+        GridPane.setMargin(pickLabel1, new Insets(20, 0, 20, 0));
+
         DatePicker fmPicker = new DatePicker(LocalDate.now());
+        fmPicker.setPrefHeight(40);
+        fmPicker.setPrefWidth(300);
+        fmPicker.setTranslateX(-20);
+        fmPicker.setTranslateY(210);
         fmPicker.setEditable(false);
         gridPaneSummary.add(pickLabel1, 0, 1);
         gridPaneSummary.add(fmPicker, 1, 1);
 
         Label pickLabel2 = new Label("To date:");
+        pickLabel2.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        gridPaneSummary.add(pickLabel2, 0, 0, 2, 1);
+        pickLabel2.setAlignment(Pos.CENTER);
+        pickLabel2.setTranslateX(-350);
+        pickLabel2.setTranslateY(130);
+        GridPane.setHalignment(pickLabel2, HPos.CENTER);
+        GridPane.setMargin(pickLabel2, new Insets(20, 0, 20, 0));
+
         DatePicker toPicker = new DatePicker(LocalDate.now());
+        toPicker.setPrefHeight(40);
+        toPicker.setPrefWidth(300);
+        toPicker.setTranslateX(-20);
+        toPicker.setTranslateY(210);
         toPicker.setEditable(false);
         gridPaneSummary.add(pickLabel2, 0, 2);
         gridPaneSummary.add(toPicker, 1, 2);
@@ -218,22 +269,6 @@ public class WeeklySummary extends Application {
 
     }
 
-    private void initAndShowGUI() {
-
-        frame = new JFrame("View History");
-        JFXPanel fxPanel = new JFXPanel();
-        frame.add(fxPanel);
-        frame.setSize(400, 300);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setLocation(new Point(400, 200));
-
-        Platform.runLater(() -> {
-            fxPanel.setScene(summaryScene(stage));
-        });
-
-        frame.requestFocus();
-    }
 
     private static Callback<DatePicker, DateCell> getCustomDateCellFactory(DateParameterType dateParamType) {
 
